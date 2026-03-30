@@ -21,44 +21,51 @@ enum UserRole {
 }
 
 model Hotel {
-  id                 String    @id @default(cuid())
-  name               String
-  slug               String    @unique
-  description        String?
-  shortDescription   String?
-  address            String?
-  city               String?
-  country            String    @default("KZ")
-  phone              String?
-  email              String?
-  website            String?
-  logoUrl            String?
-  coverImageUrl      String?
-  galleryUrls        String    @default("[]")
-  amenities          String    @default("[]")
-  checkInTime        String    @default("14:00")
-  checkOutTime       String    @default("12:00")
-  currency           String    @default("KZT")
-  timezone           String    @default("Asia/Almaty")
-  language           String    @default("ru")
-  plan               Plan      @default(FREE)
-  stripeCustomerId   String?
-  stripeSubId        String?
-  planExpiresAt      DateTime?
-  telegramBotToken   String?
-  telegramChatId     String?
-  stripeAccountId    String?
-  ownerId            String
-  owner              User      @relation("HotelOwner", fields: [ownerId], references: [id])
-  members            HotelMember[]
-  rooms              Room[]
-  bookings           Booking[]
-  guests             Guest[]
-  ratePlans          RatePlan[]
-  housekeepingTasks  HousekeepingTask[]
-  activityLogs       ActivityLog[]
-  createdAt          DateTime  @default(now())
-  updatedAt          DateTime  @updatedAt
+  id                   String    @id @default(cuid())
+  name                 String
+  slug                 String    @unique
+  description          String?
+  shortDescription     String?
+  address              String?
+  city                 String?
+  country              String    @default("KZ")
+  phone                String?
+  email                String?
+  website              String?
+  logoUrl              String?
+  coverImageUrl        String?
+  galleryUrls          String    @default("[]")
+  amenities            String    @default("[]")
+  checkInTime          String    @default("14:00")
+  checkOutTime         String    @default("12:00")
+  currency             String    @default("KZT")
+  timezone             String    @default("Asia/Almaty")
+  language             String    @default("ru")
+  plan                 Plan      @default(FREE)
+  stripeCustomerId     String?
+  stripeSubId          String?
+  planExpiresAt        DateTime?
+  telegramBotToken     String?
+  telegramChatId       String?
+  stripeAccountId      String?
+  cancellationHours    Int       @default(24)
+  cancellationPenalty  Int       @default(50)
+  taxRate              Float     @default(0)
+  taxName              String    @default("НДС")
+  ownerId              String
+  owner                User      @relation("HotelOwner", fields: [ownerId], references: [id])
+  members              HotelMember[]
+  rooms                Room[]
+  bookings             Booking[]
+  guests               Guest[]
+  ratePlans            RatePlan[]
+  housekeepingTasks    HousekeepingTask[]
+  activityLogs         ActivityLog[]
+  promoCodes           PromoCode[]
+  extraServices        ExtraService[]
+  reviews              Review[]
+  createdAt            DateTime  @default(now())
+  updatedAt            DateTime  @updatedAt
 }
 
 model User {
@@ -124,6 +131,7 @@ model Room {
   photos            String             @default("[]")
   isActive          Boolean            @default(true)
   sortOrder         Int                @default(0)
+  minNights         Int                @default(1)
   bookings          Booking[]
   housekeepingTasks HousekeepingTask[]
   createdAt         DateTime           @default(now())
@@ -328,4 +336,43 @@ model ActivityLog {
   entityId  String?
   details   String?  // JSON with extra info
   createdAt DateTime @default(now())
+}
+
+model PromoCode {
+  id            String    @id @default(cuid())
+  hotelId       String
+  hotel         Hotel     @relation(fields: [hotelId], references: [id])
+  code          String
+  discountType  String    @default("PERCENT") // PERCENT or FIXED
+  discountValue Float
+  maxUses       Int?
+  usedCount     Int       @default(0)
+  validFrom     DateTime?
+  validTo       DateTime?
+  isActive      Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  @@unique([hotelId, code])
+}
+
+model ExtraService {
+  id        String   @id @default(cuid())
+  hotelId   String
+  hotel     Hotel    @relation(fields: [hotelId], references: [id])
+  name      String
+  price     Float
+  perNight  Boolean  @default(false)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
+
+model Review {
+  id          String   @id @default(cuid())
+  hotelId     String
+  hotel       Hotel    @relation(fields: [hotelId], references: [id])
+  bookingId   String?
+  guestName   String
+  rating      Int
+  comment     String?
+  isPublished Boolean  @default(false)
+  createdAt   DateTime @default(now())
 }

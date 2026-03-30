@@ -2,10 +2,12 @@ import { prisma } from "@/lib/prisma"
 import { notFound } from "next/navigation"
 import { Metadata } from "next"
 import Link from "next/link"
-import { BedDouble, Mail, Phone, MapPin, MessageCircle, Send } from "lucide-react"
+import { BedDouble, Mail, Phone, MapPin, MessageCircle, Send, Star } from "lucide-react"
 import { HotelHero } from "@/components/hotel-page/hotel-hero"
 import { AmenitiesList } from "@/components/hotel-page/amenities-list"
 import { RoomsSection } from "@/components/hotel-page/rooms-section"
+import { format } from "date-fns"
+import { ru } from "date-fns/locale"
 
 export async function generateMetadata({
   params,
@@ -35,6 +37,7 @@ export default async function HotelPage({
     where: { slug },
     include: {
       rooms: { where: { isActive: true }, orderBy: { sortOrder: "asc" } },
+      reviews: { where: { isPublished: true }, orderBy: { createdAt: "desc" } },
     },
   })
 
@@ -149,6 +152,49 @@ export default async function HotelPage({
               <p className="text-gray-500">Номера не найдены.</p>
             )}
           </section>
+
+          {/* Reviews section */}
+          {hotel.reviews && hotel.reviews.length > 0 && (() => {
+            const reviews = hotel.reviews!
+            const avgRating = reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
+            return (
+              <section>
+                <div className="flex items-center gap-3 mb-6">
+                  <h2 className="text-2xl font-heading font-bold text-gray-900">Отзывы</h2>
+                  <div className="flex items-center gap-1.5 bg-amber-50 border border-amber-200 rounded-full px-3 py-1">
+                    <Star className="size-4 text-amber-400 fill-amber-400" />
+                    <span className="font-semibold text-gray-900">{avgRating.toFixed(1)}</span>
+                    <span className="text-sm text-gray-500">({reviews.length})</span>
+                  </div>
+                </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {reviews.map((review) => (
+                    <div key={review.id} className="bg-white rounded-xl border border-gray-200 p-5 space-y-3">
+                      <div className="flex items-start justify-between gap-2">
+                        <div>
+                          <p className="font-semibold text-gray-900">{review.guestName}</p>
+                          <p className="text-xs text-gray-400">
+                            {format(review.createdAt, "d MMMM yyyy", { locale: ru })}
+                          </p>
+                        </div>
+                        <div className="flex items-center gap-0.5 shrink-0">
+                          {Array.from({ length: 5 }).map((_, i) => (
+                            <Star
+                              key={i}
+                              className={`size-4 ${i < review.rating ? "text-amber-400 fill-amber-400" : "text-gray-200 fill-gray-200"}`}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                      {review.comment && (
+                        <p className="text-sm text-gray-700 leading-relaxed">{review.comment}</p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </section>
+            )
+          })()}
 
           {/* Map section */}
           {hotel.address && (
