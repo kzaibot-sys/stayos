@@ -19,7 +19,7 @@
   // Base URL — can be overridden with data-base-url attribute
   var baseUrl =
     container.getAttribute('data-base-url') ||
-    'https://stayos.app';
+    'https://stayos.aibot.kz';
 
   // Create iframe
   var iframe = document.createElement('iframe');

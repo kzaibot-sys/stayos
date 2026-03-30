@@ -22,7 +22,7 @@ export async function sendBookingConfirmationEmail(to: string, data: {
 
   try {
     await resend.emails.send({
-      from: process.env.RESEND_FROM_EMAIL || 'StayOS <noreply@stayos.app>',
+      from: process.env.RESEND_FROM_EMAIL || 'StayOS <noreply@stayos.aibot.kz>',
       to,
       subject: `Бронирование подтверждено — ${data.bookingNumber}`,
       html: buildConfirmationHtml(data),
@@ -50,7 +50,7 @@ export async function sendReminderEmail(to: string, data: {
 
   try {
     await resend.emails.send({
-      from: process.env.RESEND_FROM_EMAIL || 'StayOS <noreply@stayos.app>',
+      from: process.env.RESEND_FROM_EMAIL || 'StayOS <noreply@stayos.aibot.kz>',
       to,
       subject: `Напоминание о заезде завтра — ${data.hotelName}`,
       html: buildReminderHtml(data),

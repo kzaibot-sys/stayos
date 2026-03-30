@@ -32,7 +32,7 @@ export default function PricingPage() {
             <div className="mt-16 text-center">
               <p className="text-sm text-gray-400">
                 Все цены указаны без НДС. Есть вопросы?{" "}
-                <a href="mailto:sales@stayos.app" className="text-[#1b4332] font-medium hover:underline">
+                <a href="mailto:sales@stayos.aibot.kz" className="text-[#1b4332] font-medium hover:underline">
                   Напишите нам
                 </a>
               </p>

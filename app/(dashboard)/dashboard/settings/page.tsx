@@ -225,7 +225,7 @@ export default function SettingsPage() {
                 URL (slug)
               </label>
               <div className="flex items-center gap-1">
-                <span className="text-sm text-muted-foreground">stayos.app/hotel/</span>
+                <span className="text-sm text-muted-foreground">stayos.aibot.kz/</span>
                 <input
                   type="text"
                   value={form.slug}

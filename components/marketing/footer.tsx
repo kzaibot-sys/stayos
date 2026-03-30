@@ -22,7 +22,7 @@ const footerLinks = {
     title: "Поддержка",
     links: [
       { label: "FAQ", href: "/faq" },
-      { label: "support@stayos.app", href: "mailto:support@stayos.app" },
+      { label: "support@stayos.aibot.kz", href: "mailto:support@stayos.aibot.kz" },
     ],
   },
 }

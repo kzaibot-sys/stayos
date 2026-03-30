@@ -356,7 +356,7 @@ function BillingContent() {
                 </button>
               ) : plan.planKey === "ENTERPRISE" ? (
                 <a
-                  href="mailto:sales@stayos.app"
+                  href="mailto:sales@stayos.aibot.kz"
                   className="w-full py-2 rounded-lg text-xs font-medium border border-gray-300 hover:bg-gray-50 text-gray-700 transition-colors text-center block"
                 >
                   Связаться

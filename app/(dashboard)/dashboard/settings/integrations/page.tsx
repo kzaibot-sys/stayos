@@ -107,7 +107,7 @@ export default function IntegrationsPage() {
     }
   }
 
-  const embedCode = `<div id="stayos-widget"></div>\n<script src="https://stayos.app/widget.js" data-hotel="${hotelSlug}"></script>`
+  const embedCode = `<div id="stayos-widget"></div>\n<script src="https://stayos.aibot.kz/widget.js" data-hotel="${hotelSlug}"></script>`
 
   const handleCopy = () => {
     navigator.clipboard.writeText(embedCode).then(() => {
@@ -373,7 +373,7 @@ export default function IntegrationsPage() {
 
           <div className="bg-blue-50 border border-blue-200 rounded-lg px-4 py-3 text-sm text-blue-700">
             <strong>Превью:</strong> Виджет появится на вашем сайте по адресу{" "}
-            <code className="font-mono">stayos.app/hotel/{hotelSlug || "your-hotel"}</code>
+            <code className="font-mono">stayos.aibot.kz/{hotelSlug || "your-hotel"}</code>
           </div>
         </section>
       </div>

@@ -206,7 +206,7 @@ export default function RegisterPage() {
                   <p className="text-xs text-muted-foreground">
                     Ваш адрес:{" "}
                     <span className="font-medium text-[#1a56db]">
-                      stayos.app/{hotelSlug}
+                      stayos.aibot.kz/{hotelSlug}
                     </span>
                   </p>
                 )}

@@ -89,7 +89,7 @@ const plans: Plan[] = [
       "Обучение персонала",
     ],
     cta: "Связаться",
-    ctaHref: "mailto:sales@stayos.app",
+    ctaHref: "mailto:sales@stayos.aibot.kz",
     accent: "from-[#d4a373]/5 to-white",
   },
 ]
