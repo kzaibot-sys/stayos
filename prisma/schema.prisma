@@ -55,6 +55,8 @@ model Hotel {
   bookings           Booking[]
   guests             Guest[]
   ratePlans          RatePlan[]
+  housekeepingTasks  HousekeepingTask[]
+  activityLogs       ActivityLog[]
   createdAt          DateTime  @default(now())
   updatedAt          DateTime  @updatedAt
 }
@@ -75,13 +77,14 @@ model User {
 }
 
 model HotelMember {
-  id        String   @id @default(cuid())
-  hotelId   String
-  userId    String
-  role      UserRole @default(STAFF)
-  hotel     Hotel    @relation(fields: [hotelId], references: [id])
-  user      User     @relation(fields: [userId], references: [id])
-  createdAt DateTime @default(now())
+  id                String             @id @default(cuid())
+  hotelId           String
+  userId            String
+  role              UserRole           @default(STAFF)
+  hotel             Hotel              @relation(fields: [hotelId], references: [id])
+  user              User               @relation(fields: [userId], references: [id])
+  housekeepingTasks HousekeepingTask[]
+  createdAt         DateTime           @default(now())
   @@unique([hotelId, userId])
 }
 
@@ -102,27 +105,29 @@ enum RoomStatus {
 }
 
 model Room {
-  id            String     @id @default(cuid())
-  hotelId       String
-  hotel         Hotel      @relation(fields: [hotelId], references: [id])
-  name          String
-  roomNumber    String?
-  type          RoomType   @default(STANDARD)
-  status        RoomStatus @default(AVAILABLE)
-  floor         Int?
-  capacity      Int        @default(2)
-  bedCount      Int        @default(1)
-  bedType       String?
-  pricePerNight Float
-  weekendPrice  Float?
-  description   String?
-  amenities     String     @default("[]")
-  photos        String     @default("[]")
-  isActive      Boolean    @default(true)
-  sortOrder     Int        @default(0)
-  bookings      Booking[]
-  createdAt     DateTime   @default(now())
-  updatedAt     DateTime   @updatedAt
+  id                String             @id @default(cuid())
+  hotelId           String
+  hotel             Hotel              @relation(fields: [hotelId], references: [id])
+  name              String
+  roomNumber        String?
+  type              RoomType           @default(STANDARD)
+  status            RoomStatus         @default(AVAILABLE)
+  cleaningStatus    CleaningStatus     @default(CLEAN)
+  floor             Int?
+  capacity          Int                @default(2)
+  bedCount          Int                @default(1)
+  bedType           String?
+  pricePerNight     Float
+  weekendPrice      Float?
+  description       String?
+  amenities         String             @default("[]")
+  photos            String             @default("[]")
+  isActive          Boolean            @default(true)
+  sortOrder         Int                @default(0)
+  bookings          Booking[]
+  housekeepingTasks HousekeepingTask[]
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
 }
 
 model Guest {
@@ -271,4 +276,56 @@ model Session {
   userId       String
   expires      DateTime
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+enum CleaningStatus {
+  CLEAN
+  DIRTY
+  CLEANING
+  INSPECTION
+}
+
+enum TaskStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum TaskPriority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+}
+
+model HousekeepingTask {
+  id           String       @id @default(cuid())
+  hotelId      String
+  hotel        Hotel        @relation(fields: [hotelId], references: [id])
+  roomId       String
+  room         Room         @relation(fields: [roomId], references: [id])
+  assignedToId String?
+  assignedTo   HotelMember? @relation(fields: [assignedToId], references: [id])
+  type         String       @default("CLEANING") // CLEANING, MAINTENANCE, INSPECTION
+  status       TaskStatus   @default(PENDING)
+  priority     TaskPriority @default(MEDIUM)
+  notes        String?
+  checklist    String       @default("[]") // JSON array of {item: string, checked: boolean}
+  startedAt    DateTime?
+  completedAt  DateTime?
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+}
+
+model ActivityLog {
+  id        String   @id @default(cuid())
+  hotelId   String
+  hotel     Hotel    @relation(fields: [hotelId], references: [id])
+  userId    String?
+  action    String   // BOOKING_CREATED, ROOM_CLEANED, PAYMENT_RECEIVED, etc.
+  entity    String   // booking, room, guest, payment
+  entityId  String?
+  details   String?  // JSON with extra info
+  createdAt DateTime @default(now())
 }

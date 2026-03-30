@@ -14,6 +14,11 @@ import {
   BedDouble,
   Settings,
   ArrowRight,
+  Activity,
+  CreditCard,
+  Sparkles,
+  UserCheck,
+  DoorOpen,
 } from "lucide-react"
 import { StatsCard } from "@/components/dashboard/stats-card"
 import { RecentBookings } from "@/components/dashboard/recent-bookings"
@@ -151,12 +156,43 @@ export default async function DashboardPage() {
   const hasRooms = totalActiveRooms > 0
   const hasProfile = !!(hotel?.address || hotel?.phone)
 
+  // ── Recent activity ──────────────────────────────────────────────────────
+  const recentActivity = await prisma.activityLog.findMany({
+    where: { hotelId },
+    orderBy: { createdAt: "desc" },
+    take: 10,
+  })
+
   const formatCurrency = (amount: number) =>
     new Intl.NumberFormat("ru-KZ", {
       style: "currency",
       currency: "KZT",
       maximumFractionDigits: 0,
     }).format(amount)
+
+  function activityIcon(action: string) {
+    if (action.includes("BOOKING")) return CalendarCheck
+    if (action.includes("PAYMENT")) return CreditCard
+    if (action.includes("ROOM") || action.includes("CLEAN")) return Sparkles
+    if (action.includes("CHECKED_IN")) return UserCheck
+    if (action.includes("CHECKED_OUT")) return DoorOpen
+    return Activity
+  }
+
+  function activityLabel(action: string): string {
+    const labels: Record<string, string> = {
+      BOOKING_CREATED: "Бронь создана",
+      BOOKING_CONFIRMED: "Бронь подтверждена",
+      BOOKING_CHECKED_IN: "Гость заселён",
+      BOOKING_CHECKED_OUT: "Гость выселен",
+      BOOKING_CANCELLED: "Бронь отменена",
+      BOOKING_NO_SHOW: "Гость не явился",
+      PAYMENT_RECEIVED: "Платёж получен",
+      ROOM_CLEANED: "Номер убран",
+      ROOM_STATUS_CHANGED: "Статус номера изменён",
+    }
+    return labels[action] ?? action
+  }
 
   return (
     <div className="space-y-6">
@@ -416,6 +452,52 @@ export default async function DashboardPage() {
 
       {/* Recent bookings */}
       <RecentBookings hotelId={hotelId} />
+
+      {/* Recent activity log */}
+      {recentActivity.length > 0 && (
+        <div>
+          <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3 flex items-center gap-2">
+            <Activity className="size-4" />
+            Последние действия
+          </h2>
+          <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+            <ul className="divide-y divide-gray-100">
+              {recentActivity.map((log) => {
+                const Icon = activityIcon(log.action)
+                return (
+                  <li key={log.id} className="flex items-center gap-3 px-5 py-3">
+                    <div className="size-8 rounded-full bg-gray-100 flex items-center justify-center shrink-0">
+                      <Icon className="size-4 text-gray-500" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-medium text-gray-900">
+                        {activityLabel(log.action)}
+                      </p>
+                      {log.details && (
+                        <p className="text-xs text-gray-400 truncate">
+                          {(() => {
+                            try {
+                              const d = JSON.parse(log.details)
+                              return d.bookingNumber
+                                ? `Бронь #${d.bookingNumber}`
+                                : log.entity
+                            } catch {
+                              return log.entity
+                            }
+                          })()}
+                        </p>
+                      )}
+                    </div>
+                    <time className="text-xs text-gray-400 shrink-0">
+                      {format(new Date(log.createdAt), "d MMM, HH:mm", { locale: ru })}
+                    </time>
+                  </li>
+                )
+              })}
+            </ul>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

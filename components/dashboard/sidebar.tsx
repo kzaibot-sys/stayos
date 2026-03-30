@@ -10,6 +10,7 @@ import {
   Users,
   CreditCard,
   BarChart3,
+  Sparkles,
   Settings,
   LogOut,
 } from "lucide-react"
@@ -24,6 +25,7 @@ const navItems = [
   { label: "Гости", icon: Users, href: "/dashboard/guests" },
   { label: "Платежи", icon: CreditCard, href: "/dashboard/payments" },
   { label: "Отчёты", icon: BarChart3, href: "/dashboard/reports" },
+  { label: "Уборка", icon: Sparkles, href: "/dashboard/housekeeping" },
   { label: "Настройки", icon: Settings, href: "/dashboard/settings" },
 ]
 

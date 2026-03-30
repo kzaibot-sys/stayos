@@ -3,6 +3,7 @@ import { auth } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { z } from "zod"
 import { sendTelegramNotification, formatCancelledBookingMessage } from "@/lib/telegram"
+import { logActivity } from "@/lib/activity-log"
 
 const updateBookingSchema = z.object({
   status: z
@@ -59,6 +60,7 @@ export async function PUT(
 ) {
   const session = await auth()
   const hotelId = (session?.user as any)?.hotelId
+  const userId = (session?.user as any)?.id
 
   if (!hotelId) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
@@ -68,6 +70,7 @@ export async function PUT(
 
   const existing = await prisma.booking.findFirst({
     where: { id, hotelId },
+    include: { room: true },
   })
 
   if (!existing) {
@@ -126,6 +129,65 @@ export async function PUT(
       payments: { orderBy: { createdAt: "desc" } },
     },
   })
+
+  // On CHECKED_OUT: mark room dirty and auto-create cleaning task
+  if (data.status === "CHECKED_OUT") {
+    // Mark room as dirty
+    await prisma.room.update({
+      where: { id: existing.roomId },
+      data: { cleaningStatus: "DIRTY" },
+    })
+
+    // Determine priority: HIGH if there's a check-in today, else MEDIUM
+    const todayStart = new Date()
+    todayStart.setHours(0, 0, 0, 0)
+    const todayEnd = new Date()
+    todayEnd.setHours(23, 59, 59, 999)
+
+    const hasCheckInToday = await prisma.booking.count({
+      where: {
+        roomId: existing.roomId,
+        checkIn: { gte: todayStart, lte: todayEnd },
+        status: { in: ["CONFIRMED", "PENDING"] },
+      },
+    })
+
+    const priority = hasCheckInToday > 0 ? "HIGH" : "MEDIUM"
+
+    await prisma.housekeepingTask.create({
+      data: {
+        hotelId,
+        roomId: existing.roomId,
+        type: "CLEANING",
+        priority,
+        status: "PENDING",
+      },
+    })
+
+    logActivity({
+      hotelId,
+      userId,
+      action: "BOOKING_CHECKED_OUT",
+      entity: "booking",
+      entityId: id,
+      details: {
+        bookingNumber: booking.bookingNumber,
+        roomId: existing.roomId,
+      },
+    })
+  }
+
+  // Activity log for status changes
+  if (data.status && data.status !== "CHECKED_OUT") {
+    logActivity({
+      hotelId,
+      userId,
+      action: `BOOKING_${data.status}`,
+      entity: "booking",
+      entityId: id,
+      details: { bookingNumber: booking.bookingNumber },
+    })
+  }
 
   // Send Telegram cancellation notification (non-blocking)
   if (data.status === "CANCELLED") {
