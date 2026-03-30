@@ -6,8 +6,8 @@ export default function NotFound() {
     <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center px-4">
       <div className="text-center max-w-md">
         {/* Icon */}
-        <div className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-blue-100 mb-8">
-          <Search className="size-12 text-blue-500" />
+        <div className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-[#1b4332]/10 mb-8">
+          <Search className="size-12 text-[#2d6a4f]" />
         </div>
 
         {/* 404 number */}
@@ -29,7 +29,7 @@ export default function NotFound() {
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Link
             href="/"
-            className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-6 py-2.5 text-sm font-medium text-white hover:bg-blue-700 transition-colors gap-2"
+            className="inline-flex items-center justify-center rounded-lg bg-[#1b4332] px-6 py-2.5 text-sm font-medium text-white hover:bg-[#2d6a4f] transition-colors gap-2"
           >
             <BedDouble className="size-4" />
             На главную

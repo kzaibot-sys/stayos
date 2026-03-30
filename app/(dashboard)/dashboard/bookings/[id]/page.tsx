@@ -13,9 +13,9 @@ import { InternalNotes } from "@/components/dashboard/internal-notes"
 
 const bookingStatusConfig: Record<string, { label: string; className: string }> = {
   PENDING: { label: "Ожидает", className: "bg-yellow-100 text-yellow-700" },
-  CONFIRMED: { label: "Подтверждена", className: "bg-blue-100 text-blue-700" },
+  CONFIRMED: { label: "Подтверждена", className: "bg-[#1b4332]/10 text-[#1b4332]" },
   CHECKED_IN: { label: "Заселён", className: "bg-green-100 text-green-700" },
-  CHECKED_OUT: { label: "Выселился", className: "bg-gray-100 text-gray-700" },
+  CHECKED_OUT: { label: "Выселился", className: "bg-muted text-foreground" },
   CANCELLED: { label: "Отменена", className: "bg-red-100 text-red-700" },
   NO_SHOW: { label: "Не приехал", className: "bg-orange-100 text-orange-700" },
 }
@@ -24,7 +24,7 @@ const paymentStatusConfig: Record<string, { label: string; className: string }> 
   UNPAID: { label: "Не оплачено", className: "bg-red-100 text-red-700" },
   PARTIAL: { label: "Частично", className: "bg-yellow-100 text-yellow-700" },
   PAID: { label: "Оплачено", className: "bg-green-100 text-green-700" },
-  REFUNDED: { label: "Возврат", className: "bg-gray-100 text-gray-700" },
+  REFUNDED: { label: "Возврат", className: "bg-muted text-foreground" },
 }
 
 const sourceLabels: Record<string, string> = {
@@ -327,7 +327,7 @@ export default async function BookingDetailPage({
                 <div className="space-y-4">
                   {timeline.map((event, i) => (
                     <div key={i} className="flex items-start gap-3 pl-6 relative">
-                      <div className="absolute left-0 top-1 w-4 h-4 rounded-full bg-blue-100 border-2 border-blue-400 flex-shrink-0" />
+                      <div className="absolute left-0 top-1 w-4 h-4 rounded-full bg-[#1b4332]/10 border-2 border-[#2d6a4f] flex-shrink-0" />
                       <div>
                         <p className="text-sm font-medium text-foreground">{event.label}</p>
                         {event.date && (

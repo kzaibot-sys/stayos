@@ -262,12 +262,12 @@ export function StepDates({
               key={room.id}
               className={`flex flex-col sm:flex-row rounded-xl border bg-white overflow-hidden shadow-sm hover:shadow-md transition-all ${
                 selectedRoomId === room.id
-                  ? "border-[#1a56db] ring-2 ring-[#1a56db]/20"
+                  ? "border-[#1b4332] ring-2 ring-[#1b4332]/20"
                   : "border-gray-200"
               }`}
             >
               {/* Image placeholder */}
-              <div className="sm:w-48 shrink-0 bg-gradient-to-br from-[#1a56db]/10 to-[#6366f1]/10 flex items-center justify-center min-h-[140px]">
+              <div className="sm:w-48 shrink-0 bg-gradient-to-br from-[#1b4332]/10 to-[#2d6a4f]/10 flex items-center justify-center min-h-[140px]">
                 {room.photos?.[0] ? (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img
@@ -276,7 +276,7 @@ export function StepDates({
                     className="w-full h-full object-cover"
                   />
                 ) : (
-                  <BedDouble className="size-12 text-[#1a56db]/30" />
+                  <BedDouble className="size-12 text-[#1b4332]/30" />
                 )}
               </div>
 
@@ -377,7 +377,7 @@ export function StepDates({
                   </div>
                   <Button
                     onClick={() => handleSelectRoom(room)}
-                    className="bg-[#1a56db] text-white hover:bg-[#1e429f] shrink-0"
+                    className="bg-[#1b4332] text-white hover:bg-[#2d6a4f] shrink-0"
                     size="sm"
                   >
                     Выбрать

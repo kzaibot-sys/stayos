@@ -142,7 +142,7 @@ export function PaymentForm({
                 min={1}
                 step={1}
                 required
-                className="w-full h-10 rounded-lg border border-border bg-background px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full h-10 rounded-lg border border-border bg-background px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[#2d6a4f]"
               />
             </div>
 
@@ -153,7 +153,7 @@ export function PaymentForm({
               <select
                 value={method}
                 onChange={(e) => setMethod(e.target.value)}
-                className="w-full h-10 rounded-lg border border-border bg-background px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full h-10 rounded-lg border border-border bg-background px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[#2d6a4f]"
               >
                 {PAYMENT_METHODS.map((m) => (
                   <option key={m.value} value={m.value}>
@@ -188,7 +188,7 @@ export function PaymentForm({
                 onChange={(e) => setNotes(e.target.value)}
                 rows={2}
                 placeholder="Комментарий к оплате..."
-                className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[#2d6a4f] resize-none"
               />
             </div>
 

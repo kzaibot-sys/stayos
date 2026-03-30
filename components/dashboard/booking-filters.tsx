@@ -103,7 +103,7 @@ export function BookingFilters({ rooms }: BookingFiltersProps) {
           onKeyDown={(e) => e.key === "Enter" && applyFilters()}
           onBlur={applyFilters}
           placeholder="Поиск по номеру брони, имени гостя, email, телефону..."
-          className="w-full h-10 rounded-lg border border-border bg-background pl-9 pr-4 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full h-10 rounded-lg border border-border bg-background pl-9 pr-4 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[#2d6a4f]"
         />
       </div>
 
@@ -114,7 +114,7 @@ export function BookingFilters({ rooms }: BookingFiltersProps) {
         <select
           value={status}
           onChange={(e) => setStatus(e.target.value)}
-          className="h-9 rounded-lg border border-border bg-background px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="h-9 rounded-lg border border-border bg-background px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[#2d6a4f]"
         >
           {statusOptions.map((opt) => (
             <option key={opt.value} value={opt.value}>
@@ -132,7 +132,7 @@ export function BookingFilters({ rooms }: BookingFiltersProps) {
           value={dateFrom}
           onChange={(e) => setDateFrom(e.target.value)}
           onBlur={applyFilters}
-          className="h-9 rounded-lg border border-border bg-background px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="h-9 rounded-lg border border-border bg-background px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[#2d6a4f]"
         />
       </div>
 
@@ -144,7 +144,7 @@ export function BookingFilters({ rooms }: BookingFiltersProps) {
           value={dateTo}
           onChange={(e) => setDateTo(e.target.value)}
           onBlur={applyFilters}
-          className="h-9 rounded-lg border border-border bg-background px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="h-9 rounded-lg border border-border bg-background px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[#2d6a4f]"
         />
       </div>
 
@@ -154,7 +154,7 @@ export function BookingFilters({ rooms }: BookingFiltersProps) {
         <select
           value={roomId}
           onChange={(e) => setRoomId(e.target.value)}
-          className="h-9 rounded-lg border border-border bg-background px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="h-9 rounded-lg border border-border bg-background px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[#2d6a4f]"
         >
           <option value="ALL">Все номера</option>
           {rooms.map((room) => (
@@ -172,7 +172,7 @@ export function BookingFilters({ rooms }: BookingFiltersProps) {
         <select
           value={source}
           onChange={(e) => setSource(e.target.value)}
-          className="h-9 rounded-lg border border-border bg-background px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="h-9 rounded-lg border border-border bg-background px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[#2d6a4f]"
         >
           {sourceOptions.map((opt) => (
             <option key={opt.value} value={opt.value}>

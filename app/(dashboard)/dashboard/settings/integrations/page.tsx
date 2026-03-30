@@ -118,10 +118,10 @@ export default function IntegrationsPage() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold text-gray-900 mb-6">Настройки</h1>
+      <h1 className="text-2xl font-bold text-foreground mb-6">Настройки</h1>
 
       {/* Settings navigation tabs */}
-      <div className="flex gap-1 mb-8 border-b border-gray-200">
+      <div className="flex gap-1 mb-8 border-b border-border">
         {settingsTabs.map((tab) => {
           const Icon = tab.icon
           const isActive = tab.href === "/dashboard/settings/integrations"
@@ -131,8 +131,8 @@ export default function IntegrationsPage() {
               href={tab.href}
               className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium border-b-2 transition-colors ${
                 isActive
-                  ? "border-blue-600 text-blue-600"
-                  : "border-transparent text-gray-500 hover:text-gray-700"
+                  ? "border-[#1b4332] text-[#1b4332]"
+                  : "border-transparent text-muted-foreground hover:text-foreground"
               }`}
             >
               <Icon className="size-4" />
@@ -144,15 +144,15 @@ export default function IntegrationsPage() {
 
       <div className="space-y-6">
         {/* Telegram */}
-        <section className="bg-white rounded-xl border border-gray-200 p-6 space-y-4">
+        <section className="bg-card rounded-xl border border-border p-6 space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="size-10 rounded-lg bg-blue-100 flex items-center justify-center">
-                <Send className="size-5 text-blue-600" />
+              <div className="size-10 rounded-lg bg-[#1b4332]/10 flex items-center justify-center">
+                <Send className="size-5 text-[#1b4332]" />
               </div>
               <div>
-                <h2 className="text-base font-semibold text-gray-900">Telegram</h2>
-                <p className="text-sm text-gray-500">Получайте уведомления о новых бронях в Telegram</p>
+                <h2 className="text-base font-semibold text-foreground">Telegram</h2>
+                <p className="text-sm text-muted-foreground">Получайте уведомления о новых бронях в Telegram</p>
               </div>
             </div>
             <div className="flex items-center gap-2">
@@ -163,8 +163,8 @@ export default function IntegrationsPage() {
                 </>
               ) : (
                 <>
-                  <XCircle className="size-4 text-gray-400" />
-                  <span className="text-sm text-gray-500">Не подключено</span>
+                  <XCircle className="size-4 text-muted-foreground" />
+                  <span className="text-sm text-muted-foreground">Не подключено</span>
                 </>
               )}
             </div>
@@ -173,7 +173,7 @@ export default function IntegrationsPage() {
           {/* Instructions toggle */}
           <button
             onClick={() => setShowTelegramInstructions(!showTelegramInstructions)}
-            className="flex items-center gap-2 text-sm text-blue-600 hover:text-blue-700 font-medium"
+            className="flex items-center gap-2 text-sm text-[#2d6a4f] hover:text-[#1b4332] font-medium"
           >
             {showTelegramInstructions ? (
               <ChevronUp className="size-4" />
@@ -184,14 +184,14 @@ export default function IntegrationsPage() {
           </button>
 
           {showTelegramInstructions && (
-            <div className="bg-gray-50 rounded-lg p-4 text-sm text-gray-700 space-y-2">
-              <p className="font-medium text-gray-800">Как подключить Telegram-бота:</p>
+            <div className="bg-muted rounded-lg p-4 text-sm text-foreground space-y-2">
+              <p className="font-medium text-foreground">Как подключить Telegram-бота:</p>
               <ol className="list-decimal list-inside space-y-1.5">
                 <li>Откройте <strong>@BotFather</strong> в Telegram</li>
-                <li>Отправьте команду <code className="bg-gray-200 px-1 rounded">/newbot</code> и следуйте инструкциям</li>
-                <li>Скопируйте токен бота (выглядит как: <code className="bg-gray-200 px-1 rounded">123456:ABC-DEF...</code>)</li>
+                <li>Отправьте команду <code className="bg-muted px-1 rounded">/newbot</code> и следуйте инструкциям</li>
+                <li>Скопируйте токен бота (выглядит как: <code className="bg-muted px-1 rounded">123456:ABC-DEF...</code>)</li>
                 <li>Добавьте бота в группу или напишите ему в личку и отправьте любое сообщение</li>
-                <li>Получите Chat ID: откройте <code className="bg-gray-200 px-1 rounded">https://api.telegram.org/bot&lt;TOKEN&gt;/getUpdates</code></li>
+                <li>Получите Chat ID: откройте <code className="bg-muted px-1 rounded">https://api.telegram.org/bot&lt;TOKEN&gt;/getUpdates</code></li>
                 <li>Вставьте токен и Chat ID ниже и нажмите «Подключить»</li>
               </ol>
             </div>
@@ -199,27 +199,27 @@ export default function IntegrationsPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-foreground mb-1">
                 Токен бота
               </label>
               <input
                 type="text"
                 value={telegramToken}
                 onChange={(e) => setTelegramToken(e.target.value)}
-                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"
+                className="w-full rounded-lg border border-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2d6a4f] font-mono"
                 placeholder="123456:ABC-DEF..."
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-foreground mb-1">
                 Chat ID
               </label>
               <input
                 type="text"
                 value={telegramChatId}
                 onChange={(e) => setTelegramChatId(e.target.value)}
-                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"
+                className="w-full rounded-lg border border-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2d6a4f] font-mono"
                 placeholder="-100123456789"
               />
             </div>
@@ -240,7 +240,7 @@ export default function IntegrationsPage() {
             <button
               onClick={handleConnectTelegram}
               disabled={telegramLoading}
-              className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded-lg text-sm transition-colors disabled:opacity-60"
+              className="flex items-center gap-2 bg-[#1b4332] hover:bg-[#2d6a4f] text-white font-medium px-4 py-2 rounded-lg text-sm transition-colors disabled:opacity-60"
             >
               {telegramLoading && <Loader2 className="size-4 animate-spin" />}
               Подключить
@@ -250,7 +250,7 @@ export default function IntegrationsPage() {
               <button
                 onClick={handleTestTelegram}
                 disabled={telegramTestLoading}
-                className="flex items-center gap-2 border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium px-4 py-2 rounded-lg text-sm transition-colors disabled:opacity-60"
+                className="flex items-center gap-2 border border-border hover:bg-muted text-foreground font-medium px-4 py-2 rounded-lg text-sm transition-colors disabled:opacity-60"
               >
                 {telegramTestLoading ? (
                   <Loader2 className="size-4 animate-spin" />
@@ -264,24 +264,24 @@ export default function IntegrationsPage() {
         </section>
 
         {/* Online Payment (Stripe Connect) */}
-        <section className="bg-white rounded-xl border border-gray-200 p-6 space-y-4">
+        <section className="bg-card rounded-xl border border-border p-6 space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="size-10 rounded-lg bg-purple-100 flex items-center justify-center">
                 <CreditCard className="size-5 text-purple-600" />
               </div>
               <div>
-                <h2 className="text-base font-semibold text-gray-900">Онлайн-оплата (Stripe)</h2>
-                <p className="text-sm text-gray-500">Принимайте оплату от гостей онлайн</p>
+                <h2 className="text-base font-semibold text-foreground">Онлайн-оплата (Stripe)</h2>
+                <p className="text-sm text-muted-foreground">Принимайте оплату от гостей онлайн</p>
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <XCircle className="size-4 text-gray-400" />
-              <span className="text-sm text-gray-500">Не подключено</span>
+              <XCircle className="size-4 text-muted-foreground" />
+              <span className="text-sm text-muted-foreground">Не подключено</span>
             </div>
           </div>
 
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-muted-foreground">
             Подключите Stripe для приёма онлайн-платежей от гостей. Stripe Connect позволяет
             безопасно принимать карты и переводить средства на ваш счёт.
           </p>
@@ -292,75 +292,75 @@ export default function IntegrationsPage() {
         </section>
 
         {/* WhatsApp */}
-        <section className="bg-white rounded-xl border border-gray-200 p-6 space-y-4">
+        <section className="bg-card rounded-xl border border-border p-6 space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="size-10 rounded-lg bg-green-100 flex items-center justify-center">
                 <MessageCircle className="size-5 text-green-600" />
               </div>
               <div>
-                <h2 className="text-base font-semibold text-gray-900">WhatsApp</h2>
-                <p className="text-sm text-gray-500">Уведомления гостей через WhatsApp Business</p>
+                <h2 className="text-base font-semibold text-foreground">WhatsApp</h2>
+                <p className="text-sm text-muted-foreground">Уведомления гостей через WhatsApp Business</p>
               </div>
             </div>
             <span className="inline-flex items-center gap-1 bg-amber-100 text-amber-700 text-xs font-medium px-2.5 py-1 rounded-full border border-amber-200">
               Скоро
             </span>
           </div>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-muted-foreground">
             Автоматические уведомления гостям через WhatsApp: подтверждение брони, напоминание о заезде, счёт.
           </p>
-          <div className="bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-sm text-gray-500">
+          <div className="bg-muted border border-border rounded-lg px-4 py-3 text-sm text-muted-foreground">
             Интеграция с WhatsApp Business API находится в разработке.
           </div>
         </section>
 
         {/* SMS */}
-        <section className="bg-white rounded-xl border border-gray-200 p-6 space-y-4">
+        <section className="bg-card rounded-xl border border-border p-6 space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="size-10 rounded-lg bg-indigo-100 flex items-center justify-center">
                 <Smartphone className="size-5 text-indigo-600" />
               </div>
               <div>
-                <h2 className="text-base font-semibold text-gray-900">SMS-уведомления</h2>
-                <p className="text-sm text-gray-500">Отправка SMS гостям при бронировании</p>
+                <h2 className="text-base font-semibold text-foreground">SMS-уведомления</h2>
+                <p className="text-sm text-muted-foreground">Отправка SMS гостям при бронировании</p>
               </div>
             </div>
             <span className="inline-flex items-center gap-1 bg-amber-100 text-amber-700 text-xs font-medium px-2.5 py-1 rounded-full border border-amber-200">
               Скоро
             </span>
           </div>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-muted-foreground">
             Автоматические SMS-уведомления гостям: подтверждение брони, напоминание о заезде, код доступа.
           </p>
-          <div className="bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-sm text-gray-500">
+          <div className="bg-muted border border-border rounded-lg px-4 py-3 text-sm text-muted-foreground">
             Интеграция с SMS-провайдерами находится в разработке.
           </div>
         </section>
 
         {/* Booking Widget */}
-        <section className="bg-white rounded-xl border border-gray-200 p-6 space-y-4">
+        <section className="bg-card rounded-xl border border-border p-6 space-y-4">
           <div className="flex items-center gap-3">
             <div className="size-10 rounded-lg bg-green-100 flex items-center justify-center">
               <Plug className="size-5 text-green-600" />
             </div>
             <div>
-              <h2 className="text-base font-semibold text-gray-900">Виджет бронирования</h2>
-              <p className="text-sm text-gray-500">Встройте форму бронирования на свой сайт</p>
+              <h2 className="text-base font-semibold text-foreground">Виджет бронирования</h2>
+              <p className="text-sm text-muted-foreground">Встройте форму бронирования на свой сайт</p>
             </div>
           </div>
 
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-muted-foreground">
             Скопируйте код ниже и вставьте его на страницу вашего сайта, где должна появиться форма бронирования.
           </p>
 
           <div>
             <div className="flex items-center justify-between mb-2">
-              <label className="text-sm font-medium text-gray-700">Код для вставки</label>
+              <label className="text-sm font-medium text-foreground">Код для вставки</label>
               <button
                 onClick={handleCopy}
-                className="flex items-center gap-1.5 text-sm text-blue-600 hover:text-blue-700 font-medium"
+                className="flex items-center gap-1.5 text-sm text-[#2d6a4f] hover:text-[#1b4332] font-medium"
               >
                 <Copy className="size-3.5" />
                 {copied ? "Скопировано!" : "Копировать"}
@@ -371,7 +371,7 @@ export default function IntegrationsPage() {
             </pre>
           </div>
 
-          <div className="bg-blue-50 border border-blue-200 rounded-lg px-4 py-3 text-sm text-blue-700">
+          <div className="bg-[#1b4332]/5 border border-[#1b4332]/20 rounded-lg px-4 py-3 text-sm text-[#1b4332]">
             <strong>Превью:</strong> Виджет появится на вашем сайте по адресу{" "}
             <code className="font-mono">stayos.aibot.kz/{hotelSlug || "your-hotel"}</code>
           </div>

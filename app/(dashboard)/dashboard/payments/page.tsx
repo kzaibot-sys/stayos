@@ -30,7 +30,7 @@ const statusConfig: Record<string, { label: string; className: string }> = {
   succeeded: { label: "Успешно", className: "bg-green-100 text-green-700" },
   pending: { label: "Ожидает", className: "bg-yellow-100 text-yellow-700" },
   failed: { label: "Ошибка", className: "bg-red-100 text-red-700" },
-  refunded: { label: "Возврат", className: "bg-gray-100 text-gray-700" },
+  refunded: { label: "Возврат", className: "bg-muted text-foreground" },
 }
 
 function formatPrice(amount: number) {
@@ -208,7 +208,7 @@ export default async function PaymentsPage({
                       <td className="px-4 py-3">
                         <Link
                           href={`/dashboard/bookings/${payment.booking.id}`}
-                          className="font-mono text-xs font-medium text-blue-600 hover:text-blue-700"
+                          className="font-mono text-xs font-medium text-[#2d6a4f] hover:text-[#1b4332]"
                         >
                           {payment.booking.bookingNumber}
                         </Link>
@@ -236,7 +236,7 @@ export default async function PaymentsPage({
                             href={payment.stripeReceiptUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-xs text-blue-600 hover:text-blue-700 underline"
+                            className="text-xs text-[#2d6a4f] hover:text-[#1b4332] underline"
                           >
                             Открыть
                           </a>

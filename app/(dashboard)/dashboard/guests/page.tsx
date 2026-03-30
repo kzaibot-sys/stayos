@@ -72,7 +72,7 @@ export default async function GuestsPage({
     <div>
       {/* Page header */}
       <div className="flex items-center justify-between mb-6">
-        <h1 className="font-heading text-2xl font-semibold text-gray-900">
+        <h1 className="font-heading text-2xl font-semibold text-foreground">
           Гости
         </h1>
         <a href="/api/guests/export">
@@ -109,19 +109,19 @@ function GuestSearch({
   return (
     <form method="GET" className="flex gap-3 mb-6">
       <div className="relative flex-1 max-w-sm">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-gray-400" />
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
         <input
           type="text"
           name="search"
           defaultValue={defaultValue}
           placeholder="Поиск по имени, email, телефону..."
-          className="w-full pl-9 pr-4 py-2 text-sm border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          className="w-full pl-9 pr-4 py-2 text-sm border border-border rounded-lg bg-card focus:outline-none focus:ring-2 focus:ring-[#2d6a4f] focus:border-transparent"
         />
       </div>
       <select
         name="tags"
         defaultValue={defaultTags ?? ""}
-        className="px-3 py-2 text-sm border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="px-3 py-2 text-sm border border-border rounded-lg bg-card focus:outline-none focus:ring-2 focus:ring-[#2d6a4f]"
       >
         <option value="">Все теги</option>
         <option value="VIP">VIP</option>

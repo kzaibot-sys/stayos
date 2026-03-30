@@ -154,7 +154,7 @@ export function StepGuest({ initialData, onNext, onBack }: StepGuestProps) {
         </Button>
         <Button
           type="submit"
-          className="flex-1 bg-[#1a56db] text-white hover:bg-[#1e429f]"
+          className="flex-1 bg-[#1b4332] text-white hover:bg-[#2d6a4f]"
         >
           Далее
         </Button>

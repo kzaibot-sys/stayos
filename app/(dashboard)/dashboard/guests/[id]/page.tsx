@@ -143,9 +143,9 @@ export default async function GuestProfilePage({ params }: Props) {
                     {guest.bookings.map((booking) => {
                       const statusConfig: Record<string, { label: string; className: string }> = {
                         PENDING: { label: "Ожидает", className: "bg-yellow-100 text-yellow-700" },
-                        CONFIRMED: { label: "Подтверждена", className: "bg-blue-100 text-blue-700" },
+                        CONFIRMED: { label: "Подтверждена", className: "bg-[#1b4332]/10 text-[#1b4332]" },
                         CHECKED_IN: { label: "Заселён", className: "bg-green-100 text-green-700" },
-                        CHECKED_OUT: { label: "Выселился", className: "bg-gray-100 text-gray-700" },
+                        CHECKED_OUT: { label: "Выселился", className: "bg-muted text-foreground" },
                         CANCELLED: { label: "Отменена", className: "bg-red-100 text-red-700" },
                         NO_SHOW: { label: "Не приехал", className: "bg-orange-100 text-orange-700" },
                       }
@@ -156,7 +156,7 @@ export default async function GuestProfilePage({ params }: Props) {
                           <td className="px-4 py-3">
                             <Link
                               href={`/dashboard/bookings/${booking.id}`}
-                              className="font-mono text-xs font-medium text-blue-600 hover:text-blue-700"
+                              className="font-mono text-xs font-medium text-[#2d6a4f] hover:text-[#1b4332]"
                             >
                               {booking.bookingNumber}
                             </Link>

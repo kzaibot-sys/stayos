@@ -38,8 +38,8 @@ const ROLE_ICONS: Record<string, React.ComponentType<any>> = {
 
 const ROLE_COLORS: Record<string, string> = {
   OWNER: "bg-yellow-100 text-yellow-800",
-  ADMIN: "bg-blue-100 text-blue-800",
-  STAFF: "bg-gray-100 text-gray-700",
+  ADMIN: "bg-[#1b4332]/10 text-[#1b4332]",
+  STAFF: "bg-muted text-foreground",
 }
 
 interface Member {
@@ -146,10 +146,10 @@ export default function TeamPage() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold text-gray-900 mb-6">Настройки</h1>
+      <h1 className="text-2xl font-bold text-foreground mb-6">Настройки</h1>
 
       {/* Settings navigation tabs */}
-      <div className="flex gap-1 mb-8 border-b border-gray-200">
+      <div className="flex gap-1 mb-8 border-b border-border">
         {settingsTabs.map((tab) => {
           const Icon = tab.icon
           const isActive = tab.href === "/dashboard/settings/team"
@@ -159,8 +159,8 @@ export default function TeamPage() {
               href={tab.href}
               className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium border-b-2 transition-colors ${
                 isActive
-                  ? "border-blue-600 text-blue-600"
-                  : "border-transparent text-gray-500 hover:text-gray-700"
+                  ? "border-[#1b4332] text-[#1b4332]"
+                  : "border-transparent text-muted-foreground hover:text-foreground"
               }`}
             >
               <Icon className="size-4" />
@@ -172,17 +172,17 @@ export default function TeamPage() {
 
       <div className="space-y-6">
         {/* Current members */}
-        <section className="bg-white rounded-xl border border-gray-200 p-6">
-          <h2 className="text-base font-semibold text-gray-900 mb-4">Участники команды</h2>
+        <section className="bg-card rounded-xl border border-border p-6">
+          <h2 className="text-base font-semibold text-foreground mb-4">Участники команды</h2>
 
           {loading ? (
             <div className="flex items-center justify-center py-8">
-              <Loader2 className="size-6 animate-spin text-gray-400" />
+              <Loader2 className="size-6 animate-spin text-muted-foreground" />
             </div>
           ) : members.length === 0 ? (
-            <p className="text-sm text-gray-500 text-center py-8">Нет участников</p>
+            <p className="text-sm text-muted-foreground text-center py-8">Нет участников</p>
           ) : (
-            <div className="divide-y divide-gray-100">
+            <div className="divide-y divide-border">
               {members.map((member) => {
                 const RoleIcon = ROLE_ICONS[member.role] || User
                 return (
@@ -191,20 +191,20 @@ export default function TeamPage() {
                     className="flex items-center justify-between py-3.5 first:pt-0 last:pb-0"
                   >
                     <div className="flex items-center gap-3">
-                      <div className="size-9 rounded-full bg-gray-100 flex items-center justify-center text-sm font-semibold text-gray-600">
+                      <div className="size-9 rounded-full bg-muted flex items-center justify-center text-sm font-semibold text-muted-foreground">
                         {(member.user.name || member.user.email).charAt(0).toUpperCase()}
                       </div>
                       <div>
-                        <p className="text-sm font-medium text-gray-900">
+                        <p className="text-sm font-medium text-foreground">
                           {member.user.name || member.user.email}
                         </p>
-                        <p className="text-xs text-gray-500">{member.user.email}</p>
+                        <p className="text-xs text-muted-foreground">{member.user.email}</p>
                       </div>
                     </div>
 
                     <div className="flex items-center gap-3">
                       <span
-                        className={`inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full ${ROLE_COLORS[member.role] || "bg-gray-100 text-gray-700"}`}
+                        className={`inline-flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full ${ROLE_COLORS[member.role] || "bg-muted text-foreground"}`}
                       >
                         <RoleIcon className="size-3" />
                         {ROLE_LABELS[member.role] || member.role}
@@ -214,7 +214,7 @@ export default function TeamPage() {
                         <button
                           onClick={() => handleDelete(member.id, member.user.email)}
                           disabled={deleteLoadingId === member.id}
-                          className="p-1.5 text-gray-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-40"
+                          className="p-1.5 text-muted-foreground hover:text-red-500 hover:bg-red-50 rounded-lg transition-colors disabled:opacity-40"
                           title="Удалить из команды"
                         >
                           {deleteLoadingId === member.id ? (
@@ -233,16 +233,16 @@ export default function TeamPage() {
         </section>
 
         {/* Invite member */}
-        <section className="bg-white rounded-xl border border-gray-200 p-6">
-          <h2 className="text-base font-semibold text-gray-900 mb-1">Пригласить участника</h2>
-          <p className="text-sm text-gray-500 mb-4">
+        <section className="bg-card rounded-xl border border-border p-6">
+          <h2 className="text-base font-semibold text-foreground mb-1">Пригласить участника</h2>
+          <p className="text-sm text-muted-foreground mb-4">
             Добавьте нового участника команды по email. Если пользователь ещё не зарегистрирован, он будет создан автоматически.
           </p>
 
           <form onSubmit={handleInvite} className="space-y-4">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
               <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-foreground mb-1">
                   Email
                 </label>
                 <input
@@ -250,19 +250,19 @@ export default function TeamPage() {
                   value={inviteEmail}
                   onChange={(e) => setInviteEmail(e.target.value)}
                   required
-                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full rounded-lg border border-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2d6a4f]"
                   placeholder="staff@myhotel.com"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-foreground mb-1">
                   Роль
                 </label>
                 <select
                   value={inviteRole}
                   onChange={(e) => setInviteRole(e.target.value as "ADMIN" | "STAFF")}
-                  className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full rounded-lg border border-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2d6a4f]"
                 >
                   <option value="STAFF">Персонал</option>
                   <option value="ADMIN">Администратор</option>
@@ -287,7 +287,7 @@ export default function TeamPage() {
             <button
               type="submit"
               disabled={inviteLoading}
-              className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded-lg text-sm transition-colors disabled:opacity-60"
+              className="flex items-center gap-2 bg-[#1b4332] hover:bg-[#2d6a4f] text-white font-medium px-4 py-2 rounded-lg text-sm transition-colors disabled:opacity-60"
             >
               {inviteLoading ? (
                 <Loader2 className="size-4 animate-spin" />
@@ -300,8 +300,8 @@ export default function TeamPage() {
         </section>
 
         {/* Role descriptions */}
-        <section className="bg-white rounded-xl border border-gray-200 p-6">
-          <h2 className="text-base font-semibold text-gray-900 mb-4">Описание ролей</h2>
+        <section className="bg-card rounded-xl border border-border p-6">
+          <h2 className="text-base font-semibold text-foreground mb-4">Описание ролей</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {[
               {
@@ -327,7 +327,7 @@ export default function TeamPage() {
                   <Icon className="size-3" />
                   {ROLE_LABELS[role]}
                 </span>
-                <p className="text-sm text-gray-500">{description}</p>
+                <p className="text-sm text-muted-foreground">{description}</p>
               </div>
             ))}
           </div>

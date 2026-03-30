@@ -8,7 +8,7 @@ const statusConfig: Record<
 > = {
   CONFIRMED: {
     label: "Подтверждено",
-    className: "bg-blue-100 text-blue-700",
+    className: "bg-[#1b4332]/10 text-[#1b4332]",
   },
   CHECKED_IN: {
     label: "Заселён",
@@ -24,7 +24,7 @@ const statusConfig: Record<
   },
   CHECKED_OUT: {
     label: "Выехал",
-    className: "bg-gray-100 text-gray-700",
+    className: "bg-muted text-foreground",
   },
   NO_SHOW: {
     label: "Не явился",

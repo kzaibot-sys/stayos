@@ -22,18 +22,18 @@ export function PaymentFilters({
         type="date"
         name="dateFrom"
         defaultValue={defaultDateFrom}
-        className="px-3 py-2 text-sm border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="px-3 py-2 text-sm border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-[#2d6a4f]"
       />
       <input
         type="date"
         name="dateTo"
         defaultValue={defaultDateTo}
-        className="px-3 py-2 text-sm border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="px-3 py-2 text-sm border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-[#2d6a4f]"
       />
       <select
         name="method"
         defaultValue={defaultMethod ?? ""}
-        className="px-3 py-2 text-sm border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="px-3 py-2 text-sm border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-[#2d6a4f]"
       >
         <option value="">Все методы</option>
         <option value="STRIPE">Stripe</option>
@@ -45,7 +45,7 @@ export function PaymentFilters({
       <select
         name="status"
         defaultValue={defaultStatus ?? ""}
-        className="px-3 py-2 text-sm border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500"
+        className="px-3 py-2 text-sm border border-border rounded-lg bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-[#2d6a4f]"
       >
         <option value="">Все статусы</option>
         <option value="succeeded">Успешно</option>

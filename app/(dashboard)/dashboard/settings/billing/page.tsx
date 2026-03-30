@@ -41,7 +41,7 @@ const PLANS: PlanCard[] = [
     price: "0",
     priceId: null,
     icon: Building2,
-    color: "text-gray-600",
+    color: "text-muted-foreground",
     description: "Для начала работы",
     features: [
       "До 3 номеров",
@@ -56,7 +56,7 @@ const PLANS: PlanCard[] = [
     price: "9 990",
     priceId: "STARTER",
     icon: Zap,
-    color: "text-blue-600",
+    color: "text-[#1b4332]",
     description: "Для небольших отелей",
     features: [
       "До 10 номеров",
@@ -187,10 +187,10 @@ function BillingContent() {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold text-gray-900 mb-6">Настройки</h1>
+      <h1 className="text-2xl font-bold text-foreground mb-6">Настройки</h1>
 
       {/* Settings navigation tabs */}
-      <div className="flex gap-1 mb-8 border-b border-gray-200">
+      <div className="flex gap-1 mb-8 border-b border-border">
         {settingsTabs.map((tab) => {
           const Icon = tab.icon
           const isActive = tab.href === "/dashboard/settings/billing"
@@ -200,8 +200,8 @@ function BillingContent() {
               href={tab.href}
               className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium border-b-2 transition-colors ${
                 isActive
-                  ? "border-blue-600 text-blue-600"
-                  : "border-transparent text-gray-500 hover:text-gray-700"
+                  ? "border-[#1b4332] text-[#1b4332]"
+                  : "border-transparent text-muted-foreground hover:text-foreground"
               }`}
             >
               <Icon className="size-4" />
@@ -226,17 +226,17 @@ function BillingContent() {
       )}
 
       {/* Current plan info */}
-      <div className="bg-white rounded-xl border border-gray-200 p-6 mb-6">
-        <h2 className="text-base font-semibold text-gray-900 mb-3">Текущий тариф</h2>
+      <div className="bg-card rounded-xl border border-border p-6 mb-6">
+        <h2 className="text-base font-semibold text-foreground mb-3">Текущий тариф</h2>
         <div className="flex items-center justify-between flex-wrap gap-4">
           <div className="flex items-center gap-3">
             {currentPlanInfo && (
               <div
                 className={`size-10 rounded-lg flex items-center justify-center ${
                   currentPlan === "FREE"
-                    ? "bg-gray-100"
+                    ? "bg-muted"
                     : currentPlan === "STARTER"
-                    ? "bg-blue-100"
+                    ? "bg-[#1b4332]/10"
                     : currentPlan === "PRO"
                     ? "bg-purple-100"
                     : "bg-yellow-100"
@@ -248,16 +248,16 @@ function BillingContent() {
               </div>
             )}
             <div>
-              <p className="text-lg font-bold text-gray-900">
+              <p className="text-lg font-bold text-foreground">
                 {currentPlanInfo?.name || currentPlan}
               </p>
               {planExpiresAt && (
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-muted-foreground">
                   Действует до: {formatDate(planExpiresAt)}
                 </p>
               )}
               {!planExpiresAt && currentPlan !== "FREE" && (
-                <p className="text-sm text-gray-500">Активная подписка</p>
+                <p className="text-sm text-muted-foreground">Активная подписка</p>
               )}
             </div>
           </div>
@@ -266,7 +266,7 @@ function BillingContent() {
             <button
               onClick={handleManageSubscription}
               disabled={portalLoading}
-              className="flex items-center gap-2 border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium px-4 py-2 rounded-lg text-sm transition-colors disabled:opacity-60"
+              className="flex items-center gap-2 border border-border hover:bg-muted text-foreground font-medium px-4 py-2 rounded-lg text-sm transition-colors disabled:opacity-60"
             >
               {portalLoading && <Loader2 className="size-4 animate-spin" />}
               Управление подпиской
@@ -285,15 +285,15 @@ function BillingContent() {
           return (
             <div
               key={plan.planKey}
-              className={`relative bg-white rounded-xl border-2 p-5 flex flex-col transition-all ${
+              className={`relative bg-card rounded-xl border-2 p-5 flex flex-col transition-all ${
                 isCurrent
-                  ? "border-blue-500 shadow-md"
-                  : "border-gray-200 hover:border-gray-300"
+                  ? "border-[#1b4332] shadow-md"
+                  : "border-border hover:border-muted-foreground"
               }`}
             >
               {isCurrent && (
                 <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                  <span className="bg-blue-600 text-white text-xs font-medium px-3 py-1 rounded-full">
+                  <span className="bg-[#1b4332] text-white text-xs font-medium px-3 py-1 rounded-full">
                     Текущий
                   </span>
                 </div>
@@ -303,9 +303,9 @@ function BillingContent() {
                 <div
                   className={`size-8 rounded-lg flex items-center justify-center ${
                     plan.planKey === "FREE"
-                      ? "bg-gray-100"
+                      ? "bg-muted"
                       : plan.planKey === "STARTER"
-                      ? "bg-blue-100"
+                      ? "bg-[#1b4332]/10"
                       : plan.planKey === "PRO"
                       ? "bg-purple-100"
                       : "bg-yellow-100"
@@ -313,25 +313,25 @@ function BillingContent() {
                 >
                   <Icon className={`size-4 ${plan.color}`} />
                 </div>
-                <span className="font-semibold text-gray-900 text-sm">{plan.name}</span>
+                <span className="font-semibold text-foreground text-sm">{plan.name}</span>
               </div>
 
               <div className="mb-1">
                 {plan.price === "По запросу" ? (
-                  <span className="text-xl font-bold text-gray-900">По запросу</span>
+                  <span className="text-xl font-bold text-foreground">По запросу</span>
                 ) : (
                   <>
-                    <span className="text-2xl font-bold text-gray-900">{plan.price}</span>
-                    <span className="text-xs text-gray-500 ml-1">₸/мес</span>
+                    <span className="text-2xl font-bold text-foreground">{plan.price}</span>
+                    <span className="text-xs text-muted-foreground ml-1">₸/мес</span>
                   </>
                 )}
               </div>
 
-              <p className="text-xs text-gray-500 mb-4">{plan.description}</p>
+              <p className="text-xs text-muted-foreground mb-4">{plan.description}</p>
 
               <ul className="space-y-1.5 mb-5 flex-1">
                 {plan.features.map((feature) => (
-                  <li key={feature} className="flex items-start gap-1.5 text-xs text-gray-700">
+                  <li key={feature} className="flex items-start gap-1.5 text-xs text-foreground">
                     <Check className="size-3.5 text-green-500 mt-0.5 shrink-0" />
                     {feature}
                   </li>
@@ -341,7 +341,7 @@ function BillingContent() {
               {isCurrent ? (
                 <button
                   disabled
-                  className="w-full py-2 rounded-lg text-xs font-medium bg-blue-50 text-blue-600 cursor-default"
+                  className="w-full py-2 rounded-lg text-xs font-medium bg-[#1b4332]/5 text-[#1b4332] cursor-default"
                 >
                   Текущий тариф
                 </button>
@@ -349,7 +349,7 @@ function BillingContent() {
                 <button
                   onClick={() => handleUpgrade(plan.priceId!)}
                   disabled={isLoading}
-                  className="w-full py-2 rounded-lg text-xs font-medium bg-blue-600 hover:bg-blue-700 text-white transition-colors disabled:opacity-60 flex items-center justify-center gap-1.5"
+                  className="w-full py-2 rounded-lg text-xs font-medium bg-[#1b4332] hover:bg-[#2d6a4f] text-white transition-colors disabled:opacity-60 flex items-center justify-center gap-1.5"
                 >
                   {isLoading && <Loader2 className="size-3 animate-spin" />}
                   Перейти
@@ -357,14 +357,14 @@ function BillingContent() {
               ) : plan.planKey === "ENTERPRISE" ? (
                 <a
                   href="mailto:sales@stayos.aibot.kz"
-                  className="w-full py-2 rounded-lg text-xs font-medium border border-gray-300 hover:bg-gray-50 text-gray-700 transition-colors text-center block"
+                  className="w-full py-2 rounded-lg text-xs font-medium border border-border hover:bg-muted text-foreground transition-colors text-center block"
                 >
                   Связаться
                 </a>
               ) : (
                 <button
                   disabled
-                  className="w-full py-2 rounded-lg text-xs font-medium bg-gray-100 text-gray-400 cursor-not-allowed"
+                  className="w-full py-2 rounded-lg text-xs font-medium bg-muted text-muted-foreground cursor-not-allowed"
                 >
                   Недоступно
                 </button>
@@ -375,24 +375,24 @@ function BillingContent() {
       </div>
 
       {/* FAQ */}
-      <div className="mt-8 bg-white rounded-xl border border-gray-200 p-6">
-        <h2 className="text-base font-semibold text-gray-900 mb-4">Часто задаваемые вопросы</h2>
+      <div className="mt-8 bg-card rounded-xl border border-border p-6">
+        <h2 className="text-base font-semibold text-foreground mb-4">Часто задаваемые вопросы</h2>
         <div className="space-y-4">
           <div>
-            <p className="text-sm font-medium text-gray-800">Могу ли я отменить подписку?</p>
-            <p className="text-sm text-gray-500 mt-1">
+            <p className="text-sm font-medium text-foreground">Могу ли я отменить подписку?</p>
+            <p className="text-sm text-muted-foreground mt-1">
               Да, вы можете отменить подписку в любое время через портал управления подпиской. Доступ к платным функциям сохранится до конца оплаченного периода.
             </p>
           </div>
           <div>
-            <p className="text-sm font-medium text-gray-800">Как осуществляется оплата?</p>
-            <p className="text-sm text-gray-500 mt-1">
+            <p className="text-sm font-medium text-foreground">Как осуществляется оплата?</p>
+            <p className="text-sm text-muted-foreground mt-1">
               Оплата осуществляется банковской картой через безопасный платёжный шлюз Stripe. Мы не храним данные вашей карты.
             </p>
           </div>
           <div>
-            <p className="text-sm font-medium text-gray-800">Что произойдёт при превышении лимита?</p>
-            <p className="text-sm text-gray-500 mt-1">
+            <p className="text-sm font-medium text-foreground">Что произойдёт при превышении лимита?</p>
+            <p className="text-sm text-muted-foreground mt-1">
               При достижении лимита бронирований или номеров вы получите уведомление. Вы сможете перейти на более высокий тариф в любой момент.
             </p>
           </div>
@@ -406,7 +406,7 @@ export default function BillingPage() {
   return (
     <Suspense fallback={
       <div className="flex items-center justify-center h-64">
-        <Loader2 className="size-8 animate-spin text-gray-400" />
+        <Loader2 className="size-8 animate-spin text-muted-foreground" />
       </div>
     }>
       <BillingContent />

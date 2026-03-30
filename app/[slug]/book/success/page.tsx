@@ -90,7 +90,7 @@ export default async function BookingSuccessPage({
         <div className="max-w-2xl mx-auto flex items-center justify-center">
           <Link
             href={`/${slug}`}
-            className="flex items-center gap-1.5 font-semibold text-[#1a56db]"
+            className="flex items-center gap-1.5 font-semibold text-[#1b4332]"
           >
             <BedDouble className="size-5" />
             {booking?.hotel.name ?? "StayOS"}
@@ -142,9 +142,9 @@ export default async function BookingSuccessPage({
               Бронирование подтверждено!
             </h1>
             {bookingNumber && (
-              <div className="inline-flex items-center gap-2 bg-blue-50 border border-blue-100 rounded-full px-5 py-2">
+              <div className="inline-flex items-center gap-2 bg-[#1b4332]/5 border border-[#1b4332]/10 rounded-full px-5 py-2">
                 <span className="text-sm text-gray-500">Номер брони:</span>
-                <span className="text-lg font-bold text-[#1a56db] font-mono">
+                <span className="text-lg font-bold text-[#1b4332] font-mono">
                   #{bookingNumber}
                 </span>
               </div>
@@ -165,7 +165,7 @@ export default async function BookingSuccessPage({
                 <div className="space-y-4">
                   {/* Room */}
                   <div className="flex items-start gap-3">
-                    <BedDouble className="size-5 text-[#1a56db] shrink-0 mt-0.5" />
+                    <BedDouble className="size-5 text-[#1b4332] shrink-0 mt-0.5" />
                     <div>
                       <p className="text-sm text-gray-500">Номер</p>
                       <p className="font-medium text-gray-900">
@@ -176,7 +176,7 @@ export default async function BookingSuccessPage({
 
                   {/* Check-in */}
                   <div className="flex items-start gap-3">
-                    <CalendarDays className="size-5 text-[#1a56db] shrink-0 mt-0.5" />
+                    <CalendarDays className="size-5 text-[#1b4332] shrink-0 mt-0.5" />
                     <div>
                       <p className="text-sm text-gray-500">Заезд</p>
                       <p className="font-medium text-gray-900">
@@ -204,7 +204,7 @@ export default async function BookingSuccessPage({
 
                   {/* Guest */}
                   <div className="flex items-start gap-3">
-                    <User className="size-5 text-[#1a56db] shrink-0 mt-0.5" />
+                    <User className="size-5 text-[#1b4332] shrink-0 mt-0.5" />
                     <div>
                       <p className="text-sm text-gray-500">Гость</p>
                       <p className="font-medium text-gray-900">
@@ -221,7 +221,7 @@ export default async function BookingSuccessPage({
                   {/* Total */}
                   <div className="border-t border-gray-100 pt-4 flex justify-between items-center">
                     <span className="font-semibold text-gray-900">Сумма</span>
-                    <span className="text-xl font-bold text-[#1a56db]">
+                    <span className="text-xl font-bold text-[#1b4332]">
                       {formatPrice(booking.totalPrice)}
                     </span>
                   </div>
@@ -237,7 +237,7 @@ export default async function BookingSuccessPage({
                     rel="noopener noreferrer"
                     className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
                   >
-                    <CalendarPlus className="size-4 text-[#1a56db]" />
+                    <CalendarPlus className="size-4 text-[#1b4332]" />
                     Добавить в Google Calendar
                   </a>
                 )}
@@ -245,13 +245,13 @@ export default async function BookingSuccessPage({
               </div>
 
               {/* Check-in info */}
-              <div className="bg-blue-50 rounded-xl border border-blue-100 p-6 space-y-4">
+              <div className="bg-[#1b4332]/5 rounded-xl border border-[#1b4332]/10 p-6 space-y-4">
                 <h2 className="text-lg font-semibold text-gray-900">
                   Информация для заезда
                 </h2>
                 <div className="space-y-3">
                   <div className="flex items-center gap-3 text-sm text-gray-700">
-                    <Clock className="size-4 text-[#1a56db] shrink-0" />
+                    <Clock className="size-4 text-[#1b4332] shrink-0" />
                     <span>
                       Заезд с {booking.hotel.checkInTime}, выезд до{" "}
                       {booking.hotel.checkOutTime}
@@ -259,12 +259,12 @@ export default async function BookingSuccessPage({
                   </div>
                   {booking.hotel.address && (
                     <div className="flex items-start gap-3 text-sm text-gray-700">
-                      <MapPin className="size-4 text-[#1a56db] shrink-0 mt-0.5" />
+                      <MapPin className="size-4 text-[#1b4332] shrink-0 mt-0.5" />
                       <a
                         href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(booking.hotel.address)}`}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="hover:text-[#1a56db] hover:underline"
+                        className="hover:text-[#1b4332] hover:underline"
                       >
                         {booking.hotel.address}
                       </a>
@@ -272,10 +272,10 @@ export default async function BookingSuccessPage({
                   )}
                   {booking.hotel.phone && (
                     <div className="flex items-center gap-3 text-sm text-gray-700">
-                      <Phone className="size-4 text-[#1a56db] shrink-0" />
+                      <Phone className="size-4 text-[#1b4332] shrink-0" />
                       <a
                         href={`tel:${booking.hotel.phone}`}
-                        className="hover:text-[#1a56db] transition-colors"
+                        className="hover:text-[#1b4332] transition-colors"
                       >
                         {booking.hotel.phone}
                       </a>
@@ -283,10 +283,10 @@ export default async function BookingSuccessPage({
                   )}
                   {booking.hotel.email && (
                     <div className="flex items-center gap-3 text-sm text-gray-700">
-                      <Mail className="size-4 text-[#1a56db] shrink-0" />
+                      <Mail className="size-4 text-[#1b4332] shrink-0" />
                       <a
                         href={`mailto:${booking.hotel.email}`}
-                        className="hover:text-[#1a56db] transition-colors"
+                        className="hover:text-[#1b4332] transition-colors"
                       >
                         {booking.hotel.email}
                       </a>
@@ -313,7 +313,7 @@ export default async function BookingSuccessPage({
           <div className="text-center">
             <Link
               href={`/${slug}`}
-              className="inline-flex items-center gap-2 text-[#1a56db] hover:underline font-medium"
+              className="inline-flex items-center gap-2 text-[#1b4332] hover:underline font-medium"
             >
               ← Вернуться на сайт отеля
             </Link>
@@ -327,7 +327,7 @@ export default async function BookingSuccessPage({
           <span>Powered by</span>
           <Link
             href="/"
-            className="flex items-center gap-1 font-semibold text-[#1a56db] hover:underline"
+            className="flex items-center gap-1 font-semibold text-[#1b4332] hover:underline"
           >
             <BedDouble className="size-4" />
             StayOS

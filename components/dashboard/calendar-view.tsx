@@ -33,7 +33,7 @@ interface CalendarViewProps {
 // ─── Status colors ──────────────────────────────────────────────────────────
 
 const statusColors: Record<string, string> = {
-  CONFIRMED: "bg-blue-500 hover:bg-blue-600",
+  CONFIRMED: "bg-[#2d6a4f] hover:bg-[#1b4332]",
   CHECKED_IN: "bg-green-500 hover:bg-green-600",
   PENDING: "bg-yellow-400 hover:bg-yellow-500",
   NO_SHOW: "bg-orange-400 hover:bg-orange-500",
@@ -71,13 +71,13 @@ export function CalendarView({ rooms, startDate, endDate }: CalendarViewProps) {
                 <div
                   key={day.toISOString()}
                   className={`flex-shrink-0 border-r border-border flex flex-col items-center justify-center py-2 ${
-                    isCurrentDay ? "bg-blue-50 dark:bg-blue-950" : ""
+                    isCurrentDay ? "bg-[#1b4332]/5 dark:bg-[#2d6a4f]/10" : ""
                   }`}
                   style={{ width: COL_WIDTH, minWidth: COL_WIDTH }}
                 >
                   <span
                     className={`text-xs font-medium ${
-                      isCurrentDay ? "text-blue-600 dark:text-blue-400" : "text-muted-foreground"
+                      isCurrentDay ? "text-[#1b4332] dark:text-[#d4a373]" : "text-muted-foreground"
                     }`}
                   >
                     {format(day, "EE", { locale: ru })}
@@ -85,7 +85,7 @@ export function CalendarView({ rooms, startDate, endDate }: CalendarViewProps) {
                   <span
                     className={`text-sm font-semibold ${
                       isCurrentDay
-                        ? "text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-blue-900 rounded-full w-6 h-6 flex items-center justify-center"
+                        ? "text-[#1b4332] dark:text-[#d4a373] bg-[#1b4332]/10 dark:bg-[#2d6a4f]/20 rounded-full w-6 h-6 flex items-center justify-center"
                         : "text-foreground"
                     }`}
                   >
@@ -131,7 +131,7 @@ export function CalendarView({ rooms, startDate, endDate }: CalendarViewProps) {
                         key={day.toISOString()}
                         href={`/dashboard/bookings/new?roomId=${room.id}&date=${format(day, "yyyy-MM-dd")}`}
                         className={`flex-shrink-0 border-r border-border h-full ${
-                          isCurrentDay ? "bg-blue-50/50 dark:bg-blue-950/50" : "hover:bg-muted/50"
+                          isCurrentDay ? "bg-[#1b4332]/5 dark:bg-[#2d6a4f]/5" : "hover:bg-muted/50"
                         } transition-colors`}
                         style={{ width: COL_WIDTH, minWidth: COL_WIDTH }}
                       />

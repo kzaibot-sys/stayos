@@ -41,7 +41,7 @@ export function InternalNotes({ bookingId, initialNotes }: InternalNotesProps) {
         onChange={(e) => setNotes(e.target.value)}
         placeholder="Заметки видны только сотрудникам отеля..."
         rows={3}
-        className="w-full rounded-lg border border-border px-3 py-2 text-sm text-foreground bg-yellow-50 dark:bg-yellow-950/20 placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
+        className="w-full rounded-lg border border-border px-3 py-2 text-sm text-foreground bg-yellow-50 dark:bg-yellow-950/20 placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-[#2d6a4f] focus:border-transparent resize-none"
       />
       <div className="mt-2 flex justify-end">
         <Button

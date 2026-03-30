@@ -148,7 +148,7 @@ export function BookingWizard({ hotel, slug }: { hotel: Hotel; slug: string }) {
             </Link>
             <Link
               href={`/${slug}`}
-              className="flex items-center gap-1.5 font-semibold text-[#1a56db]"
+              className="flex items-center gap-1.5 font-semibold text-[#1b4332]"
             >
               <BedDouble className="size-5" />
               {hotel.name}
@@ -176,7 +176,7 @@ export function BookingWizard({ hotel, slug }: { hotel: Hotel; slug: string }) {
                         isCompleted
                           ? "bg-green-500 border-green-500 text-white"
                           : isActive
-                          ? "bg-[#1a56db] border-[#1a56db] text-white"
+                          ? "bg-[#1b4332] border-[#1b4332] text-white"
                           : "bg-card border-border text-muted-foreground"
                       }`}
                     >
@@ -189,7 +189,7 @@ export function BookingWizard({ hotel, slug }: { hotel: Hotel; slug: string }) {
                     <span
                       className={`mt-1.5 text-xs font-medium whitespace-nowrap ${
                         isActive
-                          ? "text-[#1a56db]"
+                          ? "text-[#1b4332]"
                           : isCompleted
                           ? "text-green-600"
                           : "text-muted-foreground"
@@ -270,7 +270,7 @@ export function BookingWizard({ hotel, slug }: { hotel: Hotel; slug: string }) {
             <span>Powered by</span>
             <Link
               href="/"
-              className="flex items-center gap-1 font-semibold text-[#1a56db] hover:underline"
+              className="flex items-center gap-1 font-semibold text-[#1b4332] hover:underline"
             >
               <BedDouble className="size-4" />
               StayOS

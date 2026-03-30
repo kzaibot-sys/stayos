@@ -152,29 +152,29 @@ export default function NewBookingPage() {
             Назад
           </Button>
         </Link>
-        <h1 className="font-heading text-2xl font-semibold text-gray-900">
+        <h1 className="font-heading text-2xl font-semibold text-foreground">
           Новая бронь
         </h1>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         {/* Room selection */}
-        <div className="bg-white rounded-xl border border-gray-200 p-6">
-          <h2 className="text-base font-semibold text-gray-900 mb-4">Номер и даты</h2>
+        <div className="bg-card rounded-xl border border-border p-6">
+          <h2 className="text-base font-semibold text-foreground mb-4">Номер и даты</h2>
 
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-foreground mb-1">
                 Номер <span className="text-red-500">*</span>
               </label>
               {isLoadingRooms ? (
-                <div className="h-10 bg-gray-100 rounded-lg animate-pulse" />
+                <div className="h-10 bg-muted rounded-lg animate-pulse" />
               ) : (
                 <select
                   value={roomId}
                   onChange={(e) => setRoomId(e.target.value)}
                   required
-                  className="w-full h-10 rounded-lg border border-gray-200 bg-white px-3 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full h-10 rounded-lg border border-border bg-card px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[#2d6a4f]"
                 >
                   <option value="">Выберите номер</option>
                   {rooms.map((room) => (
@@ -190,7 +190,7 @@ export default function NewBookingPage() {
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-foreground mb-1">
                   Дата заезда <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -199,11 +199,11 @@ export default function NewBookingPage() {
                   onChange={(e) => setCheckIn(e.target.value)}
                   required
                   min={format(new Date(), "yyyy-MM-dd")}
-                  className="w-full h-10 rounded-lg border border-gray-200 bg-white px-3 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full h-10 rounded-lg border border-border bg-card px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[#2d6a4f]"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-foreground mb-1">
                   Дата выезда <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -212,14 +212,14 @@ export default function NewBookingPage() {
                   onChange={(e) => setCheckOut(e.target.value)}
                   required
                   min={checkIn || format(new Date(), "yyyy-MM-dd")}
-                  className="w-full h-10 rounded-lg border border-gray-200 bg-white px-3 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full h-10 rounded-lg border border-border bg-card px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[#2d6a4f]"
                 />
               </div>
             </div>
 
             {/* Price override */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-foreground mb-1">
                 Цена за ночь (переопределить)
               </label>
               <input
@@ -232,13 +232,13 @@ export default function NewBookingPage() {
                     : "Цена за ночь"
                 }
                 min={0}
-                className="w-full h-10 rounded-lg border border-gray-200 bg-white px-3 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full h-10 rounded-lg border border-border bg-card px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[#2d6a4f]"
               />
             </div>
 
             {/* Discount */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-foreground mb-1">
                 Скидка
               </label>
               <div className="flex gap-2">
@@ -248,16 +248,16 @@ export default function NewBookingPage() {
                   onChange={(e) => setDiscount(e.target.value)}
                   placeholder="0"
                   min={0}
-                  className="flex-1 h-10 rounded-lg border border-gray-200 bg-white px-3 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="flex-1 h-10 rounded-lg border border-border bg-card px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[#2d6a4f]"
                 />
-                <div className="flex rounded-lg border border-gray-200 overflow-hidden">
+                <div className="flex rounded-lg border border-border overflow-hidden">
                   <button
                     type="button"
                     onClick={() => setDiscountType("KZT")}
                     className={`px-3 h-10 text-sm font-medium transition-colors ${
                       discountType === "KZT"
-                        ? "bg-blue-600 text-white"
-                        : "bg-white text-gray-700 hover:bg-gray-50"
+                        ? "bg-[#1b4332] text-white"
+                        : "bg-card text-foreground hover:bg-muted"
                     }`}
                   >
                     ₸
@@ -267,8 +267,8 @@ export default function NewBookingPage() {
                     onClick={() => setDiscountType("%")}
                     className={`px-3 h-10 text-sm font-medium transition-colors ${
                       discountType === "%"
-                        ? "bg-blue-600 text-white"
-                        : "bg-white text-gray-700 hover:bg-gray-50"
+                        ? "bg-[#1b4332] text-white"
+                        : "bg-card text-foreground hover:bg-muted"
                     }`}
                   >
                     %
@@ -279,24 +279,24 @@ export default function NewBookingPage() {
 
             {/* Price summary */}
             {nights > 0 && selectedRoom && (
-              <div className="bg-blue-50 border border-blue-100 rounded-lg p-4 space-y-1.5">
+              <div className="bg-[#1b4332]/5 border border-[#1b4332]/10 rounded-lg p-4 space-y-1.5">
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-blue-700">
+                  <span className="text-[#1b4332]">
                     Подытог ({nights} ночей × {formatPrice(basePrice)}):
                   </span>
-                  <span className="text-blue-900">{formatPrice(subtotal)}</span>
+                  <span className="text-foreground">{formatPrice(subtotal)}</span>
                 </div>
                 {discountAmount > 0 && (
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-blue-700">
+                    <span className="text-[#1b4332]">
                       Скидка{discountType === "%" ? ` (${discountNum}%)` : ""}:
                     </span>
                     <span className="text-red-600">− {formatPrice(discountAmount)}</span>
                   </div>
                 )}
-                <div className="flex items-center justify-between border-t border-blue-200 pt-1.5 mt-1.5">
-                  <span className="text-blue-700 font-medium">Итого:</span>
-                  <span className="font-semibold text-blue-900 text-base">
+                <div className="flex items-center justify-between border-t border-[#1b4332]/20 pt-1.5 mt-1.5">
+                  <span className="text-[#1b4332] font-medium">Итого:</span>
+                  <span className="font-semibold text-foreground text-base">
                     {formatPrice(totalPrice)}
                   </span>
                 </div>
@@ -306,13 +306,13 @@ export default function NewBookingPage() {
         </div>
 
         {/* Guest info */}
-        <div className="bg-white rounded-xl border border-gray-200 p-6">
-          <h2 className="text-base font-semibold text-gray-900 mb-4">Данные гостя</h2>
+        <div className="bg-card rounded-xl border border-border p-6">
+          <h2 className="text-base font-semibold text-foreground mb-4">Данные гостя</h2>
 
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-foreground mb-1">
                   Имя <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -321,11 +321,11 @@ export default function NewBookingPage() {
                   onChange={(e) => setGuestFirstName(e.target.value)}
                   required
                   placeholder="Иван"
-                  className="w-full h-10 rounded-lg border border-gray-200 bg-white px-3 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full h-10 rounded-lg border border-border bg-card px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[#2d6a4f]"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-foreground mb-1">
                   Фамилия <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -334,14 +334,14 @@ export default function NewBookingPage() {
                   onChange={(e) => setGuestLastName(e.target.value)}
                   required
                   placeholder="Иванов"
-                  className="w-full h-10 rounded-lg border border-gray-200 bg-white px-3 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full h-10 rounded-lg border border-border bg-card px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[#2d6a4f]"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-foreground mb-1">
                   Email
                 </label>
                 <input
@@ -349,11 +349,11 @@ export default function NewBookingPage() {
                   value={guestEmail}
                   onChange={(e) => setGuestEmail(e.target.value)}
                   placeholder="ivan@example.com"
-                  className="w-full h-10 rounded-lg border border-gray-200 bg-white px-3 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full h-10 rounded-lg border border-border bg-card px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[#2d6a4f]"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-foreground mb-1">
                   Телефон
                 </label>
                 <input
@@ -361,14 +361,14 @@ export default function NewBookingPage() {
                   value={guestPhone}
                   onChange={(e) => setGuestPhone(e.target.value)}
                   placeholder="+7 700 000 0000"
-                  className="w-full h-10 rounded-lg border border-gray-200 bg-white px-3 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full h-10 rounded-lg border border-border bg-card px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[#2d6a4f]"
                 />
               </div>
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-foreground mb-1">
                   Взрослых
                 </label>
                 <input
@@ -377,11 +377,11 @@ export default function NewBookingPage() {
                   onChange={(e) => setAdults(parseInt(e.target.value, 10) || 1)}
                   min={1}
                   max={20}
-                  className="w-full h-10 rounded-lg border border-gray-200 bg-white px-3 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full h-10 rounded-lg border border-border bg-card px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[#2d6a4f]"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-foreground mb-1">
                   Детей
                 </label>
                 <input
@@ -390,7 +390,7 @@ export default function NewBookingPage() {
                   onChange={(e) => setChildren(parseInt(e.target.value, 10) || 0)}
                   min={0}
                   max={10}
-                  className="w-full h-10 rounded-lg border border-gray-200 bg-white px-3 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full h-10 rounded-lg border border-border bg-card px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[#2d6a4f]"
                 />
               </div>
             </div>
@@ -398,19 +398,19 @@ export default function NewBookingPage() {
         </div>
 
         {/* Additional info */}
-        <div className="bg-white rounded-xl border border-gray-200 p-6">
-          <h2 className="text-base font-semibold text-gray-900 mb-4">Дополнительно</h2>
+        <div className="bg-card rounded-xl border border-border p-6">
+          <h2 className="text-base font-semibold text-foreground mb-4">Дополнительно</h2>
 
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-foreground mb-1">
                   Статус брони
                 </label>
                 <select
                   value={status}
                   onChange={(e) => setStatus(e.target.value)}
-                  className="w-full h-10 rounded-lg border border-gray-200 bg-white px-3 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full h-10 rounded-lg border border-border bg-card px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[#2d6a4f]"
                 >
                   {statusOptions.map((opt) => (
                     <option key={opt.value} value={opt.value}>
@@ -420,13 +420,13 @@ export default function NewBookingPage() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-foreground mb-1">
                   Статус оплаты
                 </label>
                 <select
                   value={paymentStatus}
                   onChange={(e) => setPaymentStatus(e.target.value)}
-                  className="w-full h-10 rounded-lg border border-gray-200 bg-white px-3 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full h-10 rounded-lg border border-border bg-card px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[#2d6a4f]"
                 >
                   {paymentStatusOptions.map((opt) => (
                     <option key={opt.value} value={opt.value}>
@@ -438,7 +438,7 @@ export default function NewBookingPage() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-foreground mb-1">
                 Особые пожелания
               </label>
               <textarea
@@ -446,12 +446,12 @@ export default function NewBookingPage() {
                 onChange={(e) => setSpecialRequests(e.target.value)}
                 rows={3}
                 placeholder="Пожелания гостя..."
-                className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[#2d6a4f] resize-none"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-foreground mb-1">
                 Внутренние заметки
               </label>
               <textarea
@@ -459,7 +459,7 @@ export default function NewBookingPage() {
                 onChange={(e) => setInternalNotes(e.target.value)}
                 rows={2}
                 placeholder="Заметки для персонала (не видны гостю)..."
-                className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                className="w-full rounded-lg border border-border bg-card px-3 py-2 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-[#2d6a4f] resize-none"
               />
             </div>
           </div>

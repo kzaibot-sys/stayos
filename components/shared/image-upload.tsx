@@ -104,12 +104,12 @@ export function ImageUpload({ value, onChange, maxFiles = 10 }: ImageUploadProps
         onDragLeave={handleDragLeave}
         className={`border-2 border-dashed rounded-lg p-6 flex flex-col items-center justify-center gap-2 cursor-pointer transition-colors ${
           isDragging
-            ? "border-blue-500 bg-blue-50"
+            ? "border-[#2d6a4f] bg-[#1b4332]/5"
             : "border-gray-200 hover:border-gray-400 bg-white"
         } ${isUploading ? "opacity-60 cursor-not-allowed" : ""}`}
       >
         {isUploading ? (
-          <Loader2 className="size-8 text-blue-500 animate-spin" />
+          <Loader2 className="size-8 text-[#2d6a4f] animate-spin" />
         ) : (
           <Upload className="size-8 text-gray-400" />
         )}

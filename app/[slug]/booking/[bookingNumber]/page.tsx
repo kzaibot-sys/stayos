@@ -16,7 +16,7 @@ function formatPrice(n: number) {
 
 const statusLabels: Record<string, { label: string; color: string }> = {
   PENDING: { label: "Ожидает подтверждения", color: "text-yellow-700 bg-yellow-100" },
-  CONFIRMED: { label: "Подтверждена", color: "text-blue-700 bg-blue-100" },
+  CONFIRMED: { label: "Подтверждена", color: "text-[#1b4332] bg-[#1b4332]/10" },
   CHECKED_IN: { label: "Заселён", color: "text-green-700 bg-green-100" },
   CHECKED_OUT: { label: "Выселился", color: "text-gray-700 bg-gray-100" },
   CANCELLED: { label: "Отменена", color: "text-red-700 bg-red-100" },
@@ -55,7 +55,7 @@ export default async function GuestBookingPage({
       {/* Header */}
       <header className="bg-white border-b border-gray-200 px-4 py-4">
         <div className="max-w-2xl mx-auto flex items-center gap-2">
-          <BedDouble className="size-5 text-[#1a56db]" />
+          <BedDouble className="size-5 text-[#1b4332]" />
           <span className="font-semibold text-gray-900">{hotel.name}</span>
         </div>
       </header>
@@ -76,7 +76,7 @@ export default async function GuestBookingPage({
           <h2 className="font-semibold text-gray-900">Детали бронирования</h2>
 
           <div className="flex items-start gap-3">
-            <User className="size-5 text-[#1a56db] shrink-0 mt-0.5" />
+            <User className="size-5 text-[#1b4332] shrink-0 mt-0.5" />
             <div>
               <p className="text-sm text-gray-500">Гость</p>
               <p className="font-medium">{booking.guestFirstName} {booking.guestLastName}</p>
@@ -85,7 +85,7 @@ export default async function GuestBookingPage({
           </div>
 
           <div className="flex items-start gap-3">
-            <BedDouble className="size-5 text-[#1a56db] shrink-0 mt-0.5" />
+            <BedDouble className="size-5 text-[#1b4332] shrink-0 mt-0.5" />
             <div>
               <p className="text-sm text-gray-500">Номер</p>
               <p className="font-medium">{booking.room.name}</p>
@@ -93,7 +93,7 @@ export default async function GuestBookingPage({
           </div>
 
           <div className="flex items-start gap-3">
-            <CalendarDays className="size-5 text-[#1a56db] shrink-0 mt-0.5" />
+            <CalendarDays className="size-5 text-[#1b4332] shrink-0 mt-0.5" />
             <div>
               <p className="text-sm text-gray-500">Даты</p>
               <p className="font-medium">{formatDate(booking.checkIn)} — {formatDate(booking.checkOut)}</p>
@@ -103,7 +103,7 @@ export default async function GuestBookingPage({
 
           {hotel.address && (
             <div className="flex items-start gap-3">
-              <MapPin className="size-5 text-[#1a56db] shrink-0 mt-0.5" />
+              <MapPin className="size-5 text-[#1b4332] shrink-0 mt-0.5" />
               <div>
                 <p className="text-sm text-gray-500">Адрес</p>
                 <p className="font-medium">{hotel.address}</p>
@@ -124,7 +124,7 @@ export default async function GuestBookingPage({
             )}
             <div className="flex justify-between font-semibold text-gray-900 border-t border-gray-100 pt-2 mt-1">
               <span>Итого</span>
-              <span className="text-[#1a56db]">{formatPrice(booking.totalPrice)}</span>
+              <span className="text-[#1b4332]">{formatPrice(booking.totalPrice)}</span>
             </div>
           </div>
         </div>
@@ -154,7 +154,7 @@ export default async function GuestBookingPage({
       <footer className="border-t border-gray-200 bg-white py-4 mt-8">
         <div className="max-w-2xl mx-auto px-4 flex items-center justify-center gap-2 text-sm text-gray-400">
           <span>Powered by</span>
-          <Link href="/" className="flex items-center gap-1 font-semibold text-[#1a56db] hover:underline">
+          <Link href="/" className="flex items-center gap-1 font-semibold text-[#1b4332] hover:underline">
             <BedDouble className="size-4" />
             StayOS
           </Link>

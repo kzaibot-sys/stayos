@@ -8,13 +8,13 @@ import { toast } from "sonner"
 
 const TAG_COLORS: Record<string, string> = {
   VIP: "bg-purple-100 text-purple-700",
-  Постоянный: "bg-blue-100 text-blue-700",
+  Постоянный: "bg-[#1b4332]/10 text-[#1b4332]",
   Проблемный: "bg-red-100 text-red-700",
   Корпоративный: "bg-orange-100 text-orange-700",
 }
 
 function getTagColor(tag: string) {
-  return TAG_COLORS[tag] ?? "bg-gray-100 text-gray-700"
+  return TAG_COLORS[tag] ?? "bg-muted text-foreground"
 }
 
 const PRESET_TAGS = ["VIP", "Постоянный", "Проблемный", "Корпоративный"]
@@ -149,7 +149,7 @@ export function GuestProfileClient({ guest }: Props) {
                   onChange={(e) =>
                     setForm((f) => ({ ...f, firstName: e.target.value }))
                   }
-                  className="w-full px-3 py-1.5 text-sm border border-border bg-background text-foreground rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-1.5 text-sm border border-border bg-background text-foreground rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2d6a4f]"
                 />
               </div>
               <div>
@@ -162,7 +162,7 @@ export function GuestProfileClient({ guest }: Props) {
                   onChange={(e) =>
                     setForm((f) => ({ ...f, lastName: e.target.value }))
                   }
-                  className="w-full px-3 py-1.5 text-sm border border-border bg-background text-foreground rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-1.5 text-sm border border-border bg-background text-foreground rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2d6a4f]"
                 />
               </div>
             </div>
@@ -177,7 +177,7 @@ export function GuestProfileClient({ guest }: Props) {
                 onChange={(e) =>
                   setForm((f) => ({ ...f, email: e.target.value }))
                 }
-                className="w-full px-3 py-1.5 text-sm border border-border bg-background text-foreground rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-1.5 text-sm border border-border bg-background text-foreground rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2d6a4f]"
               />
             </div>
 
@@ -191,7 +191,7 @@ export function GuestProfileClient({ guest }: Props) {
                 onChange={(e) =>
                   setForm((f) => ({ ...f, phone: e.target.value }))
                 }
-                className="w-full px-3 py-1.5 text-sm border border-border bg-background text-foreground rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-1.5 text-sm border border-border bg-background text-foreground rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2d6a4f]"
               />
             </div>
 
@@ -205,7 +205,7 @@ export function GuestProfileClient({ guest }: Props) {
                 onChange={(e) =>
                   setForm((f) => ({ ...f, passportNumber: e.target.value }))
                 }
-                className="w-full px-3 py-1.5 text-sm border border-border bg-background text-foreground rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-1.5 text-sm border border-border bg-background text-foreground rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2d6a4f]"
               />
             </div>
 
@@ -220,7 +220,7 @@ export function GuestProfileClient({ guest }: Props) {
                   onChange={(e) =>
                     setForm((f) => ({ ...f, nationality: e.target.value }))
                   }
-                  className="w-full px-3 py-1.5 text-sm border border-border bg-background text-foreground rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-1.5 text-sm border border-border bg-background text-foreground rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2d6a4f]"
                 />
               </div>
               <div>
@@ -233,7 +233,7 @@ export function GuestProfileClient({ guest }: Props) {
                   onChange={(e) =>
                     setForm((f) => ({ ...f, birthDate: e.target.value }))
                   }
-                  className="w-full px-3 py-1.5 text-sm border border-border bg-background text-foreground rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-1.5 text-sm border border-border bg-background text-foreground rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2d6a4f]"
                 />
               </div>
             </div>
@@ -248,7 +248,7 @@ export function GuestProfileClient({ guest }: Props) {
                   setForm((f) => ({ ...f, notes: e.target.value }))
                 }
                 rows={3}
-                className="w-full px-3 py-1.5 text-sm border border-border bg-background text-foreground rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                className="w-full px-3 py-1.5 text-sm border border-border bg-background text-foreground rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2d6a4f] resize-none"
               />
             </div>
           </>
@@ -284,7 +284,7 @@ export function GuestProfileClient({ guest }: Props) {
             <p className="text-xs font-medium text-muted-foreground">Теги</p>
             <button
               onClick={() => setShowTagPicker((v) => !v)}
-              className="inline-flex items-center text-xs text-blue-600 hover:text-blue-700"
+              className="inline-flex items-center text-xs text-[#2d6a4f] hover:text-[#1b4332]"
             >
               <Plus className="size-3 mr-0.5" />
               Добавить

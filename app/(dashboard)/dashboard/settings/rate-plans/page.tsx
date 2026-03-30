@@ -175,7 +175,7 @@ export default function RatePlansPage() {
     <div>
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="font-heading text-2xl font-semibold text-gray-900">
+          <h1 className="font-heading text-2xl font-semibold text-foreground">
             Тарифные планы
           </h1>
           <p className="text-sm text-muted-foreground mt-0.5">
@@ -191,7 +191,7 @@ export default function RatePlansPage() {
       {isLoading ? (
         <div className="space-y-3">
           {Array.from({ length: 3 }).map((_, i) => (
-            <div key={i} className="h-20 bg-gray-100 rounded-xl animate-pulse" />
+            <div key={i} className="h-20 bg-muted rounded-xl animate-pulse" />
           ))}
         </div>
       ) : ratePlans.length === 0 ? (
@@ -205,33 +205,33 @@ export default function RatePlansPage() {
           {ratePlans.map((plan) => (
             <div
               key={plan.id}
-              className="bg-white rounded-xl border border-gray-200 px-5 py-4 flex items-center justify-between gap-4"
+              className="bg-card rounded-xl border border-border px-5 py-4 flex items-center justify-between gap-4"
             >
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 mb-1">
-                  <h3 className="font-medium text-gray-900">{plan.name}</h3>
+                  <h3 className="font-medium text-foreground">{plan.name}</h3>
                   {!plan.isActive && (
-                    <span className="text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-500">
+                    <span className="text-xs px-2 py-0.5 rounded-full bg-muted text-muted-foreground">
                       Неактивен
                     </span>
                   )}
                 </div>
                 {plan.description && (
-                  <p className="text-sm text-gray-500 mb-1">{plan.description}</p>
+                  <p className="text-sm text-muted-foreground mb-1">{plan.description}</p>
                 )}
-                <div className="flex items-center gap-3 text-sm text-gray-500">
+                <div className="flex items-center gap-3 text-sm text-muted-foreground">
                   <span>
                     {format(new Date(plan.dateFrom), "d MMM yyyy", { locale: ru })} —{" "}
                     {format(new Date(plan.dateTo), "d MMM yyyy", { locale: ru })}
                   </span>
-                  <span className="text-gray-300">•</span>
+                  <span className="text-muted-foreground">•</span>
                   <span
                     className={`font-medium ${
                       plan.multiplier > 1
                         ? "text-orange-600"
                         : plan.multiplier < 1
                         ? "text-green-600"
-                        : "text-gray-700"
+                        : "text-foreground"
                     }`}
                   >
                     ×{plan.multiplier} ({multiplierToLabel(plan.multiplier)})
@@ -241,7 +241,7 @@ export default function RatePlansPage() {
               <div className="flex items-center gap-2 shrink-0">
                 <button
                   onClick={() => openEdit(plan)}
-                  className="inline-flex items-center justify-center h-8 w-8 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors"
+                  className="inline-flex items-center justify-center h-8 w-8 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors"
                 >
                   <Pencil className="size-4" />
                 </button>
@@ -316,7 +316,7 @@ export default function RatePlansPage() {
             <div>
               <Label htmlFor="multiplier">
                 Множитель цены *{" "}
-                <span className="font-normal text-gray-400">
+                <span className="font-normal text-muted-foreground">
                   (1.0 = без изменений, 1.5 = +50%, 0.8 = −20%)
                 </span>
               </Label>
@@ -331,7 +331,7 @@ export default function RatePlansPage() {
                 className="mt-1"
               />
               {form.multiplier && !isNaN(parseFloat(form.multiplier)) && (
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-muted-foreground mt-1">
                   {multiplierToLabel(parseFloat(form.multiplier))}
                 </p>
               )}
@@ -343,7 +343,7 @@ export default function RatePlansPage() {
                 type="checkbox"
                 checked={form.isActive}
                 onChange={(e) => setForm((f) => ({ ...f, isActive: e.target.checked }))}
-                className="rounded border-gray-300"
+                className="rounded border-border"
               />
               <Label htmlFor="isActive" className="cursor-pointer">
                 Активен
@@ -368,7 +368,7 @@ export default function RatePlansPage() {
           <DialogHeader>
             <DialogTitle>Удалить тарифный план?</DialogTitle>
           </DialogHeader>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-muted-foreground">
             Это действие нельзя отменить. Связанные бронирования не будут затронуты.
           </p>
           <DialogFooter>

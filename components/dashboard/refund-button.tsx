@@ -72,14 +72,14 @@ export function RefundButton({ paymentId, maxAmount }: RefundButtonProps) {
         max={maxAmount}
         min={1}
         step={1}
-        className="border border-gray-300 rounded px-2 py-1 text-xs w-full focus:outline-none focus:ring-1 focus:ring-[#1a56db]"
+        className="border border-border rounded px-2 py-1 text-xs w-full focus:outline-none focus:ring-1 focus:ring-[#2d6a4f]"
         placeholder="Сумма"
       />
       <input
         type="text"
         value={notes}
         onChange={e => setNotes(e.target.value)}
-        className="border border-gray-300 rounded px-2 py-1 text-xs w-full focus:outline-none focus:ring-1 focus:ring-[#1a56db]"
+        className="border border-border rounded px-2 py-1 text-xs w-full focus:outline-none focus:ring-1 focus:ring-[#2d6a4f]"
         placeholder="Причина (необязательно)"
       />
       <div className="flex gap-1">

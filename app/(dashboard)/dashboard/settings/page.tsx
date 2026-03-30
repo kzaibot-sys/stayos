@@ -190,7 +190,7 @@ export default function SettingsPage() {
               href={tab.href}
               className={`flex items-center gap-2 px-4 py-2.5 text-sm font-medium border-b-2 transition-colors ${
                 isActive
-                  ? "border-blue-600 text-blue-600"
+                  ? "border-[#1b4332] text-[#1b4332]"
                   : "border-transparent text-muted-foreground hover:text-foreground"
               }`}
             >
@@ -216,7 +216,7 @@ export default function SettingsPage() {
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
                 required
-                className="w-full rounded-lg border border-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full rounded-lg border border-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2d6a4f]"
               />
             </div>
 
@@ -232,7 +232,7 @@ export default function SettingsPage() {
                   onChange={(e) =>
                     setForm({ ...form, slug: e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '-') })
                   }
-                  className="flex-1 rounded-lg border border-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="flex-1 rounded-lg border border-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2d6a4f]"
                   placeholder="my-hotel"
                 />
               </div>
@@ -246,7 +246,7 @@ export default function SettingsPage() {
                 type="text"
                 value={form.shortDescription}
                 onChange={(e) => setForm({ ...form, shortDescription: e.target.value })}
-                className="w-full rounded-lg border border-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full rounded-lg border border-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2d6a4f]"
                 placeholder="Краткое описание для превью"
               />
             </div>
@@ -259,7 +259,7 @@ export default function SettingsPage() {
                 value={form.description}
                 onChange={(e) => setForm({ ...form, description: e.target.value })}
                 rows={4}
-                className="w-full rounded-lg border border-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                className="w-full rounded-lg border border-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2d6a4f] resize-none"
                 placeholder="Полное описание отеля"
               />
             </div>
@@ -277,7 +277,7 @@ export default function SettingsPage() {
                 type="text"
                 value={form.address}
                 onChange={(e) => setForm({ ...form, address: e.target.value })}
-                className="w-full rounded-lg border border-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full rounded-lg border border-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2d6a4f]"
               />
             </div>
 
@@ -287,7 +287,7 @@ export default function SettingsPage() {
                 type="text"
                 value={form.city}
                 onChange={(e) => setForm({ ...form, city: e.target.value })}
-                className="w-full rounded-lg border border-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full rounded-lg border border-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2d6a4f]"
               />
             </div>
 
@@ -296,7 +296,7 @@ export default function SettingsPage() {
               <select
                 value={form.country}
                 onChange={(e) => setForm({ ...form, country: e.target.value })}
-                className="w-full rounded-lg border border-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full rounded-lg border border-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2d6a4f]"
               >
                 {COUNTRIES.map((c) => (
                   <option key={c.code} value={c.code}>
@@ -319,7 +319,7 @@ export default function SettingsPage() {
                 type="tel"
                 value={form.phone}
                 onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                className="w-full rounded-lg border border-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full rounded-lg border border-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2d6a4f]"
                 placeholder="+7 (777) 123-45-67"
               />
             </div>
@@ -330,7 +330,7 @@ export default function SettingsPage() {
                 type="email"
                 value={form.email}
                 onChange={(e) => setForm({ ...form, email: e.target.value })}
-                className="w-full rounded-lg border border-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full rounded-lg border border-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2d6a4f]"
               />
             </div>
 
@@ -340,7 +340,7 @@ export default function SettingsPage() {
                 type="url"
                 value={form.website}
                 onChange={(e) => setForm({ ...form, website: e.target.value })}
-                className="w-full rounded-lg border border-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full rounded-lg border border-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2d6a4f]"
                 placeholder="https://myhotel.com"
               />
             </div>
@@ -358,7 +358,7 @@ export default function SettingsPage() {
                 type="time"
                 value={form.checkInTime}
                 onChange={(e) => setForm({ ...form, checkInTime: e.target.value })}
-                className="w-full rounded-lg border border-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full rounded-lg border border-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2d6a4f]"
               />
             </div>
 
@@ -368,7 +368,7 @@ export default function SettingsPage() {
                 type="time"
                 value={form.checkOutTime}
                 onChange={(e) => setForm({ ...form, checkOutTime: e.target.value })}
-                className="w-full rounded-lg border border-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full rounded-lg border border-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2d6a4f]"
               />
             </div>
 
@@ -377,7 +377,7 @@ export default function SettingsPage() {
               <select
                 value={form.currency}
                 onChange={(e) => setForm({ ...form, currency: e.target.value })}
-                className="w-full rounded-lg border border-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full rounded-lg border border-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2d6a4f]"
               >
                 {CURRENCIES.map((c) => (
                   <option key={c.code} value={c.code}>
@@ -392,7 +392,7 @@ export default function SettingsPage() {
               <select
                 value={form.language}
                 onChange={(e) => setForm({ ...form, language: e.target.value })}
-                className="w-full rounded-lg border border-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full rounded-lg border border-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2d6a4f]"
               >
                 {LANGUAGES.map((l) => (
                   <option key={l.code} value={l.code}>
@@ -407,7 +407,7 @@ export default function SettingsPage() {
               <select
                 value={form.timezone}
                 onChange={(e) => setForm({ ...form, timezone: e.target.value })}
-                className="w-full rounded-lg border border-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full rounded-lg border border-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2d6a4f]"
               >
                 {TIMEZONES.map((tz) => (
                   <option key={tz} value={tz}>
@@ -433,7 +433,7 @@ export default function SettingsPage() {
                   type="checkbox"
                   checked={form.amenities.includes(amenity)}
                   onChange={() => toggleAmenity(amenity)}
-                  className="rounded border-border text-blue-600 focus:ring-blue-500"
+                  className="rounded border-border text-[#1b4332] focus:ring-[#2d6a4f]"
                 />
                 <span className="text-sm text-foreground">{amenity}</span>
               </label>
@@ -459,7 +459,7 @@ export default function SettingsPage() {
                   onChange={(e) =>
                     setForm({ ...form, prepaymentPercent: Math.min(100, Math.max(0, parseInt(e.target.value) || 0)) })
                   }
-                  className="w-32 rounded-lg border border-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-32 rounded-lg border border-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2d6a4f]"
                 />
                 <span className="text-sm text-muted-foreground">% от суммы бронирования</span>
               </div>
@@ -497,7 +497,7 @@ export default function SettingsPage() {
           <button
             type="submit"
             disabled={saving}
-            className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-2.5 rounded-lg transition-colors disabled:opacity-60"
+            className="flex items-center gap-2 bg-[#1b4332] hover:bg-[#2d6a4f] text-white font-medium px-6 py-2.5 rounded-lg transition-colors disabled:opacity-60"
           >
             {saving ? (
               <Loader2 className="size-4 animate-spin" />

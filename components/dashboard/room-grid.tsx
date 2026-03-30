@@ -39,11 +39,11 @@ const statusConfig: Record<
   },
   OCCUPIED: {
     label: "Занят",
-    className: "bg-blue-100 text-blue-700",
+    className: "bg-[#1b4332]/10 text-[#1b4332]",
   },
   MAINTENANCE: {
     label: "Тех. обслуживание",
-    className: "bg-gray-100 text-gray-700",
+    className: "bg-muted text-foreground",
   },
   BLOCKED: {
     label: "Заблокирован",
@@ -163,7 +163,7 @@ export function RoomGrid({ rooms }: RoomGridProps) {
               {/* Actions dropdown */}
               <div className="absolute top-3 right-3">
                 <DropdownMenu>
-                  <DropdownMenuTrigger className="flex items-center justify-center w-8 h-8 rounded-full bg-white/90 text-gray-600 hover:bg-white hover:text-gray-900 shadow-sm transition-colors">
+                  <DropdownMenuTrigger className="flex items-center justify-center w-8 h-8 rounded-full bg-card/90 text-muted-foreground hover:bg-card hover:text-foreground shadow-sm transition-colors">
                     <MoreVertical className="size-4" />
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
@@ -224,7 +224,7 @@ export function RoomGrid({ rooms }: RoomGridProps) {
                   </span>
                   <Link
                     href={`/dashboard/rooms/${room.id}`}
-                    className="text-xs text-blue-600 hover:text-blue-700 font-medium"
+                    className="text-xs text-[#2d6a4f] hover:text-[#1b4332] font-medium"
                   >
                     Изменить
                   </Link>

@@ -44,7 +44,7 @@ function CustomTooltip({ active, payload, label }: any) {
   return (
     <div className="bg-card border border-border rounded-lg shadow-sm p-3 text-sm">
       <p className="font-medium text-foreground mb-1">{formatDate(label)}</p>
-      <p className="text-blue-600">
+      <p className="text-[#1b4332]">
         Выручка: {formatPrice(payload[0]?.value ?? 0)}
       </p>
       {payload[1] && (
@@ -93,10 +93,10 @@ export function RevenueChart({ data }: Props) {
         <Line
           type="monotone"
           dataKey="revenue"
-          stroke="#3b82f6"
+          stroke="#2d6a4f"
           strokeWidth={2}
           dot={false}
-          activeDot={{ r: 4, fill: "#3b82f6" }}
+          activeDot={{ r: 4, fill: "#2d6a4f" }}
         />
       </LineChart>
     </ResponsiveContainer>

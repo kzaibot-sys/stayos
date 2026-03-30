@@ -22,12 +22,12 @@ export function UserNav({ user }: UserNavProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
-        className="flex items-center gap-2 rounded-full outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-1"
+        className="flex items-center gap-2 rounded-full outline-none focus:ring-2 focus:ring-[#2d6a4f] focus:ring-offset-1"
         aria-label="User menu"
       >
         <Avatar>
           {user.image && <AvatarImage src={user.image} alt={user.name} />}
-          <AvatarFallback className="bg-[#1a56db] text-white font-medium">
+          <AvatarFallback className="bg-[#1b4332] text-white font-medium">
             {initials}
           </AvatarFallback>
         </Avatar>

@@ -68,7 +68,7 @@ export default async function BookingsPage({
     <div>
       {/* Page header */}
       <div className="flex items-center justify-between mb-6">
-        <h1 className="font-heading text-2xl font-semibold text-gray-900">
+        <h1 className="font-heading text-2xl font-semibold text-foreground">
           Бронирования
         </h1>
         <Link href="/dashboard/bookings/new">

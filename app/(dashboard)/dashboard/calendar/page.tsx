@@ -96,7 +96,7 @@ export default function CalendarPage() {
     <div>
       {/* Page header */}
       <div className="flex items-center justify-between mb-6">
-        <h1 className="font-heading text-2xl font-semibold text-gray-900">
+        <h1 className="font-heading text-2xl font-semibold text-foreground">
           Календарь загрузки
         </h1>
         <Button variant="outline" size="sm" onClick={goToday}>
@@ -111,7 +111,7 @@ export default function CalendarPage() {
           <ChevronLeft className="size-4" />
           Пред.
         </Button>
-        <span className="text-sm font-medium text-gray-700 min-w-[180px] text-center">
+        <span className="text-sm font-medium text-foreground min-w-[180px] text-center">
           {dateRangeLabel}
         </span>
         <Button variant="outline" size="sm" onClick={goForward} className="gap-1.5">
@@ -123,7 +123,7 @@ export default function CalendarPage() {
       {/* Legend */}
       <div className="flex flex-wrap gap-3 mb-4">
         {[
-          { label: "Подтверждена", color: "bg-blue-500" },
+          { label: "Подтверждена", color: "bg-[#2d6a4f]" },
           { label: "Заселён", color: "bg-green-500" },
           { label: "Ожидает", color: "bg-yellow-400" },
           { label: "Выселился", color: "bg-gray-400" },
@@ -131,17 +131,17 @@ export default function CalendarPage() {
         ].map((item) => (
           <div key={item.label} className="flex items-center gap-1.5">
             <div className={`w-3 h-3 rounded-sm ${item.color}`} />
-            <span className="text-xs text-gray-500">{item.label}</span>
+            <span className="text-xs text-muted-foreground">{item.label}</span>
           </div>
         ))}
       </div>
 
       {/* Calendar */}
       {isLoading ? (
-        <div className="rounded-xl border border-gray-200 bg-white p-12 text-center">
+        <div className="rounded-xl border border-border bg-card p-12 text-center">
           <div className="animate-pulse space-y-3">
             {[...Array(5)].map((_, i) => (
-              <div key={i} className="h-12 bg-gray-100 rounded" />
+              <div key={i} className="h-12 bg-muted rounded" />
             ))}
           </div>
         </div>
@@ -149,7 +149,7 @@ export default function CalendarPage() {
         <CalendarView rooms={rooms} startDate={startDate} endDate={endDate} />
       )}
 
-      <p className="text-xs text-gray-400 mt-3">
+      <p className="text-xs text-muted-foreground mt-3">
         Нажмите на пустую ячейку, чтобы создать бронь. Нажмите на бронь, чтобы открыть детали.
       </p>
     </div>

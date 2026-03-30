@@ -67,11 +67,11 @@ export function WeatherWidget({ city = "Almaty" }: WeatherWidgetProps) {
 
   if (loading) {
     return (
-      <div className="flex items-center gap-2 bg-white border border-gray-200 rounded-xl px-4 py-3 animate-pulse">
-        <div className="size-8 bg-gray-200 rounded-full" />
+      <div className="flex items-center gap-2 bg-card border border-border rounded-xl px-4 py-3 animate-pulse">
+        <div className="size-8 bg-muted rounded-full" />
         <div className="space-y-1">
-          <div className="h-3 w-16 bg-gray-200 rounded" />
-          <div className="h-2 w-12 bg-gray-200 rounded" />
+          <div className="h-3 w-16 bg-muted rounded" />
+          <div className="h-2 w-12 bg-muted rounded" />
         </div>
       </div>
     )
@@ -82,19 +82,19 @@ export function WeatherWidget({ city = "Almaty" }: WeatherWidgetProps) {
   }
 
   return (
-    <div className="flex items-center gap-3 bg-gradient-to-r from-blue-50 to-sky-50 border border-blue-100 rounded-xl px-4 py-3">
+    <div className="flex items-center gap-3 bg-gradient-to-r from-[#1b4332]/5 to-[#2d6a4f]/5 border border-[#1b4332]/10 rounded-xl px-4 py-3">
       <WeatherIcon
         code={weather.weatherCode}
-        className="size-7 text-blue-500 shrink-0"
+        className="size-7 text-[#2d6a4f] shrink-0"
       />
       <div className="min-w-0">
         <div className="flex items-baseline gap-1.5">
-          <span className="text-xl font-bold text-gray-900">{weather.temp}°C</span>
-          <span className="text-xs text-gray-500 hidden sm:inline">
+          <span className="text-xl font-bold text-foreground">{weather.temp}°C</span>
+          <span className="text-xs text-muted-foreground hidden sm:inline">
             ощущается {weather.feels_like}°
           </span>
         </div>
-        <p className="text-xs text-gray-500 truncate">{weather.city} · {weather.description}</p>
+        <p className="text-xs text-muted-foreground truncate">{weather.city} · {weather.description}</p>
       </div>
     </div>
   )

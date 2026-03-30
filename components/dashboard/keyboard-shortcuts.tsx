@@ -72,7 +72,7 @@ export function KeyboardShortcuts() {
       {/* Help button */}
       <button
         onClick={() => setShowModal(true)}
-        className="fixed bottom-6 right-6 z-40 size-10 rounded-full bg-gray-800 text-white flex items-center justify-center shadow-lg hover:bg-gray-700 transition-colors"
+        className="fixed bottom-6 right-6 z-40 size-10 rounded-full bg-foreground text-background flex items-center justify-center shadow-lg hover:bg-foreground/90 transition-colors"
         title="Горячие клавиши (?)"
       >
         <Keyboard className="size-4" />
@@ -85,17 +85,17 @@ export function KeyboardShortcuts() {
           onClick={() => setShowModal(false)}
         >
           <div
-            className="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-sm mx-4"
+            className="bg-card rounded-2xl shadow-2xl p-6 w-full max-w-sm mx-4"
             onClick={(e) => e.stopPropagation()}
           >
             <div className="flex items-center justify-between mb-5">
               <div className="flex items-center gap-2">
-                <Keyboard className="size-5 text-gray-700" />
-                <h2 className="text-base font-semibold text-gray-900">Горячие клавиши</h2>
+                <Keyboard className="size-5 text-foreground" />
+                <h2 className="text-base font-semibold text-foreground">Горячие клавиши</h2>
               </div>
               <button
                 onClick={() => setShowModal(false)}
-                className="text-gray-400 hover:text-gray-600 transition-colors"
+                className="text-muted-foreground hover:text-foreground transition-colors"
               >
                 <X className="size-5" />
               </button>
@@ -104,15 +104,15 @@ export function KeyboardShortcuts() {
             <div className="space-y-2">
               {SHORTCUTS.map(({ key, label }) => (
                 <div key={key} className="flex items-center justify-between py-1.5">
-                  <span className="text-sm text-gray-700">{label}</span>
-                  <kbd className="inline-flex items-center justify-center min-w-[28px] h-7 px-2 bg-gray-100 border border-gray-300 rounded text-xs font-mono text-gray-700 shadow-sm">
+                  <span className="text-sm text-foreground">{label}</span>
+                  <kbd className="inline-flex items-center justify-center min-w-[28px] h-7 px-2 bg-muted border border-border rounded text-xs font-mono text-foreground shadow-sm">
                     {key}
                   </kbd>
                 </div>
               ))}
             </div>
 
-            <p className="text-xs text-gray-400 mt-4 pt-4 border-t border-gray-100">
+            <p className="text-xs text-muted-foreground mt-4 pt-4 border-t border-border">
               Горячие клавиши не работают при вводе текста
             </p>
           </div>

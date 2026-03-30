@@ -65,7 +65,7 @@ export default function EditRoomPage() {
         </p>
         <Link
           href="/dashboard/rooms"
-          className="text-sm text-blue-600 hover:underline"
+          className="text-sm text-[#2d6a4f] hover:underline"
         >
           Вернуться к номерам
         </Link>
@@ -78,12 +78,12 @@ export default function EditRoomPage() {
       <div className="mb-6">
         <Link
           href="/dashboard/rooms"
-          className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-gray-900 mb-3 transition-colors"
+          className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground mb-3 transition-colors"
         >
           <ArrowLeft className="size-4" />
           Назад к номерам
         </Link>
-        <h1 className="font-heading text-2xl font-semibold text-gray-900">
+        <h1 className="font-heading text-2xl font-semibold text-foreground">
           Редактирование номера
         </h1>
         <p className="text-sm text-muted-foreground mt-0.5">{room.name}</p>

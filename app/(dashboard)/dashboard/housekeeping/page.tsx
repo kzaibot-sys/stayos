@@ -83,9 +83,9 @@ const CLEANING_STATUS_CONFIG: Record<
   },
   INSPECTION: {
     label: "Инспекция",
-    bg: "bg-blue-100 dark:bg-blue-900",
-    text: "text-blue-800 dark:text-blue-200",
-    dot: "bg-blue-500",
+    bg: "bg-[#1b4332]/10 dark:bg-[#2d6a4f]/20",
+    text: "text-[#1b4332] dark:text-[#d4a373]",
+    dot: "bg-[#2d6a4f]",
   },
 }
 
@@ -175,7 +175,7 @@ export default function HousekeepingPage() {
 
   const priorityColors: Record<TaskPriority, string> = {
     LOW: "bg-muted text-muted-foreground",
-    MEDIUM: "bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300",
+    MEDIUM: "bg-[#1b4332]/10 text-[#1b4332] dark:bg-[#2d6a4f]/20 dark:text-[#d4a373]",
     HIGH: "bg-orange-100 text-orange-700 dark:bg-orange-900 dark:text-orange-300",
     URGENT: "bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300",
   }
@@ -193,7 +193,7 @@ export default function HousekeepingPage() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="font-heading text-2xl font-semibold text-foreground flex items-center gap-2">
-            <Sparkles className="size-6 text-blue-600" />
+            <Sparkles className="size-6 text-[#2d6a4f]" />
             Уборка
           </h1>
           <p className="text-sm text-muted-foreground mt-0.5">
@@ -210,7 +210,7 @@ export default function HousekeepingPage() {
           </button>
           <button
             onClick={() => setShowDialog(true)}
-            className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 transition-colors"
+            className="inline-flex items-center gap-2 rounded-lg bg-[#1b4332] px-4 py-2 text-sm font-medium text-white hover:bg-[#2d6a4f] transition-colors"
           >
             <Plus className="size-4" />
             Создать задачу
@@ -269,7 +269,7 @@ export default function HousekeepingPage() {
               onClick={() => setFilterStatus(tab.value)}
               className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors -mb-px ${
                 filterStatus === tab.value
-                  ? "border-blue-600 text-blue-600"
+                  ? "border-[#1b4332] text-[#1b4332]"
                   : "border-transparent text-muted-foreground hover:text-foreground"
               }`}
             >
@@ -397,7 +397,7 @@ export default function HousekeepingPage() {
                   value={form.roomId}
                   onChange={(e) => setForm((f) => ({ ...f, roomId: e.target.value }))}
                   required
-                  className="w-full rounded-lg border border-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full rounded-lg border border-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2d6a4f]"
                 >
                   <option value="">Выберите номер</option>
                   {rooms.map((r) => (
@@ -418,7 +418,7 @@ export default function HousekeepingPage() {
                   onChange={(e) =>
                     setForm((f) => ({ ...f, type: e.target.value as TaskType }))
                   }
-                  className="w-full rounded-lg border border-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full rounded-lg border border-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2d6a4f]"
                 >
                   <option value="CLEANING">Уборка</option>
                   <option value="MAINTENANCE">Обслуживание</option>
@@ -435,7 +435,7 @@ export default function HousekeepingPage() {
                   onChange={(e) =>
                     setForm((f) => ({ ...f, priority: e.target.value as TaskPriority }))
                   }
-                  className="w-full rounded-lg border border-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full rounded-lg border border-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2d6a4f]"
                 >
                   <option value="LOW">Низкий</option>
                   <option value="MEDIUM">Средний</option>
@@ -452,7 +452,7 @@ export default function HousekeepingPage() {
                   value={form.notes}
                   onChange={(e) => setForm((f) => ({ ...f, notes: e.target.value }))}
                   rows={3}
-                  className="w-full rounded-lg border border-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                  className="w-full rounded-lg border border-border px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2d6a4f] resize-none"
                   placeholder="Дополнительные инструкции..."
                 />
               </div>
@@ -468,7 +468,7 @@ export default function HousekeepingPage() {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 transition-colors disabled:opacity-60"
+                  className="rounded-lg bg-[#1b4332] px-4 py-2 text-sm font-medium text-white hover:bg-[#2d6a4f] transition-colors disabled:opacity-60"
                 >
                   {submitting ? "Создание..." : "Создать"}
                 </button>

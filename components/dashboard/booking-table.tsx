@@ -36,7 +36,7 @@ import { toast } from "sonner"
 
 const bookingStatusConfig: Record<string, { label: string; className: string }> = {
   PENDING: { label: "Ожидает", className: "bg-yellow-100 text-yellow-700" },
-  CONFIRMED: { label: "Подтверждена", className: "bg-blue-100 text-blue-700" },
+  CONFIRMED: { label: "Подтверждена", className: "bg-[#1b4332]/10 text-[#1b4332]" },
   CHECKED_IN: { label: "Заселён", className: "bg-green-100 text-green-700" },
   CHECKED_OUT: { label: "Выселился", className: "bg-muted text-foreground" },
   CANCELLED: { label: "Отменена", className: "bg-red-100 text-red-700" },
@@ -161,7 +161,7 @@ export function BookingTable({ bookings, total, page, limit }: BookingTableProps
                 <div>
                   <Link
                     href={`/dashboard/bookings/${booking.id}`}
-                    className="font-mono text-xs font-medium text-blue-600 hover:text-blue-700"
+                    className="font-mono text-xs font-medium text-[#2d6a4f] hover:text-[#1b4332]"
                   >
                     {booking.bookingNumber}
                   </Link>
@@ -196,7 +196,7 @@ export function BookingTable({ bookings, total, page, limit }: BookingTableProps
                 </span>
                 <Link
                   href={`/dashboard/bookings/${booking.id}`}
-                  className="text-xs text-blue-600 hover:text-blue-700 font-medium"
+                  className="text-xs text-[#2d6a4f] hover:text-[#1b4332] font-medium"
                 >
                   Подробнее →
                 </Link>
@@ -291,7 +291,7 @@ export function BookingTable({ bookings, total, page, limit }: BookingTableProps
                     <td className="px-4 py-3">
                       <Link
                         href={`/dashboard/bookings/${booking.id}`}
-                        className="font-mono text-xs font-medium text-blue-600 hover:text-blue-700"
+                        className="font-mono text-xs font-medium text-[#2d6a4f] hover:text-[#1b4332]"
                       >
                         {booking.bookingNumber}
                       </Link>

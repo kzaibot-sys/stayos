@@ -285,7 +285,7 @@ export default function ReportsPage() {
           onClick={() => setCompareMode((v) => !v)}
           className={`flex items-center gap-2 text-sm font-medium rounded-lg px-3 py-1.5 border transition-colors ${
             compareMode
-              ? "bg-blue-50 border-blue-300 text-blue-700 dark:bg-blue-950 dark:border-blue-800 dark:text-blue-300"
+              ? "bg-[#1b4332]/5 border-[#1b4332]/30 text-[#1b4332] dark:bg-[#2d6a4f]/10 dark:border-[#2d6a4f]/30 dark:text-[#d4a373]"
               : "bg-card border-border text-foreground hover:bg-muted"
           }`}
         >
@@ -305,7 +305,7 @@ export default function ReportsPage() {
               : undefined
           }
           icon={TrendingUp}
-          iconClassName="text-blue-500"
+          iconClassName="text-[#1b4332]"
         />
         <StatCard
           label="Средний ADR"
@@ -359,8 +359,8 @@ export default function ReportsPage() {
             <AreaChart data={mergedRevenueData}>
               <defs>
                 <linearGradient id="revGrad" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%" stopColor="#1a56db" stopOpacity={0.15} />
-                  <stop offset="95%" stopColor="#1a56db" stopOpacity={0} />
+                  <stop offset="5%" stopColor="#1b4332" stopOpacity={0.15} />
+                  <stop offset="95%" stopColor="#1b4332" stopOpacity={0} />
                 </linearGradient>
                 <linearGradient id="prevRevGrad" x1="0" y1="0" x2="0" y2="1">
                   <stop offset="5%" stopColor="#94a3b8" stopOpacity={0.15} />
@@ -388,7 +388,7 @@ export default function ReportsPage() {
               <Area
                 type="monotone"
                 dataKey="revenue"
-                stroke="#1a56db"
+                stroke="#1b4332"
                 fill="url(#revGrad)"
                 strokeWidth={2}
               />

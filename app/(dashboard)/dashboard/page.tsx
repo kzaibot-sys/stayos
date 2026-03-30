@@ -209,7 +209,7 @@ export default async function DashboardPage() {
 
       {/* Onboarding banner for new hotels */}
       {isNewHotel && (
-        <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl border border-blue-100 p-6">
+        <div className="bg-gradient-to-br from-[#1b4332]/5 to-[#2d6a4f]/5 rounded-xl border border-[#1b4332]/10 p-6">
           <h2 className="text-xl font-bold text-foreground mb-1">
             Добро пожаловать в StayOS!
           </h2>
@@ -243,14 +243,14 @@ export default async function DashboardPage() {
                 className={`flex items-center gap-3 rounded-lg border p-4 transition-all hover:shadow-sm ${
                   done
                     ? "border-green-200 bg-green-50"
-                    : "border-border bg-card hover:border-blue-300"
+                    : "border-border bg-card hover:border-[#2d6a4f]/40"
                 }`}
               >
                 <div
                   className={`size-8 rounded-full flex items-center justify-center text-sm font-bold shrink-0 ${
                     done
                       ? "bg-green-500 text-white"
-                      : "bg-blue-100 text-blue-700"
+                      : "bg-[#1b4332]/10 text-[#1b4332]"
                   }`}
                 >
                   {done ? "✓" : step}
@@ -298,7 +298,7 @@ export default async function DashboardPage() {
         <div className="flex flex-wrap gap-3">
           <Link
             href="/dashboard/bookings/new"
-            className="inline-flex items-center gap-2 rounded-lg border border-blue-200 bg-blue-50 px-4 py-2.5 text-sm font-medium text-blue-700 hover:bg-blue-100 transition-colors"
+            className="inline-flex items-center gap-2 rounded-lg border border-[#1b4332]/20 bg-[#1b4332]/5 px-4 py-2.5 text-sm font-medium text-[#1b4332] hover:bg-[#1b4332]/10 transition-colors"
           >
             <Plus className="size-4" />
             Новая бронь
@@ -350,8 +350,8 @@ export default async function DashboardPage() {
           title="Заездов сегодня"
           value={checkInsToday}
           icon={CalendarCheck}
-          iconColor="text-blue-600"
-          iconBg="bg-blue-100"
+          iconColor="text-[#1b4332]"
+          iconBg="bg-[#1b4332]/10"
           trend={{ value: calcTrend(checkInsToday, checkInsYesterday), label: "вчера" }}
         />
         <StatsCard
@@ -387,10 +387,10 @@ export default async function DashboardPage() {
             <div className="bg-card rounded-xl border border-border overflow-hidden">
               <div className="flex items-center justify-between px-5 py-4 border-b border-border">
                 <h3 className="font-semibold text-foreground flex items-center gap-2">
-                  <CalendarCheck className="size-4 text-blue-600" />
+                  <CalendarCheck className="size-4 text-[#1b4332]" />
                   Заезды сегодня
                 </h3>
-                <span className="text-xs bg-blue-100 text-blue-700 font-medium px-2 py-0.5 rounded-full">
+                <span className="text-xs bg-[#1b4332]/10 text-[#1b4332] font-medium px-2 py-0.5 rounded-full">
                   {checkInsList.length}
                 </span>
               </div>
@@ -408,7 +408,7 @@ export default async function DashboardPage() {
                     </div>
                     <Link
                       href={`/dashboard/bookings/${b.id}`}
-                      className="text-xs text-blue-600 hover:underline font-medium shrink-0"
+                      className="text-xs text-[#2d6a4f] hover:underline font-medium shrink-0"
                     >
                       Открыть →
                     </Link>
@@ -444,7 +444,7 @@ export default async function DashboardPage() {
                     </div>
                     <Link
                       href={`/dashboard/bookings/${b.id}`}
-                      className="text-xs text-blue-600 hover:underline font-medium shrink-0"
+                      className="text-xs text-[#2d6a4f] hover:underline font-medium shrink-0"
                     >
                       Открыть →
                     </Link>

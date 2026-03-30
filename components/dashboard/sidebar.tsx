@@ -39,7 +39,7 @@ export function Sidebar({ user, onClose }: SidebarProps) {
 
   return (
     <div
-      className="flex flex-col h-full w-60 bg-[#111827] text-white"
+      className="flex flex-col h-full w-60 bg-[#1b4332] text-white"
       style={{ width: "240px" }}
     >
       {/* Logo */}

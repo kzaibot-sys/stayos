@@ -29,7 +29,7 @@ const METHOD_LABELS: Record<string, string> = {
   OTHER: "Другое",
 }
 
-const PIE_COLORS = ["#1a56db", "#10b981", "#f59e0b", "#8b5cf6", "#ef4444"]
+const PIE_COLORS = ["#1b4332", "#10b981", "#f59e0b", "#8b5cf6", "#ef4444"]
 
 interface Summary {
   totalRevenue: number
@@ -106,7 +106,7 @@ export default function FinanceDashboardPage() {
               label="Общая выручка"
               value={formatPrice(data?.summary.totalRevenue ?? 0)}
               icon={TrendingUp}
-              color="text-blue-500"
+              color="text-[#1b4332]"
             />
             <SummaryCard
               label="Средний чек"
@@ -152,7 +152,7 @@ export default function FinanceDashboardPage() {
                   <Tooltip
                     formatter={(value) => [formatPrice(Number(value)), "Выручка"]}
                   />
-                  <Bar dataKey="revenue" fill="#1a56db" radius={[4, 4, 0, 0]} />
+                  <Bar dataKey="revenue" fill="#1b4332" radius={[4, 4, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>

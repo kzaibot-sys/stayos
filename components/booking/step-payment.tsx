@@ -256,7 +256,7 @@ export function StepPayment({ bookingData, slug, prepaymentPercent = 0, onBack }
         <div className="space-y-4">
           {/* Room */}
           <div className="flex items-start gap-3">
-            <BedDouble className="size-5 text-[#1a56db] shrink-0 mt-0.5" />
+            <BedDouble className="size-5 text-[#1b4332] shrink-0 mt-0.5" />
             <div>
               <p className="text-sm text-gray-500">Номер</p>
               <p className="font-medium text-gray-900">
@@ -270,7 +270,7 @@ export function StepPayment({ bookingData, slug, prepaymentPercent = 0, onBack }
 
           {/* Dates */}
           <div className="flex items-start gap-3">
-            <CalendarDays className="size-5 text-[#1a56db] shrink-0 mt-0.5" />
+            <CalendarDays className="size-5 text-[#1b4332] shrink-0 mt-0.5" />
             <div>
               <p className="text-sm text-gray-500">Даты проживания</p>
               <p className="font-medium text-gray-900">
@@ -284,7 +284,7 @@ export function StepPayment({ bookingData, slug, prepaymentPercent = 0, onBack }
 
           {/* Guest */}
           <div className="flex items-start gap-3">
-            <User className="size-5 text-[#1a56db] shrink-0 mt-0.5" />
+            <User className="size-5 text-[#1b4332] shrink-0 mt-0.5" />
             <div>
               <p className="text-sm text-gray-500">Гость</p>
               <p className="font-medium text-gray-900">
@@ -327,7 +327,7 @@ export function StepPayment({ bookingData, slug, prepaymentPercent = 0, onBack }
           <div className="flex justify-between font-semibold text-gray-900 text-base pt-1 border-t border-gray-100">
             <span>Итого</span>
             <div className="text-right">
-              <span className="text-[#1a56db]">{formatPrice(totalPrice)}</span>
+              <span className="text-[#1b4332]">{formatPrice(totalPrice)}</span>
               <p className="text-xs text-gray-400 font-normal">
                 ≈ ${toUSD(totalPrice)} USD · €{toEUR(totalPrice)} EUR
               </p>
@@ -352,7 +352,7 @@ export function StepPayment({ bookingData, slug, prepaymentPercent = 0, onBack }
       {extraServices.length > 0 && (
         <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-4">
           <div className="flex items-center gap-2">
-            <CheckSquare className="size-5 text-[#1a56db]" />
+            <CheckSquare className="size-5 text-[#1b4332]" />
             <h3 className="text-lg font-semibold text-gray-900">Дополнительные услуги</h3>
           </div>
           <div className="space-y-3">
@@ -363,7 +363,7 @@ export function StepPayment({ bookingData, slug, prepaymentPercent = 0, onBack }
                 <label
                   key={service.id}
                   className={`flex items-center gap-4 p-4 rounded-lg border-2 cursor-pointer transition-all ${
-                    checked ? "border-[#1a56db] bg-blue-50" : "border-gray-200 hover:border-gray-300"
+                    checked ? "border-[#1b4332] bg-[#1b4332]/5" : "border-gray-200 hover:border-gray-300"
                   }`}
                 >
                   <input
@@ -374,7 +374,7 @@ export function StepPayment({ bookingData, slug, prepaymentPercent = 0, onBack }
                   />
                   <div
                     className={`size-5 rounded border-2 flex items-center justify-center shrink-0 ${
-                      checked ? "border-[#1a56db] bg-[#1a56db]" : "border-gray-300"
+                      checked ? "border-[#1b4332] bg-[#1b4332]" : "border-gray-300"
                     }`}
                   >
                     {checked && (
@@ -400,7 +400,7 @@ export function StepPayment({ bookingData, slug, prepaymentPercent = 0, onBack }
       {/* Promo Code */}
       <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-4">
         <div className="flex items-center gap-2">
-          <Tag className="size-5 text-[#1a56db]" />
+          <Tag className="size-5 text-[#1b4332]" />
           <h3 className="text-lg font-semibold text-gray-900">Промокод</h3>
         </div>
 
@@ -424,7 +424,7 @@ export function StepPayment({ bookingData, slug, prepaymentPercent = 0, onBack }
               onChange={e => { setPromoCode(e.target.value.toUpperCase()); setPromoError(null) }}
               onKeyDown={e => e.key === "Enter" && handleApplyPromo()}
               placeholder="Введите промокод"
-              className="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#1a56db] focus:border-transparent uppercase"
+              className="flex-1 border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2d6a4f] focus:border-transparent uppercase"
             />
             <Button
               type="button"
@@ -449,7 +449,7 @@ export function StepPayment({ bookingData, slug, prepaymentPercent = 0, onBack }
         <div className="space-y-3">
           <label
             className={`flex items-center gap-4 p-4 rounded-lg border-2 cursor-pointer transition-all ${
-              earlyCheckIn ? "border-[#1a56db] bg-blue-50" : "border-gray-200 hover:border-gray-300"
+              earlyCheckIn ? "border-[#1b4332] bg-[#1b4332]/5" : "border-gray-200 hover:border-gray-300"
             }`}
           >
             <input
@@ -460,7 +460,7 @@ export function StepPayment({ bookingData, slug, prepaymentPercent = 0, onBack }
             />
             <div
               className={`size-5 rounded border-2 flex items-center justify-center shrink-0 ${
-                earlyCheckIn ? "border-[#1a56db] bg-[#1a56db]" : "border-gray-300"
+                earlyCheckIn ? "border-[#1b4332] bg-[#1b4332]" : "border-gray-300"
               }`}
             >
               {earlyCheckIn && (
@@ -478,7 +478,7 @@ export function StepPayment({ bookingData, slug, prepaymentPercent = 0, onBack }
 
           <label
             className={`flex items-center gap-4 p-4 rounded-lg border-2 cursor-pointer transition-all ${
-              lateCheckOut ? "border-[#1a56db] bg-blue-50" : "border-gray-200 hover:border-gray-300"
+              lateCheckOut ? "border-[#1b4332] bg-[#1b4332]/5" : "border-gray-200 hover:border-gray-300"
             }`}
           >
             <input
@@ -489,7 +489,7 @@ export function StepPayment({ bookingData, slug, prepaymentPercent = 0, onBack }
             />
             <div
               className={`size-5 rounded border-2 flex items-center justify-center shrink-0 ${
-                lateCheckOut ? "border-[#1a56db] bg-[#1a56db]" : "border-gray-300"
+                lateCheckOut ? "border-[#1b4332] bg-[#1b4332]" : "border-gray-300"
               }`}
             >
               {lateCheckOut && (
@@ -514,7 +514,7 @@ export function StepPayment({ bookingData, slug, prepaymentPercent = 0, onBack }
           <label
             className={`flex items-center gap-4 p-4 rounded-lg border-2 cursor-pointer transition-all ${
               paymentMethod === "on_arrival"
-                ? "border-[#1a56db] bg-blue-50"
+                ? "border-[#1b4332] bg-[#1b4332]/5"
                 : "border-gray-200 hover:border-gray-300"
             }`}
           >
@@ -529,12 +529,12 @@ export function StepPayment({ bookingData, slug, prepaymentPercent = 0, onBack }
             <div
               className={`size-5 rounded-full border-2 flex items-center justify-center shrink-0 ${
                 paymentMethod === "on_arrival"
-                  ? "border-[#1a56db]"
+                  ? "border-[#1b4332]"
                   : "border-gray-300"
               }`}
             >
               {paymentMethod === "on_arrival" && (
-                <div className="size-2.5 rounded-full bg-[#1a56db]" />
+                <div className="size-2.5 rounded-full bg-[#1b4332]" />
               )}
             </div>
             <div>
@@ -546,7 +546,7 @@ export function StepPayment({ bookingData, slug, prepaymentPercent = 0, onBack }
           <label
             className={`flex items-center gap-4 p-4 rounded-lg border-2 cursor-pointer transition-all ${
               paymentMethod === "online"
-                ? "border-[#1a56db] bg-blue-50"
+                ? "border-[#1b4332] bg-[#1b4332]/5"
                 : "border-gray-200 hover:border-gray-300"
             }`}
           >
@@ -561,19 +561,19 @@ export function StepPayment({ bookingData, slug, prepaymentPercent = 0, onBack }
             <div
               className={`size-5 rounded-full border-2 flex items-center justify-center shrink-0 ${
                 paymentMethod === "online"
-                  ? "border-[#1a56db]"
+                  ? "border-[#1b4332]"
                   : "border-gray-300"
               }`}
             >
               {paymentMethod === "online" && (
-                <div className="size-2.5 rounded-full bg-[#1a56db]" />
+                <div className="size-2.5 rounded-full bg-[#1b4332]" />
               )}
             </div>
             <div>
               <p className="font-medium text-gray-900">Оплатить онлайн</p>
               <p className="text-sm text-gray-500">Банковской картой онлайн через Stripe</p>
             </div>
-            <CreditCard className="size-5 text-[#1a56db] ml-auto shrink-0" />
+            <CreditCard className="size-5 text-[#1b4332] ml-auto shrink-0" />
           </label>
         </div>
       </div>
@@ -592,7 +592,7 @@ export function StepPayment({ bookingData, slug, prepaymentPercent = 0, onBack }
         <Button
           onClick={handleConfirm}
           disabled={loading}
-          className="flex-1 bg-[#1a56db] text-white hover:bg-[#1e429f]"
+          className="flex-1 bg-[#1b4332] text-white hover:bg-[#2d6a4f]"
         >
           {loading ? (
             <>

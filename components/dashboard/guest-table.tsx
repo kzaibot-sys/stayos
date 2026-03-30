@@ -8,7 +8,7 @@ import { EmptyState } from "@/components/shared/empty-state"
 
 const TAG_COLORS: Record<string, string> = {
   VIP: "bg-purple-100 text-purple-700",
-  Постоянный: "bg-blue-100 text-blue-700",
+  Постоянный: "bg-[#1b4332]/10 text-[#1b4332]",
   Проблемный: "bg-red-100 text-red-700",
   Корпоративный: "bg-orange-100 text-orange-700",
 }

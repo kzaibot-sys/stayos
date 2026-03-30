@@ -98,7 +98,7 @@ export function GuestPreArrivalForm({
             <p className="text-green-700 font-medium">Спасибо! Ваша информация сохранена.</p>
             <button
               onClick={() => setSaved(false)}
-              className="text-sm text-[#1a56db] mt-2 hover:underline"
+              className="text-sm text-[#1b4332] mt-2 hover:underline"
             >
               Изменить
             </button>
@@ -114,7 +114,7 @@ export function GuestPreArrivalForm({
                 type="time"
                 value={arrivalTime}
                 onChange={(e) => setArrivalTime(e.target.value)}
-                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2d6a4f]"
               />
             </div>
             <div>
@@ -125,7 +125,7 @@ export function GuestPreArrivalForm({
               <select
                 value={transport}
                 onChange={(e) => setTransport(e.target.value)}
-                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2d6a4f]"
               >
                 <option value="">Выберите...</option>
                 <option value="own_car">На своём автомобиле</option>
@@ -146,13 +146,13 @@ export function GuestPreArrivalForm({
                 onChange={(e) => setRequests(e.target.value)}
                 rows={3}
                 placeholder="Любые особые пожелания к заезду..."
-                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#2d6a4f] resize-none"
               />
             </div>
             <button
               type="submit"
               disabled={saving}
-              className="w-full flex items-center justify-center gap-2 bg-[#1a56db] hover:bg-[#1e429f] text-white font-medium px-4 py-2.5 rounded-lg transition-colors disabled:opacity-60"
+              className="w-full flex items-center justify-center gap-2 bg-[#1b4332] hover:bg-[#2d6a4f] text-white font-medium px-4 py-2.5 rounded-lg transition-colors disabled:opacity-60"
             >
               {saving && <Loader2 className="size-4 animate-spin" />}
               Сохранить информацию

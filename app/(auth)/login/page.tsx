@@ -45,7 +45,7 @@ export default function LoginPage() {
       <div className="w-full max-w-md mx-auto mt-20">
         {/* Logo */}
         <div className="flex items-center justify-center gap-2 mb-8">
-          <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-[#1a56db]">
+          <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-[#1b4332]">
             <BedDouble className="w-6 h-6 text-white" />
           </div>
           <span className="text-2xl font-bold text-foreground font-heading">StayOS</span>
@@ -75,7 +75,7 @@ export default function LoginPage() {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                   autoComplete="email"
-                  className="border-border focus:border-[#1a56db] focus:ring-[#1a56db]"
+                  className="border-border focus:border-[#1b4332] focus:ring-[#1b4332]"
                 />
               </div>
 
@@ -91,13 +91,13 @@ export default function LoginPage() {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   autoComplete="current-password"
-                  className="border-border focus:border-[#1a56db] focus:ring-[#1a56db]"
+                  className="border-border focus:border-[#1b4332] focus:ring-[#1b4332]"
                 />
               </div>
 
               <Button
                 type="submit"
-                className="w-full bg-[#1a56db] hover:bg-[#1648c0] text-white font-medium h-11 mt-2"
+                className="w-full bg-[#1b4332] hover:bg-[#2d6a4f] text-white font-medium h-11 mt-2"
                 disabled={isLoading}
               >
                 {isLoading ? (
@@ -115,7 +115,7 @@ export default function LoginPage() {
               Нет аккаунта?{" "}
               <Link
                 href="/register"
-                className="text-[#1a56db] font-medium hover:underline"
+                className="text-[#1b4332] font-medium hover:underline"
               >
                 Зарегистрироваться
               </Link>

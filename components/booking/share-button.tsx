@@ -20,7 +20,7 @@ export function ShareButton() {
       onClick={handleShare}
       className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
     >
-      <Share2 className="size-4 text-[#1a56db]" />
+      <Share2 className="size-4 text-[#1b4332]" />
       Поделиться бронью
     </button>
   )
