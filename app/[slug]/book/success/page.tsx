@@ -3,7 +3,6 @@ import Link from "next/link"
 import { format } from "date-fns"
 import { ru } from "date-fns/locale/ru"
 import {
-  CheckCircle2,
   BedDouble,
   CalendarDays,
   User,
@@ -11,7 +10,9 @@ import {
   Mail,
   MapPin,
   Clock,
+  CalendarPlus,
 } from "lucide-react"
+import { ShareButton } from "@/components/booking/share-button"
 
 function formatPrice(price: number): string {
   return new Intl.NumberFormat("ru-RU").format(price) + " ₸"
@@ -23,6 +24,31 @@ function formatDate(date: Date): string {
   } catch {
     return date.toLocaleDateString()
   }
+}
+
+function buildGoogleCalendarLink({
+  title,
+  details,
+  location,
+  startDate,
+  endDate,
+}: {
+  title: string
+  details: string
+  location: string
+  startDate: Date
+  endDate: Date
+}): string {
+  const fmt = (d: Date) =>
+    d.toISOString().replace(/-|:|\.\d{3}/g, "").slice(0, 8)
+  const params = new URLSearchParams({
+    action: "TEMPLATE",
+    text: title,
+    details,
+    location,
+    dates: `${fmt(startDate)}/${fmt(endDate)}`,
+  })
+  return `https://calendar.google.com/calendar/render?${params.toString()}`
 }
 
 export default async function BookingSuccessPage({
@@ -47,6 +73,16 @@ export default async function BookingSuccessPage({
     })
   }
 
+  const calendarLink = booking
+    ? buildGoogleCalendarLink({
+        title: `Проживание: ${booking.hotel.name}`,
+        details: `Бронь №${booking.bookingNumber}\nНомер: ${booking.room.name}\nГость: ${booking.guestFirstName} ${booking.guestLastName}`,
+        location: booking.hotel.address ?? booking.hotel.name,
+        startDate: booking.checkIn,
+        endDate: booking.checkOut,
+      })
+    : null
+
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       {/* Header */}
@@ -64,18 +100,54 @@ export default async function BookingSuccessPage({
 
       <main className="flex-1 py-12 px-4">
         <div className="max-w-2xl mx-auto space-y-6">
-          {/* Success header */}
+          {/* Animated success header */}
           <div className="text-center space-y-4">
             <div className="flex justify-center">
-              <CheckCircle2 className="size-20 text-green-500" />
+              <div className="relative">
+                {/* Animated ring */}
+                <div className="size-24 rounded-full bg-green-100 flex items-center justify-center animate-[ping_1s_ease-in-out_1]" />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="size-24 rounded-full bg-green-100 flex items-center justify-center">
+                    <svg
+                      className="size-12 text-green-500"
+                      viewBox="0 0 52 52"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <circle
+                        cx="26"
+                        cy="26"
+                        r="25"
+                        stroke="currentColor"
+                        strokeWidth="2"
+                        className="text-green-200"
+                      />
+                      <path
+                        d="M14 27L22 35L38 18"
+                        stroke="currentColor"
+                        strokeWidth="3"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        style={{
+                          strokeDasharray: 40,
+                          strokeDashoffset: 0,
+                        }}
+                      />
+                    </svg>
+                  </div>
+                </div>
+              </div>
             </div>
             <h1 className="text-3xl font-bold text-gray-900">
               Бронирование подтверждено!
             </h1>
             {bookingNumber && (
-              <p className="text-2xl font-bold text-[#1a56db]">
-                #{bookingNumber}
-              </p>
+              <div className="inline-flex items-center gap-2 bg-blue-50 border border-blue-100 rounded-full px-5 py-2">
+                <span className="text-sm text-gray-500">Номер брони:</span>
+                <span className="text-lg font-bold text-[#1a56db] font-mono">
+                  #{bookingNumber}
+                </span>
+              </div>
             )}
             <p className="text-gray-500 max-w-md mx-auto">
               Ваше бронирование успешно оформлено. Ждём вас!
@@ -156,6 +228,22 @@ export default async function BookingSuccessPage({
                 </div>
               </div>
 
+              {/* Action buttons */}
+              <div className="flex flex-col sm:flex-row gap-3">
+                {calendarLink && (
+                  <a
+                    href={calendarLink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 inline-flex items-center justify-center gap-2 rounded-xl border border-gray-200 bg-white px-4 py-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                  >
+                    <CalendarPlus className="size-4 text-[#1a56db]" />
+                    Добавить в Google Calendar
+                  </a>
+                )}
+                <ShareButton />
+              </div>
+
               {/* Check-in info */}
               <div className="bg-blue-50 rounded-xl border border-blue-100 p-6 space-y-4">
                 <h2 className="text-lg font-semibold text-gray-900">
@@ -172,7 +260,14 @@ export default async function BookingSuccessPage({
                   {booking.hotel.address && (
                     <div className="flex items-start gap-3 text-sm text-gray-700">
                       <MapPin className="size-4 text-[#1a56db] shrink-0 mt-0.5" />
-                      <span>{booking.hotel.address}</span>
+                      <a
+                        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(booking.hotel.address)}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="hover:text-[#1a56db] hover:underline"
+                      >
+                        {booking.hotel.address}
+                      </a>
                     </div>
                   )}
                   {booking.hotel.phone && (

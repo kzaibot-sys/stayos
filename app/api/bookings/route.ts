@@ -46,6 +46,7 @@ export async function GET(req: Request) {
   const dateTo = searchParams.get("dateTo")
   const roomId = searchParams.get("roomId")
   const source = searchParams.get("source")
+  const search = searchParams.get("search")
   const page = parseInt(searchParams.get("page") ?? "1", 10)
   const limit = parseInt(searchParams.get("limit") ?? "20", 10)
 
@@ -64,6 +65,16 @@ export async function GET(req: Request) {
     where.checkIn = {}
     if (dateFrom) where.checkIn.gte = new Date(dateFrom)
     if (dateTo) where.checkIn.lte = new Date(dateTo)
+  }
+  if (search && search.trim()) {
+    const q = search.trim()
+    where.OR = [
+      { bookingNumber: { contains: q, mode: "insensitive" } },
+      { guestFirstName: { contains: q, mode: "insensitive" } },
+      { guestLastName: { contains: q, mode: "insensitive" } },
+      { guestEmail: { contains: q, mode: "insensitive" } },
+      { guestPhone: { contains: q, mode: "insensitive" } },
+    ]
   }
 
   const skip = (page - 1) * limit

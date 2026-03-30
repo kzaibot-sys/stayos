@@ -1,5 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card"
-import { LucideIcon } from "lucide-react"
+import { LucideIcon, TrendingUp, TrendingDown, Minus } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 interface StatsCardProps {
@@ -30,15 +30,30 @@ export function StatsCard({
             <p className="text-sm text-muted-foreground font-medium">{title}</p>
             <p className="text-3xl font-bold text-gray-900 mt-1">{value}</p>
             {trend && (
-              <p
-                className={cn(
-                  "text-xs mt-1",
-                  trend.value >= 0 ? "text-green-600" : "text-red-500"
+              <div className="flex items-center gap-1 mt-1.5">
+                {trend.value > 0 ? (
+                  <>
+                    <TrendingUp className="size-3.5 text-green-600" />
+                    <p className="text-xs text-green-600 font-medium">
+                      ↑ {trend.value}% {trend.label}
+                    </p>
+                  </>
+                ) : trend.value < 0 ? (
+                  <>
+                    <TrendingDown className="size-3.5 text-red-500" />
+                    <p className="text-xs text-red-500 font-medium">
+                      ↓ {Math.abs(trend.value)}% {trend.label}
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <Minus className="size-3.5 text-gray-400" />
+                    <p className="text-xs text-gray-400 font-medium">
+                      → 0% {trend.label}
+                    </p>
+                  </>
                 )}
-              >
-                {trend.value >= 0 ? "+" : ""}
-                {trend.value}% {trend.label}
-              </p>
+              </div>
             )}
           </div>
           <div

@@ -273,10 +273,15 @@ export function StepDates({
                       {roomTypeLabels[room.type] ?? room.type}
                     </Badge>
                   </div>
-                  <div className="flex items-center gap-3 text-sm text-gray-500">
+                  <div className="flex flex-wrap items-center gap-3 text-sm text-gray-500 mt-1">
                     <span className="flex items-center gap-1">
                       <Users className="size-3.5" />
-                      До {room.capacity} гостей
+                      До {room.capacity}{" "}
+                      {room.capacity === 1
+                        ? "гостя"
+                        : room.capacity < 5
+                        ? "гостей"
+                        : "гостей"}
                     </span>
                     {room.bedType && (
                       <span className="flex items-center gap-1">
@@ -285,8 +290,30 @@ export function StepDates({
                       </span>
                     )}
                   </div>
+                  {room.amenities && room.amenities.length > 0 && (
+                    <div className="flex flex-wrap gap-1.5 mt-2">
+                      {room.amenities.slice(0, 3).map((amenity) => (
+                        <span
+                          key={amenity}
+                          className="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs text-gray-600"
+                        >
+                          {amenity}
+                        </span>
+                      ))}
+                      {room.amenities.length > 3 && (
+                        <span className="inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs text-gray-500">
+                          +{room.amenities.length - 3}
+                        </span>
+                      )}
+                    </div>
+                  )}
                 </div>
 
+                {room.description && (
+                  <p className="text-xs text-gray-500 mt-1 line-clamp-2">
+                    {room.description}
+                  </p>
+                )}
                 <div className="flex items-end justify-between gap-4">
                   <div>
                     <p className="text-xl font-bold text-gray-900">

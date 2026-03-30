@@ -3,7 +3,7 @@
 import { useRouter, useSearchParams } from "next/navigation"
 import { useCallback, useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
-import { X } from "lucide-react"
+import { X, Search } from "lucide-react"
 
 interface Room {
   id: string
@@ -36,24 +36,31 @@ export function BookingFilters({ rooms }: BookingFiltersProps) {
   const router = useRouter()
   const searchParams = useSearchParams()
 
+  const [search, setSearch] = useState(searchParams.get("search") ?? "")
   const [status, setStatus] = useState(searchParams.get("status") ?? "ALL")
   const [dateFrom, setDateFrom] = useState(searchParams.get("dateFrom") ?? "")
   const [dateTo, setDateTo] = useState(searchParams.get("dateTo") ?? "")
   const [roomId, setRoomId] = useState(searchParams.get("roomId") ?? "ALL")
   const [source, setSource] = useState(searchParams.get("source") ?? "ALL")
 
-  const applyFilters = useCallback(() => {
+  const buildParams = useCallback(() => {
     const params = new URLSearchParams()
+    if (search.trim()) params.set("search", search.trim())
     if (status !== "ALL") params.set("status", status)
     if (dateFrom) params.set("dateFrom", dateFrom)
     if (dateTo) params.set("dateTo", dateTo)
     if (roomId !== "ALL") params.set("roomId", roomId)
     if (source !== "ALL") params.set("source", source)
     params.set("page", "1")
-    router.push(`/dashboard/bookings?${params.toString()}`)
-  }, [status, dateFrom, dateTo, roomId, source, router])
+    return params
+  }, [search, status, dateFrom, dateTo, roomId, source])
+
+  const applyFilters = useCallback(() => {
+    router.push(`/dashboard/bookings?${buildParams().toString()}`)
+  }, [buildParams, router])
 
   const handleReset = () => {
+    setSearch("")
     setStatus("ALL")
     setDateFrom("")
     setDateTo("")
@@ -65,6 +72,7 @@ export function BookingFilters({ rooms }: BookingFiltersProps) {
   // Auto-apply filters when selects change
   useEffect(() => {
     const params = new URLSearchParams()
+    if (search.trim()) params.set("search", search.trim())
     if (status !== "ALL") params.set("status", status)
     if (dateFrom) params.set("dateFrom", dateFrom)
     if (dateTo) params.set("dateTo", dateTo)
@@ -76,6 +84,7 @@ export function BookingFilters({ rooms }: BookingFiltersProps) {
   }, [status, roomId, source])
 
   const hasFilters =
+    search.trim() !== "" ||
     status !== "ALL" ||
     dateFrom !== "" ||
     dateTo !== "" ||
@@ -83,7 +92,22 @@ export function BookingFilters({ rooms }: BookingFiltersProps) {
     source !== "ALL"
 
   return (
-    <div className="flex flex-wrap items-end gap-3 mb-6">
+    <div className="space-y-3 mb-6">
+      {/* Search input */}
+      <div className="relative">
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-gray-400 pointer-events-none" />
+        <input
+          type="text"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && applyFilters()}
+          onBlur={applyFilters}
+          placeholder="Поиск по номеру брони, имени гостя, email, телефону..."
+          className="w-full h-10 rounded-lg border border-gray-200 bg-white pl-9 pr-4 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
+
+      <div className="flex flex-wrap items-end gap-3">
       {/* Status filter */}
       <div className="flex flex-col gap-1">
         <label className="text-xs text-gray-500 font-medium">Статус</label>
@@ -170,6 +194,7 @@ export function BookingFilters({ rooms }: BookingFiltersProps) {
           Сбросить
         </Button>
       )}
+      </div>
     </div>
   )
 }

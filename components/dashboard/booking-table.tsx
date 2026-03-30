@@ -146,7 +146,101 @@ export function BookingTable({ bookings, total, page, limit }: BookingTableProps
 
   return (
     <>
-      <div className="rounded-xl border border-gray-200 bg-white overflow-hidden">
+      {/* Mobile card layout */}
+      <div className="md:hidden space-y-3">
+        {bookings.map((booking) => {
+          const statusCfg = bookingStatusConfig[booking.status] ?? bookingStatusConfig["PENDING"]
+          const isLoading = isUpdating === booking.id
+
+          return (
+            <div
+              key={booking.id}
+              className="bg-white rounded-xl border border-gray-200 p-4 space-y-3 shadow-sm"
+            >
+              <div className="flex items-start justify-between gap-2">
+                <div>
+                  <Link
+                    href={`/dashboard/bookings/${booking.id}`}
+                    className="font-mono text-xs font-medium text-blue-600 hover:text-blue-700"
+                  >
+                    {booking.bookingNumber}
+                  </Link>
+                  <p className="font-semibold text-gray-900 text-sm mt-0.5">
+                    {booking.guestFirstName} {booking.guestLastName}
+                  </p>
+                  {booking.guestPhone && (
+                    <p className="text-xs text-gray-400">{booking.guestPhone}</p>
+                  )}
+                </div>
+                <span
+                  className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium whitespace-nowrap shrink-0 ${statusCfg.className}`}
+                >
+                  {statusCfg.label}
+                </span>
+              </div>
+
+              <div className="flex items-center gap-2 text-xs text-gray-600">
+                <span className="bg-gray-100 rounded px-2 py-0.5 font-medium">
+                  {booking.room.name}
+                  {booking.room.roomNumber ? ` #${booking.room.roomNumber}` : ""}
+                </span>
+                <span className="text-gray-400">•</span>
+                <span>{formatDate(booking.checkIn)} — {formatDate(booking.checkOut)}</span>
+                <span className="text-gray-400">•</span>
+                <span>{booking.nights} н.</span>
+              </div>
+
+              <div className="flex items-center justify-between pt-1 border-t border-gray-100">
+                <span className="font-bold text-gray-900 text-sm">
+                  {formatPrice(booking.totalPrice)}
+                </span>
+                <Link
+                  href={`/dashboard/bookings/${booking.id}`}
+                  className="text-xs text-blue-600 hover:text-blue-700 font-medium"
+                >
+                  Подробнее →
+                </Link>
+              </div>
+            </div>
+          )
+        })}
+
+        {/* Pagination for mobile */}
+        {Math.ceil(total / limit) > 1 && (
+          <div className="flex items-center justify-between pt-2">
+            <Button
+              variant="outline"
+              size="sm"
+              disabled={page <= 1}
+              onClick={() => {
+                const params = new URLSearchParams(window.location.search)
+                params.set("page", String(page - 1))
+                router.push(`/dashboard/bookings?${params.toString()}`)
+              }}
+            >
+              Назад
+            </Button>
+            <span className="text-sm text-gray-500">
+              {page} / {Math.ceil(total / limit)}
+            </span>
+            <Button
+              variant="outline"
+              size="sm"
+              disabled={page >= Math.ceil(total / limit)}
+              onClick={() => {
+                const params = new URLSearchParams(window.location.search)
+                params.set("page", String(page + 1))
+                router.push(`/dashboard/bookings?${params.toString()}`)
+              }}
+            >
+              Вперёд
+            </Button>
+          </div>
+        )}
+      </div>
+
+      {/* Desktop table layout */}
+      <div className="hidden md:block rounded-xl border border-gray-200 bg-white overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>

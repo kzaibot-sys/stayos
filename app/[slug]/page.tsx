@@ -2,7 +2,7 @@ import { prisma } from "@/lib/prisma"
 import { notFound } from "next/navigation"
 import { Metadata } from "next"
 import Link from "next/link"
-import { BedDouble, Mail, Phone, MapPin } from "lucide-react"
+import { BedDouble, Mail, Phone, MapPin, MessageCircle, Send } from "lucide-react"
 import { HotelHero } from "@/components/hotel-page/hotel-hero"
 import { AmenitiesList } from "@/components/hotel-page/amenities-list"
 import { RoomsSection } from "@/components/hotel-page/rooms-section"
@@ -48,6 +48,16 @@ export default async function HotelPage({
     hotelAmenities = []
   }
 
+  // Parse gallery URLs from JSON string
+  let galleryUrls: string[] = []
+  try {
+    if ((hotel as any).galleryUrls) {
+      galleryUrls = JSON.parse((hotel as any).galleryUrls)
+    }
+  } catch {
+    galleryUrls = []
+  }
+
   // Parse room amenities and photos for each room
   const rooms = hotel.rooms.map((room) => {
     let amenities: string[] = []
@@ -67,6 +77,14 @@ export default async function HotelPage({
 
   const hasContacts = hotel.phone || hotel.email || hotel.address
 
+  // Build WhatsApp and Telegram links
+  const whatsappLink = hotel.phone
+    ? `https://wa.me/${hotel.phone.replace(/\D/g, "")}`
+    : null
+  const telegramLink = hotel.phone
+    ? `https://t.me/${hotel.phone.replace(/\D/g, "")}`
+    : null
+
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       {/* Hero */}
@@ -75,6 +93,40 @@ export default async function HotelPage({
       {/* Main content */}
       <main className="flex-1">
         <div className="max-w-6xl mx-auto px-4 py-12 space-y-14">
+
+          {/* About / Description section */}
+          {hotel.description && (
+            <section>
+              <h2 className="text-2xl font-heading font-bold text-gray-900 mb-4">
+                Об отеле
+              </h2>
+              <p className="text-gray-700 leading-relaxed max-w-3xl text-base">
+                {hotel.description}
+              </p>
+            </section>
+          )}
+
+          {/* Gallery section */}
+          {galleryUrls.length > 0 && (
+            <section>
+              <h2 className="text-2xl font-heading font-bold text-gray-900 mb-6">
+                Галерея
+              </h2>
+              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                {galleryUrls.slice(0, 6).map((url, i) => (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    key={i}
+                    src={url}
+                    alt={`${hotel.name} — фото ${i + 1}`}
+                    className={`w-full object-cover rounded-xl ${
+                      i === 0 ? "aspect-video col-span-2 md:col-span-1 md:row-span-2" : "aspect-video"
+                    }`}
+                  />
+                ))}
+              </div>
+            </section>
+          )}
 
           {/* Amenities section */}
           {hotelAmenities.length > 0 && (
@@ -98,6 +150,32 @@ export default async function HotelPage({
             )}
           </section>
 
+          {/* Map section */}
+          {hotel.address && (
+            <section>
+              <h2 className="text-2xl font-heading font-bold text-gray-900 mb-6">
+                Расположение
+              </h2>
+              <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+                <div className="p-5 flex items-start gap-3 border-b border-gray-100">
+                  <MapPin className="size-5 text-[#1a56db] shrink-0 mt-0.5" />
+                  <p className="text-gray-700">{hotel.address}</p>
+                </div>
+                <div className="w-full h-64 bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center">
+                  <a
+                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(hotel.address)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex flex-col items-center gap-2 text-[#1a56db] hover:underline"
+                  >
+                    <MapPin className="size-10 text-[#1a56db]/40" />
+                    <span className="text-sm font-medium">Открыть в Google Maps</span>
+                  </a>
+                </div>
+              </div>
+            </section>
+          )}
+
           {/* Contacts section */}
           {hasContacts && (
             <section>
@@ -110,7 +188,7 @@ export default async function HotelPage({
                     <Phone className="size-5 text-[#1a56db] shrink-0" />
                     <a
                       href={`tel:${hotel.phone}`}
-                      className="hover:text-[#1a56db] transition-colors"
+                      className="hover:text-[#1a56db] transition-colors font-medium"
                     >
                       {hotel.phone}
                     </a>
@@ -131,6 +209,34 @@ export default async function HotelPage({
                   <div className="flex items-start gap-3 text-gray-700">
                     <MapPin className="size-5 text-[#1a56db] shrink-0 mt-0.5" />
                     <span>{hotel.address}</span>
+                  </div>
+                )}
+
+                {/* WhatsApp / Telegram buttons */}
+                {hotel.phone && (
+                  <div className="flex flex-wrap gap-3 pt-2">
+                    {whatsappLink && (
+                      <a
+                        href={whatsappLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 rounded-lg bg-green-500 hover:bg-green-600 text-white px-4 py-2.5 text-sm font-medium transition-colors"
+                      >
+                        <MessageCircle className="size-4" />
+                        WhatsApp
+                      </a>
+                    )}
+                    {telegramLink && (
+                      <a
+                        href={`https://t.me/+${hotel.phone.replace(/\D/g, "")}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 rounded-lg bg-[#2AABEE] hover:bg-[#229ED9] text-white px-4 py-2.5 text-sm font-medium transition-colors"
+                      >
+                        <Send className="size-4" />
+                        Telegram
+                      </a>
+                    )}
                   </div>
                 )}
               </div>
