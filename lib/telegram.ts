@@ -1,3 +1,10 @@
+export async function sendWhatsAppNotification(phone: string, message: string): Promise<boolean> {
+  // Placeholder — would use WhatsApp Business API
+  // For now, generate WhatsApp link
+  console.log(`[WhatsApp] Would send to ${phone}: ${message}`)
+  return false
+}
+
 export async function sendTelegramNotification(
   botToken: string,
   chatId: string,

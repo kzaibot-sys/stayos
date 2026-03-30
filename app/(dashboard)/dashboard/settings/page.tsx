@@ -12,6 +12,7 @@ import {
   Loader2,
   CheckCircle,
   AlertCircle,
+  Download,
 } from "lucide-react"
 
 const AMENITIES_LIST = [
@@ -484,7 +485,15 @@ export default function SettingsPage() {
           </div>
         )}
 
-        <div className="flex justify-end">
+        <div className="flex items-center justify-between">
+          <a
+            href="/api/export?format=json"
+            download
+            className="flex items-center gap-2 border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium px-4 py-2.5 rounded-lg transition-colors text-sm"
+          >
+            <Download className="size-4" />
+            Экспорт данных (JSON)
+          </a>
           <button
             type="submit"
             disabled={saving}

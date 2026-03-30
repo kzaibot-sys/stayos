@@ -14,6 +14,8 @@ import {
   ChevronUp,
   Loader2,
   Send,
+  MessageCircle,
+  Smartphone,
 } from "lucide-react"
 
 const settingsTabs = [
@@ -286,6 +288,54 @@ export default function IntegrationsPage() {
 
           <div className="bg-amber-50 border border-amber-200 rounded-lg px-4 py-3 text-sm text-amber-700">
             Функция Stripe Connect находится в разработке. Скоро будет доступна.
+          </div>
+        </section>
+
+        {/* WhatsApp */}
+        <section className="bg-white rounded-xl border border-gray-200 p-6 space-y-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="size-10 rounded-lg bg-green-100 flex items-center justify-center">
+                <MessageCircle className="size-5 text-green-600" />
+              </div>
+              <div>
+                <h2 className="text-base font-semibold text-gray-900">WhatsApp</h2>
+                <p className="text-sm text-gray-500">Уведомления гостей через WhatsApp Business</p>
+              </div>
+            </div>
+            <span className="inline-flex items-center gap-1 bg-amber-100 text-amber-700 text-xs font-medium px-2.5 py-1 rounded-full border border-amber-200">
+              Скоро
+            </span>
+          </div>
+          <p className="text-sm text-gray-600">
+            Автоматические уведомления гостям через WhatsApp: подтверждение брони, напоминание о заезде, счёт.
+          </p>
+          <div className="bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-sm text-gray-500">
+            Интеграция с WhatsApp Business API находится в разработке.
+          </div>
+        </section>
+
+        {/* SMS */}
+        <section className="bg-white rounded-xl border border-gray-200 p-6 space-y-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="size-10 rounded-lg bg-indigo-100 flex items-center justify-center">
+                <Smartphone className="size-5 text-indigo-600" />
+              </div>
+              <div>
+                <h2 className="text-base font-semibold text-gray-900">SMS-уведомления</h2>
+                <p className="text-sm text-gray-500">Отправка SMS гостям при бронировании</p>
+              </div>
+            </div>
+            <span className="inline-flex items-center gap-1 bg-amber-100 text-amber-700 text-xs font-medium px-2.5 py-1 rounded-full border border-amber-200">
+              Скоро
+            </span>
+          </div>
+          <p className="text-sm text-gray-600">
+            Автоматические SMS-уведомления гостям: подтверждение брони, напоминание о заезде, код доступа.
+          </p>
+          <div className="bg-gray-50 border border-gray-200 rounded-lg px-4 py-3 text-sm text-gray-500">
+            Интеграция с SMS-провайдерами находится в разработке.
           </div>
         </section>
 

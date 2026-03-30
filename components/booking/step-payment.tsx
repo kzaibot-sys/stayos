@@ -80,6 +80,12 @@ export function StepPayment({ bookingData, slug, prepaymentPercent = 0, onBack }
   const [paymentMethod, setPaymentMethod] = useState<"on_arrival" | "online">("on_arrival")
   const [loading, setLoading] = useState(false)
 
+  // Early check-in / Late check-out surcharges
+  const [earlyCheckIn, setEarlyCheckIn] = useState(false)
+  const [lateCheckOut, setLateCheckOut] = useState(false)
+  const EARLY_CHECKIN_PRICE = 3000
+  const LATE_CHECKOUT_PRICE = 3000
+
   // Promo code state
   const [promoCode, setPromoCode] = useState("")
   const [promoLoading, setPromoLoading] = useState(false)
@@ -110,7 +116,15 @@ export function StepPayment({ bookingData, slug, prepaymentPercent = 0, onBack }
     .filter(s => selectedExtras.has(s.id))
     .reduce((sum, s) => sum + (s.perNight ? s.price * nights : s.price), 0)
 
-  const totalPrice = Math.max(0, subtotal - discountAmount) + extrasTotal
+  const surchargeTotal = (earlyCheckIn ? EARLY_CHECKIN_PRICE : 0) + (lateCheckOut ? LATE_CHECKOUT_PRICE : 0)
+
+  const totalPrice = Math.max(0, subtotal - discountAmount) + extrasTotal + surchargeTotal
+
+  // Multi-currency display (fixed rates)
+  const USD_RATE = 450
+  const EUR_RATE = 490
+  function toUSD(kzt: number) { return Math.round(kzt / USD_RATE) }
+  function toEUR(kzt: number) { return Math.round(kzt / EUR_RATE) }
 
   // Fetch extra services on mount
   useEffect(() => {
@@ -179,10 +193,14 @@ export function StepPayment({ bookingData, slug, prepaymentPercent = 0, onBack }
           guestPhone: bookingData.phone || undefined,
           adults: bookingData.adults,
           children: bookingData.children,
-          specialRequests: bookingData.specialRequests || undefined,
+          specialRequests: [
+            bookingData.specialRequests,
+            earlyCheckIn ? "Ранний заезд (до 10:00)" : "",
+            lateCheckOut ? "Поздний выезд (до 18:00)" : "",
+          ].filter(Boolean).join("; ") || undefined,
           promoCodeId: promoResult?.id,
           discount: discountAmount,
-          extrasTotal,
+          extrasTotal: extrasTotal + surchargeTotal,
           selectedExtras: Array.from(selectedExtras),
         }),
       })
@@ -300,9 +318,20 @@ export function StepPayment({ bookingData, slug, prepaymentPercent = 0, onBack }
               <span>{formatPrice(extrasTotal)}</span>
             </div>
           )}
+          {surchargeTotal > 0 && (
+            <div className="flex justify-between text-sm text-gray-600">
+              <span>Ранний заезд / Поздний выезд</span>
+              <span>{formatPrice(surchargeTotal)}</span>
+            </div>
+          )}
           <div className="flex justify-between font-semibold text-gray-900 text-base pt-1 border-t border-gray-100">
             <span>Итого</span>
-            <span className="text-[#1a56db]">{formatPrice(totalPrice)}</span>
+            <div className="text-right">
+              <span className="text-[#1a56db]">{formatPrice(totalPrice)}</span>
+              <p className="text-xs text-gray-400 font-normal">
+                ≈ ${toUSD(totalPrice)} USD · €{toEUR(totalPrice)} EUR
+              </p>
+            </div>
           </div>
           {prepaymentPercent > 0 && (
             <>
@@ -412,6 +441,70 @@ export function StepPayment({ bookingData, slug, prepaymentPercent = 0, onBack }
         {promoError && (
           <p className="text-sm text-red-600">{promoError}</p>
         )}
+      </div>
+
+      {/* Early check-in / Late check-out */}
+      <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-4">
+        <h3 className="text-lg font-semibold text-gray-900">Дополнительные опции</h3>
+        <div className="space-y-3">
+          <label
+            className={`flex items-center gap-4 p-4 rounded-lg border-2 cursor-pointer transition-all ${
+              earlyCheckIn ? "border-[#1a56db] bg-blue-50" : "border-gray-200 hover:border-gray-300"
+            }`}
+          >
+            <input
+              type="checkbox"
+              checked={earlyCheckIn}
+              onChange={() => setEarlyCheckIn(!earlyCheckIn)}
+              className="sr-only"
+            />
+            <div
+              className={`size-5 rounded border-2 flex items-center justify-center shrink-0 ${
+                earlyCheckIn ? "border-[#1a56db] bg-[#1a56db]" : "border-gray-300"
+              }`}
+            >
+              {earlyCheckIn && (
+                <svg className="size-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+              )}
+            </div>
+            <div className="flex-1">
+              <p className="font-medium text-gray-900">Ранний заезд (до 10:00)</p>
+              <p className="text-xs text-gray-500">Заезд раньше стандартного времени</p>
+            </div>
+            <span className="font-medium text-gray-900 shrink-0">+{formatPrice(EARLY_CHECKIN_PRICE)}</span>
+          </label>
+
+          <label
+            className={`flex items-center gap-4 p-4 rounded-lg border-2 cursor-pointer transition-all ${
+              lateCheckOut ? "border-[#1a56db] bg-blue-50" : "border-gray-200 hover:border-gray-300"
+            }`}
+          >
+            <input
+              type="checkbox"
+              checked={lateCheckOut}
+              onChange={() => setLateCheckOut(!lateCheckOut)}
+              className="sr-only"
+            />
+            <div
+              className={`size-5 rounded border-2 flex items-center justify-center shrink-0 ${
+                lateCheckOut ? "border-[#1a56db] bg-[#1a56db]" : "border-gray-300"
+              }`}
+            >
+              {lateCheckOut && (
+                <svg className="size-3 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+              )}
+            </div>
+            <div className="flex-1">
+              <p className="font-medium text-gray-900">Поздний выезд (до 18:00)</p>
+              <p className="text-xs text-gray-500">Выезд позже стандартного времени</p>
+            </div>
+            <span className="font-medium text-gray-900 shrink-0">+{formatPrice(LATE_CHECKOUT_PRICE)}</span>
+          </label>
+        </div>
       </div>
 
       {/* Payment Method */}

@@ -2,11 +2,12 @@ import { prisma } from "@/lib/prisma"
 import { notFound } from "next/navigation"
 import { Metadata } from "next"
 import Link from "next/link"
-import { BedDouble, Mail, Phone, MapPin, MessageCircle, Send, Star } from "lucide-react"
+import { BedDouble, Mail, Phone, MapPin, MessageCircle, Send, Star, Tag, ExternalLink } from "lucide-react"
 import { HotelHero } from "@/components/hotel-page/hotel-hero"
 import { AmenitiesList } from "@/components/hotel-page/amenities-list"
 import { RoomsSection } from "@/components/hotel-page/rooms-section"
 import { PhotoGallery } from "@/components/hotel-page/photo-gallery"
+import { LanguageSwitcher } from "@/components/hotel-page/language-switcher"
 import { format } from "date-fns"
 import { ru } from "date-fns/locale"
 
@@ -56,6 +57,20 @@ export default async function HotelPage({
   })
 
   if (!hotel) notFound()
+
+  // Fetch active promo codes for promotions banner
+  const activePromos = await prisma.promoCode.findMany({
+    where: {
+      hotelId: hotel.id,
+      isActive: true,
+      OR: [
+        { validTo: null },
+        { validTo: { gte: new Date() } },
+      ],
+    },
+    orderBy: { createdAt: "desc" },
+    take: 3,
+  })
 
   // Parse hotel amenities from JSON string
   let hotelAmenities: string[] = []
@@ -131,6 +146,11 @@ export default async function HotelPage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
+      {/* Language switcher bar */}
+      <div className="absolute top-4 right-4 z-20">
+        <LanguageSwitcher />
+      </div>
+
       {/* Hero */}
       <HotelHero hotel={hotel} minPrice={minRoomPrice} />
 
@@ -167,6 +187,44 @@ export default async function HotelPage({
                 Удобства
               </h2>
               <AmenitiesList amenities={hotelAmenities} />
+            </section>
+          )}
+
+          {/* Promotions banner */}
+          {activePromos.length > 0 && (
+            <section>
+              <div className="bg-gradient-to-r from-amber-400 via-orange-400 to-red-400 rounded-2xl p-6 text-white relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent" />
+                <div className="relative z-10">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Tag className="size-5" />
+                    <span className="font-bold text-lg">Специальное предложение!</span>
+                  </div>
+                  <div className="space-y-2">
+                    {activePromos.map((promo) => (
+                      <div key={promo.id} className="flex flex-wrap items-center gap-3">
+                        <div>
+                          <p className="text-white/90 text-sm">
+                            {promo.discountType === "PERCENT"
+                              ? `Скидка ${promo.discountValue}% на бронирование`
+                              : `Скидка ${new Intl.NumberFormat("ru-RU").format(promo.discountValue)} ₸ на бронирование`
+                            }
+                          </p>
+                          <p className="font-semibold text-base">
+                            Используйте код:{" "}
+                            <span className="bg-white/20 rounded px-2 py-0.5 font-mono tracking-wider">
+                              {promo.code}
+                            </span>
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <p className="text-white/70 text-xs mt-3">
+                    Введите промокод на этапе оплаты при бронировании
+                  </p>
+                </div>
+              </div>
             </section>
           )}
 
@@ -236,16 +294,31 @@ export default async function HotelPage({
                   <MapPin className="size-5 text-[#1a56db] shrink-0 mt-0.5" />
                   <p className="text-gray-700">{hotel.address}</p>
                 </div>
-                <div className="w-full h-64 bg-gradient-to-br from-blue-50 to-indigo-50 flex items-center justify-center">
-                  <a
-                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(hotel.address)}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex flex-col items-center gap-2 text-[#1a56db] hover:underline"
-                  >
-                    <MapPin className="size-10 text-[#1a56db]/40" />
-                    <span className="text-sm font-medium">Открыть в Google Maps</span>
-                  </a>
+                <div className="w-full h-64 bg-gradient-to-br from-blue-50 via-indigo-50 to-sky-50 flex flex-col items-center justify-center gap-4 relative overflow-hidden">
+                  {/* Decorative grid lines */}
+                  <div className="absolute inset-0 opacity-10" style={{
+                    backgroundImage: "linear-gradient(#1a56db 1px, transparent 1px), linear-gradient(90deg, #1a56db 1px, transparent 1px)",
+                    backgroundSize: "40px 40px"
+                  }} />
+                  <div className="relative z-10 flex flex-col items-center gap-3">
+                    <div className="size-16 rounded-full bg-white/80 backdrop-blur shadow-lg flex items-center justify-center">
+                      <MapPin className="size-8 text-[#1a56db]" />
+                    </div>
+                    <div className="text-center">
+                      <p className="text-sm font-medium text-gray-700 mb-1">
+                        {hotel.address}{hotel.city ? `, ${hotel.city}` : ""}
+                      </p>
+                      <a
+                        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent((hotel.address || "") + (hotel.city ? " " + hotel.city : ""))}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 bg-[#1a56db] text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-[#1e429f] transition-colors shadow-sm"
+                      >
+                        <ExternalLink className="size-3.5" />
+                        Открыть в Google Maps
+                      </a>
+                    </div>
+                  </div>
                 </div>
               </div>
             </section>

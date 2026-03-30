@@ -4,6 +4,7 @@ import { useState } from "react"
 import { Sidebar } from "@/components/dashboard/sidebar"
 import { Topbar } from "@/components/dashboard/topbar"
 import { NotificationSound } from "@/components/dashboard/notification-sound"
+import { KeyboardShortcuts } from "@/components/dashboard/keyboard-shortcuts"
 import {
   Sheet,
   SheetContent,
@@ -44,6 +45,7 @@ export function DashboardShell({ user, hotelName, children }: DashboardShellProp
           {children}
         </main>
       </div>
+      <KeyboardShortcuts />
     </div>
   )
 }

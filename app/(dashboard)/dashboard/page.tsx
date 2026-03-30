@@ -22,6 +22,7 @@ import {
 } from "lucide-react"
 import { StatsCard } from "@/components/dashboard/stats-card"
 import { RecentBookings } from "@/components/dashboard/recent-bookings"
+import { WeatherWidget } from "@/components/dashboard/weather-widget"
 import Link from "next/link"
 
 export default async function DashboardPage() {
@@ -34,7 +35,7 @@ export default async function DashboardPage() {
 
   const hotel = await prisma.hotel.findUnique({
     where: { id: hotelId },
-    select: { name: true, address: true, phone: true },
+    select: { name: true, address: true, phone: true, city: true },
   })
 
   const today = new Date()
@@ -282,6 +283,11 @@ export default async function DashboardPage() {
           </span>
           <ArrowRight className="size-4 text-orange-500 ml-auto shrink-0" />
         </Link>
+      )}
+
+      {/* Weather widget */}
+      {hotel?.city && (
+        <WeatherWidget city={hotel.city} />
       )}
 
       {/* Quick actions */}
