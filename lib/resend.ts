@@ -1,4 +1,26 @@
 import { Resend } from 'resend'
+import {
+  bookingConfirmationHtml,
+  checkInReminderHtml,
+  bookingCancellationHtml,
+  checkOutThankYouHtml,
+  adminNewBookingHtml,
+  adminCancellationHtml,
+  welcomeHtml,
+  paymentReceiptHtml,
+} from './email-templates'
+
+function getResend(): Resend | null {
+  if (!process.env.RESEND_API_KEY) {
+    console.log('[Email] RESEND_API_KEY not set, skipping')
+    return null
+  }
+  return new Resend(process.env.RESEND_API_KEY)
+}
+
+const FROM = () => process.env.RESEND_FROM_EMAIL || 'StayOS <noreply@stayos.aibot.kz>'
+
+// ---- 1. Booking Confirmation (to guest) ----
 
 export async function sendBookingConfirmationEmail(to: string, data: {
   bookingNumber: string
@@ -12,25 +34,24 @@ export async function sendBookingConfirmationEmail(to: string, data: {
   hotelAddress?: string
   hotelPhone?: string
   checkInTime: string
+  hotelSlug?: string
 }) {
-  if (!process.env.RESEND_API_KEY) {
-    console.log('[Email] RESEND_API_KEY not set, skipping email')
-    return
-  }
-
-  const resend = new Resend(process.env.RESEND_API_KEY)
+  const resend = getResend()
+  if (!resend) return
 
   try {
     await resend.emails.send({
-      from: process.env.RESEND_FROM_EMAIL || 'StayOS <noreply@stayos.aibot.kz>',
+      from: FROM(),
       to,
-      subject: `Бронирование подтверждено — ${data.bookingNumber}`,
-      html: buildConfirmationHtml(data),
+      subject: `Бронирование подтверждено — #${data.bookingNumber}`,
+      html: bookingConfirmationHtml(data),
     })
   } catch (error) {
-    console.error('[Email] Failed to send:', error)
+    console.error('[Email] Confirmation failed:', error)
   }
 }
+
+// ---- 2. Check-in Reminder (to guest, day before) ----
 
 export async function sendReminderEmail(to: string, data: {
   guestName: string
@@ -41,104 +62,170 @@ export async function sendReminderEmail(to: string, data: {
   hotelAddress?: string
   hotelPhone?: string
 }) {
-  if (!process.env.RESEND_API_KEY) {
-    console.log('[Email] RESEND_API_KEY not set, skipping reminder email')
-    return
-  }
-
-  const resend = new Resend(process.env.RESEND_API_KEY)
+  const resend = getResend()
+  if (!resend) return
 
   try {
     await resend.emails.send({
-      from: process.env.RESEND_FROM_EMAIL || 'StayOS <noreply@stayos.aibot.kz>',
+      from: FROM(),
       to,
       subject: `Напоминание о заезде завтра — ${data.hotelName}`,
-      html: buildReminderHtml(data),
+      html: checkInReminderHtml(data),
     })
   } catch (error) {
-    console.error('[Email] Failed to send reminder:', error)
+    console.error('[Email] Reminder failed:', error)
   }
 }
 
-function buildReminderHtml(data: {
-  guestName: string
-  hotelName: string
-  roomName: string
-  checkIn: string
-  checkInTime: string
-  hotelAddress?: string
-  hotelPhone?: string
-}): string {
-  return `
-    <div style="font-family: 'Inter', Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-      <div style="text-align: center; padding: 20px 0; border-bottom: 2px solid #1a56db;">
-        <h1 style="color: #1a56db; margin: 0;">StayOS</h1>
-        <p style="color: #6b7280; margin: 5px 0 0;">${data.hotelName}</p>
-      </div>
-      <div style="padding: 30px 0;">
-        <h2 style="color: #111827;">Напоминание о заезде завтра 🏨</h2>
-        <p style="color: #6b7280;">Здравствуйте, ${data.guestName}!</p>
-        <p style="color: #6b7280;">Напоминаем, что завтра вас ждёт заезд в ${data.hotelName}.</p>
-        <div style="background: #eff6ff; border-radius: 12px; padding: 20px; margin: 20px 0;">
-          <h3 style="margin: 0 0 10px; color: #111827;">Детали заезда</h3>
-          <p style="margin: 5px 0; color: #6b7280;">🛏 Номер: <strong>${data.roomName}</strong></p>
-          <p style="margin: 5px 0; color: #6b7280;">📅 Дата заезда: <strong>${data.checkIn}</strong></p>
-          <p style="margin: 5px 0; color: #6b7280;">⏰ Время заезда: <strong>${data.checkInTime}</strong></p>
-          ${data.hotelAddress ? `<p style="margin: 5px 0; color: #6b7280;">📍 ${data.hotelAddress}</p>` : ''}
-          ${data.hotelPhone ? `<p style="margin: 5px 0; color: #6b7280;">📞 ${data.hotelPhone}</p>` : ''}
-        </div>
-        <p style="color: #6b7280;">Ждём вас! Если у вас есть вопросы, свяжитесь с нами.</p>
-      </div>
-      <div style="text-align: center; padding: 20px 0; border-top: 1px solid #e5e7eb; color: #9ca3af; font-size: 12px;">
-        <p>Powered by StayOS</p>
-      </div>
-    </div>
-  `
-}
+// ---- 3. Booking Cancellation (to guest) ----
 
-function buildConfirmationHtml(data: {
+export async function sendCancellationEmail(to: string, data: {
   bookingNumber: string
   guestName: string
   hotelName: string
   roomName: string
   checkIn: string
   checkOut: string
+  refundNote?: string
+}) {
+  const resend = getResend()
+  if (!resend) return
+
+  try {
+    await resend.emails.send({
+      from: FROM(),
+      to,
+      subject: `Бронирование отменено — #${data.bookingNumber}`,
+      html: bookingCancellationHtml(data),
+    })
+  } catch (error) {
+    console.error('[Email] Cancellation failed:', error)
+  }
+}
+
+// ---- 4. Check-out Thank You + Review Request (to guest) ----
+
+export async function sendCheckOutEmail(to: string, data: {
+  guestName: string
+  hotelName: string
+  roomName: string
+  nights: number
+  reviewLink?: string
+}) {
+  const resend = getResend()
+  if (!resend) return
+
+  try {
+    await resend.emails.send({
+      from: FROM(),
+      to,
+      subject: `Спасибо за визит — ${data.hotelName}`,
+      html: checkOutThankYouHtml(data),
+    })
+  } catch (error) {
+    console.error('[Email] CheckOut email failed:', error)
+  }
+}
+
+// ---- 5. Admin: New Booking Notification ----
+
+export async function sendAdminNewBookingEmail(to: string, data: {
+  bookingNumber: string
+  guestName: string
+  guestEmail: string
+  guestPhone?: string
+  hotelName: string
+  roomName: string
+  checkIn: string
+  checkOut: string
   nights: number
   totalPrice: string
-  hotelAddress?: string
-  hotelPhone?: string
-  checkInTime: string
-}): string {
-  return `
-    <div style="font-family: 'Inter', Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-      <div style="text-align: center; padding: 20px 0; border-bottom: 2px solid #1a56db;">
-        <h1 style="color: #1a56db; margin: 0;">StayOS</h1>
-        <p style="color: #6b7280; margin: 5px 0 0;">${data.hotelName}</p>
-      </div>
-      <div style="padding: 30px 0;">
-        <h2 style="color: #111827;">Бронирование подтверждено ✅</h2>
-        <p style="color: #6b7280;">Здравствуйте, ${data.guestName}!</p>
-        <p style="color: #6b7280;">Ваше бронирование успешно оформлено.</p>
-        <div style="background: #f9fafb; border-radius: 12px; padding: 20px; margin: 20px 0;">
-          <table style="width: 100%; border-collapse: collapse;">
-            <tr><td style="padding: 8px 0; color: #6b7280;">№ брони</td><td style="padding: 8px 0; font-weight: 600; color: #1a56db;">#${data.bookingNumber}</td></tr>
-            <tr><td style="padding: 8px 0; color: #6b7280;">Номер</td><td style="padding: 8px 0; font-weight: 600;">${data.roomName}</td></tr>
-            <tr><td style="padding: 8px 0; color: #6b7280;">Заезд</td><td style="padding: 8px 0; font-weight: 600;">${data.checkIn}</td></tr>
-            <tr><td style="padding: 8px 0; color: #6b7280;">Выезд</td><td style="padding: 8px 0; font-weight: 600;">${data.checkOut}</td></tr>
-            <tr><td style="padding: 8px 0; color: #6b7280;">Ночей</td><td style="padding: 8px 0; font-weight: 600;">${data.nights}</td></tr>
-            <tr><td style="padding: 8px 0; color: #6b7280;">Сумма</td><td style="padding: 8px 0; font-weight: 600; color: #057a55;">${data.totalPrice}</td></tr>
-          </table>
-        </div>
-        <div style="background: #eff6ff; border-radius: 12px; padding: 20px; margin: 20px 0;">
-          <h3 style="margin: 0 0 10px; color: #111827;">Информация для заезда</h3>
-          <p style="margin: 5px 0; color: #6b7280;">⏰ Время заезда: ${data.checkInTime}</p>
-          ${data.hotelAddress ? `<p style="margin: 5px 0; color: #6b7280;">📍 ${data.hotelAddress}</p>` : ''}
-          ${data.hotelPhone ? `<p style="margin: 5px 0; color: #6b7280;">📞 ${data.hotelPhone}</p>` : ''}
-        </div>
-      </div>
-      <div style="text-align: center; padding: 20px 0; border-top: 1px solid #e5e7eb; color: #9ca3af; font-size: 12px;">
-        <p>Powered by StayOS</p>
-      </div>
-    </div>
-  `
+  dashboardLink?: string
+}) {
+  const resend = getResend()
+  if (!resend) return
+
+  try {
+    await resend.emails.send({
+      from: FROM(),
+      to,
+      subject: `Новое бронирование #${data.bookingNumber} — ${data.guestName}`,
+      html: adminNewBookingHtml(data),
+    })
+  } catch (error) {
+    console.error('[Email] Admin new booking failed:', error)
+  }
+}
+
+// ---- 6. Admin: Cancellation Notification ----
+
+export async function sendAdminCancellationEmail(to: string, data: {
+  bookingNumber: string
+  guestName: string
+  hotelName: string
+  roomName: string
+  checkIn: string
+  checkOut: string
+  reason?: string
+}) {
+  const resend = getResend()
+  if (!resend) return
+
+  try {
+    await resend.emails.send({
+      from: FROM(),
+      to,
+      subject: `Отмена бронирования #${data.bookingNumber}`,
+      html: adminCancellationHtml(data),
+    })
+  } catch (error) {
+    console.error('[Email] Admin cancellation failed:', error)
+  }
+}
+
+// ---- 7. Welcome Email (after registration) ----
+
+export async function sendWelcomeEmail(to: string, data: {
+  userName: string
+  hotelName: string
+  dashboardLink: string
+}) {
+  const resend = getResend()
+  if (!resend) return
+
+  try {
+    await resend.emails.send({
+      from: FROM(),
+      to,
+      subject: `Добро пожаловать в StayOS!`,
+      html: welcomeHtml(data),
+    })
+  } catch (error) {
+    console.error('[Email] Welcome failed:', error)
+  }
+}
+
+// ---- 8. Payment Receipt (to guest) ----
+
+export async function sendPaymentReceiptEmail(to: string, data: {
+  bookingNumber: string
+  guestName: string
+  hotelName: string
+  amount: string
+  paymentMethod: string
+  paidAt: string
+}) {
+  const resend = getResend()
+  if (!resend) return
+
+  try {
+    await resend.emails.send({
+      from: FROM(),
+      to,
+      subject: `Оплата получена — #${data.bookingNumber}`,
+      html: paymentReceiptHtml(data),
+    })
+  } catch (error) {
+    console.error('[Email] Payment receipt failed:', error)
+  }
 }

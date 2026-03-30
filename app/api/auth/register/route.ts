@@ -4,6 +4,7 @@ import { NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
 import bcrypt from "bcryptjs"
 import { z } from "zod"
+import { sendWelcomeEmail } from "@/lib/resend"
 
 const registerSchema = z.object({
   name: z.string().min(2),
@@ -45,6 +46,14 @@ export async function POST(req: Request) {
       },
       include: { hotels: true },
     })
+
+    // Send welcome email (non-blocking)
+    const baseUrl = process.env.NEXTAUTH_URL || 'https://stayos.aibot.kz'
+    sendWelcomeEmail(email, {
+      userName: name,
+      hotelName,
+      dashboardLink: `${baseUrl}/dashboard`,
+    }).catch(() => {})
 
     return NextResponse.json({
       user: { id: user.id, email: user.email, name: user.name },

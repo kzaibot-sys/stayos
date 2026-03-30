@@ -5,6 +5,7 @@ import { z } from "zod"
 import { sendTelegramNotification, formatCancelledBookingMessage } from "@/lib/telegram"
 import { MESSAGE_TEMPLATES, renderTemplate } from "@/lib/message-templates"
 import { logActivity } from "@/lib/activity-log"
+import { sendCancellationEmail, sendCheckOutEmail, sendAdminCancellationEmail } from "@/lib/resend"
 
 const updateBookingSchema = z.object({
   status: z
@@ -212,6 +213,49 @@ export async function PUT(
     }).catch((err) => {
       console.error('[Telegram] Failed to fetch hotel for notification:', err)
     })
+  }
+
+  // Send email on CHECKED_OUT (non-blocking)
+  if (data.status === "CHECKED_OUT" && booking.guestEmail) {
+    const hotel = await prisma.hotel.findUnique({ where: { id: hotelId }, select: { name: true, slug: true } })
+    if (hotel) {
+      const baseUrl = process.env.NEXTAUTH_URL || 'https://stayos.aibot.kz'
+      sendCheckOutEmail(booking.guestEmail, {
+        guestName: `${booking.guestFirstName} ${booking.guestLastName}`,
+        hotelName: hotel.name,
+        roomName: booking.room.name,
+        nights: Math.ceil((booking.checkOut.getTime() - booking.checkIn.getTime()) / 86400000),
+        reviewLink: `${baseUrl}/${hotel.slug}#reviews`,
+      }).catch(() => {})
+    }
+  }
+
+  // Send email on CANCELLED (non-blocking)
+  if (data.status === "CANCELLED" && booking.guestEmail) {
+    const hotel = await prisma.hotel.findUnique({ where: { id: hotelId }, select: { name: true, email: true } })
+    const fmt = new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })
+    if (hotel) {
+      sendCancellationEmail(booking.guestEmail, {
+        bookingNumber: booking.bookingNumber,
+        guestName: `${booking.guestFirstName} ${booking.guestLastName}`,
+        hotelName: hotel.name,
+        roomName: booking.room.name,
+        checkIn: fmt.format(booking.checkIn),
+        checkOut: fmt.format(booking.checkOut),
+      }).catch(() => {})
+      // Notify admin
+      if (hotel.email) {
+        sendAdminCancellationEmail(hotel.email, {
+          bookingNumber: booking.bookingNumber,
+          guestName: `${booking.guestFirstName} ${booking.guestLastName}`,
+          hotelName: hotel.name,
+          roomName: booking.room.name,
+          checkIn: fmt.format(booking.checkIn),
+          checkOut: fmt.format(booking.checkOut),
+          reason: booking.cancelReason || undefined,
+        }).catch(() => {})
+      }
+    }
   }
 
   // Send Telegram cancellation notification (non-blocking)

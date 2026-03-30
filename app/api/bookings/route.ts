@@ -3,7 +3,7 @@ import { auth } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { z } from "zod"
 import { differenceInDays, isWeekend, eachDayOfInterval, startOfMonth, endOfMonth } from "date-fns"
-import { sendBookingConfirmationEmail } from "@/lib/resend"
+import { sendBookingConfirmationEmail, sendAdminNewBookingEmail } from "@/lib/resend"
 import { sendTelegramNotification, formatNewBookingMessage } from "@/lib/telegram"
 import { canCreateBooking } from "@/lib/plan-limits"
 
@@ -282,6 +282,7 @@ export async function POST(req: Request) {
       telegramBotToken: true,
       telegramChatId: true,
       name: true,
+      email: true,
       address: true,
       phone: true,
       checkInTime: true,
@@ -325,6 +326,27 @@ export async function POST(req: Request) {
         checkInTime: hotel.checkInTime,
       }).catch((err) => {
         console.error('[Email] Failed to send booking confirmation:', err)
+      })
+    }
+
+    // Send admin new booking notification
+    if (hotel.email) {
+      const fmt2 = new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })
+      const baseUrl = process.env.NEXTAUTH_URL || 'https://stayos.aibot.kz'
+      sendAdminNewBookingEmail(hotel.email, {
+        bookingNumber: booking.bookingNumber,
+        guestName: `${booking.guestFirstName} ${booking.guestLastName}`,
+        guestEmail: booking.guestEmail || '',
+        guestPhone: booking.guestPhone || undefined,
+        hotelName: hotel.name,
+        roomName: booking.room.name,
+        checkIn: fmt2.format(booking.checkIn),
+        checkOut: fmt2.format(booking.checkOut),
+        nights: booking.nights,
+        totalPrice: new Intl.NumberFormat('ru-RU').format(booking.totalPrice) + ' ₸',
+        dashboardLink: `${baseUrl}/dashboard/bookings/${booking.id}`,
+      }).catch((err) => {
+        console.error('[Email] Failed to send admin notification:', err)
       })
     }
   }).catch((err) => {
