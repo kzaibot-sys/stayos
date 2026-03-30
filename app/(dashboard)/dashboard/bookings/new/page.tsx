@@ -64,6 +64,8 @@ export default function NewBookingPage() {
   const [status, setStatus] = useState("CONFIRMED")
   const [paymentStatus, setPaymentStatus] = useState("UNPAID")
   const [priceOverride, setPriceOverride] = useState("")
+  const [discount, setDiscount] = useState("")
+  const [discountType, setDiscountType] = useState<"KZT" | "%">("KZT")
 
   // Load rooms
   useEffect(() => {
@@ -85,7 +87,10 @@ export default function NewBookingPage() {
   const basePrice = priceOverride
     ? parseFloat(priceOverride) || 0
     : (selectedRoom?.pricePerNight ?? 0)
-  const totalPrice = basePrice * nights
+  const subtotal = basePrice * nights
+  const discountNum = parseFloat(discount) || 0
+  const discountAmount = discountType === "%" ? (subtotal * discountNum) / 100 : discountNum
+  const totalPrice = Math.max(0, subtotal - discountAmount)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -118,6 +123,7 @@ export default function NewBookingPage() {
           paymentStatus,
           source: "MANUAL",
           priceOverride: priceOverride ? parseFloat(priceOverride) : null,
+          discount: discountAmount > 0 ? discountAmount : null,
         }),
       })
 
@@ -211,20 +217,6 @@ export default function NewBookingPage() {
               </div>
             </div>
 
-            {/* Price summary */}
-            {nights > 0 && selectedRoom && (
-              <div className="bg-blue-50 border border-blue-100 rounded-lg p-4">
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-blue-700">
-                    {nights} ночей × {formatPrice(basePrice)}
-                  </span>
-                  <span className="font-semibold text-blue-900 text-base">
-                    {formatPrice(totalPrice)}
-                  </span>
-                </div>
-              </div>
-            )}
-
             {/* Price override */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -243,6 +235,73 @@ export default function NewBookingPage() {
                 className="w-full h-10 rounded-lg border border-gray-200 bg-white px-3 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
+
+            {/* Discount */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Скидка
+              </label>
+              <div className="flex gap-2">
+                <input
+                  type="number"
+                  value={discount}
+                  onChange={(e) => setDiscount(e.target.value)}
+                  placeholder="0"
+                  min={0}
+                  className="flex-1 h-10 rounded-lg border border-gray-200 bg-white px-3 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <div className="flex rounded-lg border border-gray-200 overflow-hidden">
+                  <button
+                    type="button"
+                    onClick={() => setDiscountType("KZT")}
+                    className={`px-3 h-10 text-sm font-medium transition-colors ${
+                      discountType === "KZT"
+                        ? "bg-blue-600 text-white"
+                        : "bg-white text-gray-700 hover:bg-gray-50"
+                    }`}
+                  >
+                    ₸
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setDiscountType("%")}
+                    className={`px-3 h-10 text-sm font-medium transition-colors ${
+                      discountType === "%"
+                        ? "bg-blue-600 text-white"
+                        : "bg-white text-gray-700 hover:bg-gray-50"
+                    }`}
+                  >
+                    %
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Price summary */}
+            {nights > 0 && selectedRoom && (
+              <div className="bg-blue-50 border border-blue-100 rounded-lg p-4 space-y-1.5">
+                <div className="flex items-center justify-between text-sm">
+                  <span className="text-blue-700">
+                    Подытог ({nights} ночей × {formatPrice(basePrice)}):
+                  </span>
+                  <span className="text-blue-900">{formatPrice(subtotal)}</span>
+                </div>
+                {discountAmount > 0 && (
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-blue-700">
+                      Скидка{discountType === "%" ? ` (${discountNum}%)` : ""}:
+                    </span>
+                    <span className="text-red-600">− {formatPrice(discountAmount)}</span>
+                  </div>
+                )}
+                <div className="flex items-center justify-between border-t border-blue-200 pt-1.5 mt-1.5">
+                  <span className="text-blue-700 font-medium">Итого:</span>
+                  <span className="font-semibold text-blue-900 text-base">
+                    {formatPrice(totalPrice)}
+                  </span>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 

@@ -17,6 +17,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { ImageUpload } from "@/components/shared/image-upload"
 
 const AMENITIES = [
   "WiFi",
@@ -63,6 +64,7 @@ interface RoomFormProps {
     weekendPrice?: number | null
     description?: string
     amenities?: string[]
+    photos?: string[]
     status?: string
   }
 }
@@ -100,6 +102,7 @@ export function RoomForm({ mode, roomId, defaultValues }: RoomFormProps) {
   const [selectedAmenities, setSelectedAmenities] = useState<string[]>(
     defaultValues?.amenities ?? []
   )
+  const [photos, setPhotos] = useState<string[]>(defaultValues?.photos ?? [])
   const [status, setStatus] = useState(defaultValues?.status ?? "AVAILABLE")
 
   const toggleAmenity = (amenity: string) => {
@@ -136,6 +139,7 @@ export function RoomForm({ mode, roomId, defaultValues }: RoomFormProps) {
       weekendPrice: weekendPrice ? parseFloat(weekendPrice) : null,
       description: description.trim() || null,
       amenities: selectedAmenities,
+      photos,
       status,
     }
 
@@ -363,6 +367,16 @@ export function RoomForm({ mode, roomId, defaultValues }: RoomFormProps) {
               </label>
             ))}
           </div>
+        </CardContent>
+      </Card>
+
+      {/* Photos */}
+      <Card>
+        <CardHeader>
+          <CardTitle>Фотографии номера</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <ImageUpload value={photos} onChange={setPhotos} maxFiles={10} />
         </CardContent>
       </Card>
 

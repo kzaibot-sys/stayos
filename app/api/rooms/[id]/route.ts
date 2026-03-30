@@ -17,6 +17,7 @@ const roomUpdateSchema = z.object({
   weekendPrice: z.number().min(0).optional().nullable(),
   description: z.string().optional().nullable(),
   amenities: z.array(z.string()).optional(),
+  photos: z.array(z.string()).optional(),
   status: z
     .enum(["AVAILABLE", "OCCUPIED", "MAINTENANCE", "BLOCKED"])
     .optional(),
@@ -115,6 +116,8 @@ export async function PUT(
   if (data.description !== undefined) updateData.description = data.description
   if (data.amenities !== undefined)
     updateData.amenities = JSON.stringify(data.amenities)
+  if (data.photos !== undefined)
+    updateData.photos = JSON.stringify(data.photos)
   if (data.status !== undefined) updateData.status = data.status
 
   const room = await prisma.room.update({

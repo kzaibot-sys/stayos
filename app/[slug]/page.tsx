@@ -5,7 +5,7 @@ import Link from "next/link"
 import { BedDouble, Mail, Phone, MapPin } from "lucide-react"
 import { HotelHero } from "@/components/hotel-page/hotel-hero"
 import { AmenitiesList } from "@/components/hotel-page/amenities-list"
-import { RoomCard } from "@/components/hotel-page/room-card"
+import { RoomsSection } from "@/components/hotel-page/rooms-section"
 
 export async function generateMetadata({
   params,
@@ -92,11 +92,7 @@ export default async function HotelPage({
               Номера
             </h2>
             {rooms.length > 0 ? (
-              <div className="space-y-6">
-                {rooms.map((room) => (
-                  <RoomCard key={room.id} room={room} slug={slug} />
-                ))}
-              </div>
+              <RoomsSection rooms={rooms} slug={slug} />
             ) : (
               <p className="text-gray-500">Номера не найдены.</p>
             )}

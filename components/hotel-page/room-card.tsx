@@ -33,15 +33,22 @@ interface RoomCardProps {
     description?: string | null
   }
   slug: string
+  onOpenModal?: () => void
 }
 
-export function RoomCard({ room, slug }: RoomCardProps) {
+export function RoomCard({ room, slug, onOpenModal }: RoomCardProps) {
   const firstPhoto = room.photos?.[0]
   const visibleAmenities = room.amenities?.slice(0, 5) ?? []
   const typeLabel = roomTypeLabels[room.type] ?? room.type
 
   return (
-    <div className="flex flex-col md:flex-row rounded-xl border border-gray-200 bg-white overflow-hidden shadow-sm hover:shadow-md transition-shadow">
+    <div
+      className="flex flex-col md:flex-row rounded-xl border border-gray-200 bg-white overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer"
+      onClick={onOpenModal}
+      role={onOpenModal ? "button" : undefined}
+      tabIndex={onOpenModal ? 0 : undefined}
+      onKeyDown={onOpenModal ? (e) => { if (e.key === "Enter" || e.key === " ") onOpenModal() } : undefined}
+    >
       {/* Image / Placeholder */}
       <div className="md:w-64 shrink-0 relative bg-gradient-to-br from-[#1a56db]/10 to-[#6366f1]/10 flex items-center justify-center min-h-[200px]">
         {firstPhoto ? (
@@ -125,6 +132,7 @@ export function RoomCard({ room, slug }: RoomCardProps) {
           </div>
           <Link
             href={`/${slug}/book`}
+            onClick={(e) => e.stopPropagation()}
             className={cn(
               buttonVariants({ size: "sm" }),
               "bg-[#1a56db] text-white hover:bg-[#1e429f]"

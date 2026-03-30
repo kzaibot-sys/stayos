@@ -18,6 +18,7 @@ const roomSchema = z.object({
   weekendPrice: z.number().min(0).optional().nullable(),
   description: z.string().optional().nullable(),
   amenities: z.array(z.string()).default([]),
+  photos: z.array(z.string()).default([]),
   status: z
     .enum(["AVAILABLE", "OCCUPIED", "MAINTENANCE", "BLOCKED"])
     .default("AVAILABLE"),
@@ -113,6 +114,7 @@ export async function POST(req: Request) {
       weekendPrice: data.weekendPrice ?? null,
       description: data.description ?? null,
       amenities: JSON.stringify(data.amenities),
+      photos: JSON.stringify(data.photos),
       status: data.status,
     },
   })
@@ -121,7 +123,7 @@ export async function POST(req: Request) {
     {
       ...room,
       amenities: data.amenities,
-      photos: [],
+      photos: data.photos,
     },
     { status: 201 }
   )

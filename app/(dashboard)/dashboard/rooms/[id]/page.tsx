@@ -19,6 +19,7 @@ interface RoomData {
   weekendPrice: number | null
   description: string | null
   amenities: string[]
+  photos: string[]
   status: string
 }
 
@@ -103,6 +104,7 @@ export default function EditRoomPage() {
           weekendPrice: room.weekendPrice,
           description: room.description ?? "",
           amenities: room.amenities,
+          photos: room.photos,
           status: room.status,
         }}
       />

@@ -29,6 +29,7 @@ const createBookingSchema = z.object({
     .enum(["DIRECT", "WIDGET", "MANUAL", "BOOKING_COM", "AIRBNB", "OTHER"])
     .default("MANUAL"),
   priceOverride: z.number().optional().nullable(),
+  discount: z.number().min(0).optional().nullable(),
 })
 
 export async function GET(req: Request) {
@@ -192,7 +193,8 @@ export async function POST(req: Request) {
     subtotal += dayPrice * multiplier
   }
   const pricePerNight = basePrice * multiplier
-  const totalPrice = subtotal
+  const discountAmount = data.discount ?? 0
+  const totalPrice = Math.max(0, subtotal - discountAmount)
 
   // Generate booking number
   const year = new Date().getFullYear()
@@ -249,6 +251,7 @@ export async function POST(req: Request) {
       source: data.source,
       pricePerNight,
       subtotal,
+      discount: discountAmount,
       totalPrice,
       specialRequests: data.specialRequests ?? null,
       internalNotes: data.internalNotes ?? null,

@@ -7,6 +7,7 @@ import { ru } from "date-fns/locale"
 import { ArrowLeft, Mail } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { BookingActions } from "@/components/dashboard/booking-actions"
+import { PaymentForm } from "@/components/dashboard/payment-form"
 
 const bookingStatusConfig: Record<string, { label: string; className: string }> = {
   PENDING: { label: "Ожидает", className: "bg-yellow-100 text-yellow-700" },
@@ -80,6 +81,9 @@ export default async function BookingDetailPage({
   const statusCfg = bookingStatusConfig[booking.status] ?? bookingStatusConfig["PENDING"]
   const paymentCfg = paymentStatusConfig[booking.paymentStatus] ?? paymentStatusConfig["UNPAID"]
   const remaining = booking.totalPrice - booking.paidAmount
+
+  // Check if email is configured (server-side env check)
+  const emailConfigured = !!process.env.RESEND_API_KEY
 
   // Build status timeline events
   const timeline: { label: string; date: Date | null }[] = [
@@ -307,6 +311,15 @@ export default async function BookingDetailPage({
                 </span>
               </div>
             </div>
+
+            {/* Payment form */}
+            <PaymentForm
+              bookingId={booking.id}
+              totalPrice={booking.totalPrice}
+              paidAmount={booking.paidAmount}
+              paymentStatus={booking.paymentStatus}
+              status={booking.status}
+            />
           </div>
 
           {/* Status timeline */}
@@ -339,11 +352,15 @@ export default async function BookingDetailPage({
               <BookingActions
                 bookingId={booking.id}
                 status={booking.status}
+                checkIn={booking.checkIn}
+                checkOut={booking.checkOut}
               />
-              <Button variant="outline" size="sm" className="w-full" disabled>
-                <Mail className="size-4 mr-2" />
-                Отправить email
-              </Button>
+              {emailConfigured && (
+                <Button variant="outline" size="sm" className="w-full" disabled>
+                  <Mail className="size-4 mr-2" />
+                  Отправить email повторно
+                </Button>
+              )}
             </div>
           </div>
         </div>
