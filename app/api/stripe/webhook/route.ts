@@ -4,6 +4,14 @@ import { prisma } from "@/lib/prisma"
 
 export const dynamic = 'force-dynamic'
 
+// Map Stripe price IDs to plans
+function getPlanFromPriceId(priceId: string): 'STARTER' | 'PRO' | 'ENTERPRISE' | null {
+  if (priceId === process.env.STRIPE_STARTER_PRICE_ID) return 'STARTER'
+  if (priceId === process.env.STRIPE_PRO_PRICE_ID) return 'PRO'
+  if (priceId === process.env.STRIPE_ENTERPRISE_PRICE_ID) return 'ENTERPRISE'
+  return null
+}
+
 export async function POST(req: Request) {
   const body = await req.text()
   const sig = req.headers.get('stripe-signature')
@@ -62,6 +70,75 @@ export async function POST(req: Request) {
     const session = event.data.object as any
     console.log('[Stripe Webhook] Session expired:', session.id)
     // Optionally handle expired sessions (e.g., mark booking as cancelled)
+  }
+
+  // Handle subscription created or updated
+  if (
+    event.type === 'customer.subscription.created' ||
+    event.type === 'customer.subscription.updated'
+  ) {
+    const subscription = event.data.object as any
+    const customerId = subscription.customer as string
+
+    try {
+      const hotel = await prisma.hotel.findFirst({
+        where: { stripeCustomerId: customerId },
+      })
+
+      if (hotel) {
+        // Get the price ID from the subscription items
+        const priceId = subscription.items?.data?.[0]?.price?.id
+        const plan = priceId ? getPlanFromPriceId(priceId) : null
+
+        const currentPeriodEnd = subscription.current_period_end
+          ? new Date(subscription.current_period_end * 1000)
+          : null
+
+        await prisma.hotel.update({
+          where: { id: hotel.id },
+          data: {
+            plan: plan || hotel.plan,
+            stripeSubId: subscription.id,
+            planExpiresAt: currentPeriodEnd,
+          },
+        })
+
+        console.log(`[Stripe Webhook] Updated hotel ${hotel.id} plan to ${plan}`)
+      } else {
+        console.warn('[Stripe Webhook] No hotel found for customer:', customerId)
+      }
+    } catch (error) {
+      console.error('[Stripe Webhook] Error processing subscription event:', error)
+      return NextResponse.json({ error: "Processing failed" }, { status: 500 })
+    }
+  }
+
+  // Handle subscription deleted (cancelled)
+  if (event.type === 'customer.subscription.deleted') {
+    const subscription = event.data.object as any
+    const customerId = subscription.customer as string
+
+    try {
+      const hotel = await prisma.hotel.findFirst({
+        where: { stripeCustomerId: customerId },
+      })
+
+      if (hotel) {
+        await prisma.hotel.update({
+          where: { id: hotel.id },
+          data: {
+            plan: 'FREE',
+            stripeSubId: null,
+            planExpiresAt: null,
+          },
+        })
+
+        console.log(`[Stripe Webhook] Reset hotel ${hotel.id} to FREE plan`)
+      }
+    } catch (error) {
+      console.error('[Stripe Webhook] Error processing subscription.deleted:', error)
+      return NextResponse.json({ error: "Processing failed" }, { status: 500 })
+    }
   }
 
   return NextResponse.json({ received: true })

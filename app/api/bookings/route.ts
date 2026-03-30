@@ -2,9 +2,10 @@ import { NextResponse } from "next/server"
 import { auth } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { z } from "zod"
-import { differenceInDays, isWeekend, eachDayOfInterval } from "date-fns"
+import { differenceInDays, isWeekend, eachDayOfInterval, startOfMonth, endOfMonth } from "date-fns"
 import { sendBookingConfirmationEmail } from "@/lib/resend"
 import { sendTelegramNotification, formatNewBookingMessage } from "@/lib/telegram"
+import { canCreateBooking } from "@/lib/plan-limits"
 
 const createBookingSchema = z.object({
   roomId: z.string(),
@@ -109,6 +110,30 @@ export async function POST(req: Request) {
   const data = parsed.data
   const checkIn = new Date(data.checkIn)
   const checkOut = new Date(data.checkOut)
+
+  // Check plan limits for booking creation
+  const hotelData = await prisma.hotel.findUnique({
+    where: { id: hotelId },
+    select: { plan: true },
+  })
+
+  const currentDate = new Date()
+  const thisMonthBookings = await prisma.booking.count({
+    where: {
+      hotelId,
+      createdAt: {
+        gte: startOfMonth(currentDate),
+        lte: endOfMonth(currentDate),
+      },
+    },
+  })
+
+  if (!canCreateBooking(hotelData?.plan || 'FREE', thisMonthBookings)) {
+    return NextResponse.json(
+      { error: "Достигнут лимит бронирований для вашего тарифа" },
+      { status: 403 }
+    )
+  }
 
   if (checkOut <= checkIn) {
     return NextResponse.json(

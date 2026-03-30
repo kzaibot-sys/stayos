@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import { auth } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { z } from "zod"
+import { canAddRoom } from "@/lib/plan-limits"
 
 const roomSchema = z.object({
   name: z.string().min(1, "Название обязательно"),
@@ -80,6 +81,23 @@ export async function POST(req: Request) {
   }
 
   const data = parsed.data
+
+  // Check plan limits for room creation
+  const hotel = await prisma.hotel.findUnique({
+    where: { id: hotelId },
+    select: { plan: true },
+  })
+
+  const currentRoomCount = await prisma.room.count({
+    where: { hotelId, isActive: true },
+  })
+
+  if (!canAddRoom(hotel?.plan || 'FREE', currentRoomCount)) {
+    return NextResponse.json(
+      { error: "Достигнут лимит номеров для вашего тарифа" },
+      { status: 403 }
+    )
+  }
 
   const room = await prisma.room.create({
     data: {
