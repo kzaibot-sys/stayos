@@ -95,7 +95,7 @@ export function BookingFilters({ rooms }: BookingFiltersProps) {
     <div className="space-y-3 mb-6">
       {/* Search input */}
       <div className="relative">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-gray-400 pointer-events-none" />
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground pointer-events-none" />
         <input
           type="text"
           value={search}
@@ -103,18 +103,18 @@ export function BookingFilters({ rooms }: BookingFiltersProps) {
           onKeyDown={(e) => e.key === "Enter" && applyFilters()}
           onBlur={applyFilters}
           placeholder="Поиск по номеру брони, имени гостя, email, телефону..."
-          className="w-full h-10 rounded-lg border border-gray-200 bg-white pl-9 pr-4 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="w-full h-10 rounded-lg border border-border bg-background pl-9 pr-4 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
 
       <div className="flex flex-wrap items-end gap-3">
       {/* Status filter */}
       <div className="flex flex-col gap-1">
-        <label className="text-xs text-gray-500 font-medium">Статус</label>
+        <label className="text-xs text-muted-foreground font-medium">Статус</label>
         <select
           value={status}
           onChange={(e) => setStatus(e.target.value)}
-          className="h-9 rounded-lg border border-gray-200 bg-white px-3 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="h-9 rounded-lg border border-border bg-background px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           {statusOptions.map((opt) => (
             <option key={opt.value} value={opt.value}>
@@ -126,35 +126,35 @@ export function BookingFilters({ rooms }: BookingFiltersProps) {
 
       {/* Date from */}
       <div className="flex flex-col gap-1">
-        <label className="text-xs text-gray-500 font-medium">Заезд от</label>
+        <label className="text-xs text-muted-foreground font-medium">Заезд от</label>
         <input
           type="date"
           value={dateFrom}
           onChange={(e) => setDateFrom(e.target.value)}
           onBlur={applyFilters}
-          className="h-9 rounded-lg border border-gray-200 bg-white px-3 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="h-9 rounded-lg border border-border bg-background px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
 
       {/* Date to */}
       <div className="flex flex-col gap-1">
-        <label className="text-xs text-gray-500 font-medium">Заезд до</label>
+        <label className="text-xs text-muted-foreground font-medium">Заезд до</label>
         <input
           type="date"
           value={dateTo}
           onChange={(e) => setDateTo(e.target.value)}
           onBlur={applyFilters}
-          className="h-9 rounded-lg border border-gray-200 bg-white px-3 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="h-9 rounded-lg border border-border bg-background px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
 
       {/* Room filter */}
       <div className="flex flex-col gap-1">
-        <label className="text-xs text-gray-500 font-medium">Номер</label>
+        <label className="text-xs text-muted-foreground font-medium">Номер</label>
         <select
           value={roomId}
           onChange={(e) => setRoomId(e.target.value)}
-          className="h-9 rounded-lg border border-gray-200 bg-white px-3 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="h-9 rounded-lg border border-border bg-background px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           <option value="ALL">Все номера</option>
           {rooms.map((room) => (
@@ -168,11 +168,11 @@ export function BookingFilters({ rooms }: BookingFiltersProps) {
 
       {/* Source filter */}
       <div className="flex flex-col gap-1">
-        <label className="text-xs text-gray-500 font-medium">Источник</label>
+        <label className="text-xs text-muted-foreground font-medium">Источник</label>
         <select
           value={source}
           onChange={(e) => setSource(e.target.value)}
-          className="h-9 rounded-lg border border-gray-200 bg-white px-3 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="h-9 rounded-lg border border-border bg-background px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           {sourceOptions.map((opt) => (
             <option key={opt.value} value={opt.value}>

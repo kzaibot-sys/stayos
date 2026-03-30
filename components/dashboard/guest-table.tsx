@@ -59,60 +59,60 @@ export function GuestTable({ guests, total, page, limit }: GuestTableProps) {
   }
 
   return (
-    <div className="rounded-xl border border-gray-200 bg-white overflow-hidden">
+    <div className="rounded-xl border border-border bg-card overflow-hidden">
       <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-gray-100 bg-gray-50">
-              <th className="text-left px-4 py-3 font-medium text-gray-500 whitespace-nowrap">
+            <tr className="border-b border-border bg-muted">
+              <th className="text-left px-4 py-3 font-medium text-muted-foreground whitespace-nowrap">
                 Имя
               </th>
-              <th className="text-left px-4 py-3 font-medium text-gray-500 whitespace-nowrap">
+              <th className="text-left px-4 py-3 font-medium text-muted-foreground whitespace-nowrap">
                 Email
               </th>
-              <th className="text-left px-4 py-3 font-medium text-gray-500 whitespace-nowrap">
+              <th className="text-left px-4 py-3 font-medium text-muted-foreground whitespace-nowrap">
                 Телефон
               </th>
-              <th className="text-left px-4 py-3 font-medium text-gray-500 whitespace-nowrap">
+              <th className="text-left px-4 py-3 font-medium text-muted-foreground whitespace-nowrap">
                 Визитов
               </th>
-              <th className="text-left px-4 py-3 font-medium text-gray-500 whitespace-nowrap">
+              <th className="text-left px-4 py-3 font-medium text-muted-foreground whitespace-nowrap">
                 Потрачено
               </th>
-              <th className="text-left px-4 py-3 font-medium text-gray-500 whitespace-nowrap">
+              <th className="text-left px-4 py-3 font-medium text-muted-foreground whitespace-nowrap">
                 Теги
               </th>
-              <th className="text-right px-4 py-3 font-medium text-gray-500 whitespace-nowrap">
+              <th className="text-right px-4 py-3 font-medium text-muted-foreground whitespace-nowrap">
                 Действия
               </th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-100">
+          <tbody className="divide-y divide-border">
             {guests.map((guest) => (
               <tr
                 key={guest.id}
-                className="hover:bg-gray-50 transition-colors cursor-pointer"
+                className="hover:bg-muted transition-colors cursor-pointer"
                 onClick={() => router.push(`/dashboard/guests/${guest.id}`)}
               >
                 <td className="px-4 py-3">
-                  <div className="font-medium text-gray-900">
+                  <div className="font-medium text-foreground">
                     {guest.firstName} {guest.lastName}
                   </div>
                 </td>
-                <td className="px-4 py-3 text-gray-600">
+                <td className="px-4 py-3 text-muted-foreground">
                   {guest.email ?? (
-                    <span className="text-gray-300">—</span>
+                    <span className="text-muted-foreground/50">—</span>
                   )}
                 </td>
-                <td className="px-4 py-3 text-gray-600">
+                <td className="px-4 py-3 text-muted-foreground">
                   {guest.phone ?? (
-                    <span className="text-gray-300">—</span>
+                    <span className="text-muted-foreground/50">—</span>
                   )}
                 </td>
-                <td className="px-4 py-3 text-center text-gray-700 font-medium">
+                <td className="px-4 py-3 text-center text-foreground font-medium">
                   {guest.totalVisits}
                 </td>
-                <td className="px-4 py-3 text-gray-900 font-medium whitespace-nowrap">
+                <td className="px-4 py-3 text-foreground font-medium whitespace-nowrap">
                   {formatPrice(guest.totalSpent)}
                 </td>
                 <td className="px-4 py-3">
@@ -126,7 +126,7 @@ export function GuestTable({ guests, total, page, limit }: GuestTableProps) {
                       </span>
                     ))}
                     {guest.tags.length === 0 && (
-                      <span className="text-gray-300 text-xs">—</span>
+                      <span className="text-muted-foreground/50 text-xs">—</span>
                     )}
                   </div>
                 </td>
@@ -145,8 +145,8 @@ export function GuestTable({ guests, total, page, limit }: GuestTableProps) {
 
       {/* Pagination */}
       {totalPages > 1 && (
-        <div className="border-t border-gray-100 px-4 py-3 flex items-center justify-between">
-          <span className="text-sm text-gray-500">
+        <div className="border-t border-border px-4 py-3 flex items-center justify-between">
+          <span className="text-sm text-muted-foreground">
             Показано {Math.min((page - 1) * limit + 1, total)}–
             {Math.min(page * limit, total)} из {total}
           </span>
@@ -163,7 +163,7 @@ export function GuestTable({ guests, total, page, limit }: GuestTableProps) {
             >
               Назад
             </Button>
-            <span className="text-sm text-gray-600">
+            <span className="text-sm text-muted-foreground">
               {page} / {totalPages}
             </span>
             <Button

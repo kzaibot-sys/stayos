@@ -107,7 +107,7 @@ export default async function BookingDetailPage({
         </Link>
         <div className="flex-1">
           <div className="flex items-center gap-3">
-            <h1 className="font-heading text-2xl font-semibold text-gray-900">
+            <h1 className="font-heading text-2xl font-semibold text-foreground">
               {booking.bookingNumber}
             </h1>
             <span
@@ -115,11 +115,11 @@ export default async function BookingDetailPage({
             >
               {statusCfg.label}
             </span>
-            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-600">
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-muted text-muted-foreground">
               {sourceLabels[booking.source] ?? booking.source}
             </span>
           </div>
-          <p className="text-sm text-gray-500 mt-0.5">
+          <p className="text-sm text-muted-foreground mt-0.5">
             Создана {formatDateTime(booking.createdAt)}
           </p>
         </div>
@@ -130,69 +130,69 @@ export default async function BookingDetailPage({
         {/* Left column (2/3 width) */}
         <div className="lg:col-span-2 space-y-6">
           {/* Booking info card */}
-          <div className="bg-white rounded-xl border border-gray-200 p-6">
-            <h2 className="text-base font-semibold text-gray-900 mb-4">Информация о брони</h2>
+          <div className="bg-card rounded-xl border border-border p-6">
+            <h2 className="text-base font-semibold text-foreground mb-4">Информация о брони</h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               {/* Guest info */}
               <div>
-                <h3 className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-3">
+                <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-3">
                   Гость
                 </h3>
-                <p className="font-medium text-gray-900 text-lg">
+                <p className="font-medium text-foreground text-lg">
                   {booking.guestFirstName} {booking.guestLastName}
                 </p>
                 {booking.guestEmail && (
-                  <p className="text-sm text-gray-500 mt-1">{booking.guestEmail}</p>
+                  <p className="text-sm text-muted-foreground mt-1">{booking.guestEmail}</p>
                 )}
                 {booking.guestPhone && (
-                  <p className="text-sm text-gray-500">{booking.guestPhone}</p>
+                  <p className="text-sm text-muted-foreground">{booking.guestPhone}</p>
                 )}
               </div>
 
               {/* Room info */}
               <div>
-                <h3 className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-3">
+                <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-3">
                   Номер
                 </h3>
-                <p className="font-medium text-gray-900">
+                <p className="font-medium text-foreground">
                   {booking.room.name}
                   {booking.room.roomNumber && (
-                    <span className="text-gray-400 font-normal ml-1 text-sm">
+                    <span className="text-muted-foreground font-normal ml-1 text-sm">
                       #{booking.room.roomNumber}
                     </span>
                   )}
                 </p>
-                <p className="text-sm text-gray-500 mt-1">
+                <p className="text-sm text-muted-foreground mt-1">
                   {roomTypeLabels[booking.room.type] ?? booking.room.type}
                 </p>
               </div>
 
               {/* Dates */}
               <div>
-                <h3 className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-3">
+                <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-3">
                   Даты
                 </h3>
                 <div className="space-y-1">
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-gray-500">Заезд:</span>
-                    <span className="font-medium text-gray-900">
+                    <span className="text-muted-foreground">Заезд:</span>
+                    <span className="font-medium text-foreground">
                       {formatDate(booking.checkIn)}
                     </span>
                   </div>
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-gray-500">Выезд:</span>
-                    <span className="font-medium text-gray-900">
+                    <span className="text-muted-foreground">Выезд:</span>
+                    <span className="font-medium text-foreground">
                       {formatDate(booking.checkOut)}
                     </span>
                   </div>
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-gray-500">Ночей:</span>
-                    <span className="font-medium text-gray-900">{booking.nights}</span>
+                    <span className="text-muted-foreground">Ночей:</span>
+                    <span className="font-medium text-foreground">{booking.nights}</span>
                   </div>
                   <div className="flex items-center justify-between text-sm">
-                    <span className="text-gray-500">Гостей:</span>
-                    <span className="font-medium text-gray-900">
+                    <span className="text-muted-foreground">Гостей:</span>
+                    <span className="font-medium text-foreground">
                       {booking.adults} взр.{booking.children > 0 ? `, ${booking.children} дет.` : ""}
                     </span>
                   </div>
@@ -201,14 +201,14 @@ export default async function BookingDetailPage({
 
               {/* Price per night */}
               <div>
-                <h3 className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-3">
+                <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-3">
                   Тариф
                 </h3>
-                <p className="font-medium text-gray-900">
+                <p className="font-medium text-foreground">
                   {formatPrice(booking.pricePerNight)} / ночь
                 </p>
                 {booking.discount > 0 && (
-                  <p className="text-sm text-gray-500 mt-1">
+                  <p className="text-sm text-muted-foreground mt-1">
                     Скидка: {formatPrice(booking.discount)}
                   </p>
                 )}
@@ -217,11 +217,11 @@ export default async function BookingDetailPage({
 
             {/* Special requests */}
             {booking.specialRequests && (
-              <div className="mt-6 pt-6 border-t border-gray-100">
-                <h3 className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-2">
+              <div className="mt-6 pt-6 border-t border-border">
+                <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2">
                   Особые пожелания
                 </h3>
-                <p className="text-sm text-gray-700">{booking.specialRequests}</p>
+                <p className="text-sm text-foreground">{booking.specialRequests}</p>
               </div>
             )}
 
@@ -231,7 +231,7 @@ export default async function BookingDetailPage({
             {/* Cancel reason */}
             {booking.cancelReason && (
               <div className="mt-4">
-                <h3 className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-2">
+                <h3 className="text-xs font-medium text-muted-foreground uppercase tracking-wider mb-2">
                   Причина отмены
                 </h3>
                 <p className="text-sm text-red-600">{booking.cancelReason}</p>
@@ -241,27 +241,27 @@ export default async function BookingDetailPage({
 
           {/* Payments */}
           {booking.payments.length > 0 && (
-            <div className="bg-white rounded-xl border border-gray-200 p-6">
-              <h2 className="text-base font-semibold text-gray-900 mb-4">Платежи</h2>
+            <div className="bg-card rounded-xl border border-border p-6">
+              <h2 className="text-base font-semibold text-foreground mb-4">Платежи</h2>
               <div className="space-y-3">
                 {booking.payments.map((payment) => (
                   <div
                     key={payment.id}
-                    className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0 gap-3"
+                    className="flex items-center justify-between py-2 border-b border-border last:border-0 gap-3"
                   >
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-gray-900">
+                      <p className="text-sm font-medium text-foreground">
                         {payment.method}
                       </p>
-                      <p className="text-xs text-gray-500">
+                      <p className="text-xs text-muted-foreground">
                         {formatDateTime(payment.createdAt)}
                       </p>
                     </div>
                     <div className="text-right shrink-0">
-                      <p className={`font-medium ${payment.amount < 0 ? "text-red-600" : "text-gray-900"}`}>
+                      <p className={`font-medium ${payment.amount < 0 ? "text-red-600" : "text-foreground"}`}>
                         {payment.amount < 0 ? "-" : ""}{formatPrice(Math.abs(payment.amount))}
                       </p>
-                      <p className="text-xs text-gray-500">{payment.status}</p>
+                      <p className="text-xs text-muted-foreground">{payment.status}</p>
                     </div>
                     {payment.amount > 0 && payment.status !== "refunded" && (
                       <RefundButton paymentId={payment.id} maxAmount={payment.amount} />
@@ -276,24 +276,24 @@ export default async function BookingDetailPage({
         {/* Right column (1/3 width) */}
         <div className="space-y-6">
           {/* Payment summary card */}
-          <div className="bg-white rounded-xl border border-gray-200 p-6">
-            <h2 className="text-base font-semibold text-gray-900 mb-4">Оплата</h2>
+          <div className="bg-card rounded-xl border border-border p-6">
+            <h2 className="text-base font-semibold text-foreground mb-4">Оплата</h2>
             <div className="space-y-3">
               <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-500">Итого:</span>
-                <span className="font-semibold text-gray-900">
+                <span className="text-muted-foreground">Итого:</span>
+                <span className="font-semibold text-foreground">
                   {formatPrice(booking.totalPrice)}
                 </span>
               </div>
               <div className="flex items-center justify-between text-sm">
-                <span className="text-gray-500">Оплачено:</span>
+                <span className="text-muted-foreground">Оплачено:</span>
                 <span className="font-medium text-green-600">
                   {formatPrice(booking.paidAmount)}
                 </span>
               </div>
               {remaining > 0 && (
-                <div className="flex items-center justify-between text-sm border-t border-gray-100 pt-3">
-                  <span className="text-gray-500">Остаток:</span>
+                <div className="flex items-center justify-between text-sm border-t border-border pt-3">
+                  <span className="text-muted-foreground">Остаток:</span>
                   <span className="font-semibold text-red-600">
                     {formatPrice(remaining)}
                   </span>
@@ -320,18 +320,18 @@ export default async function BookingDetailPage({
 
           {/* Status timeline */}
           {timeline.length > 0 && (
-            <div className="bg-white rounded-xl border border-gray-200 p-6">
-              <h2 className="text-base font-semibold text-gray-900 mb-4">История</h2>
+            <div className="bg-card rounded-xl border border-border p-6">
+              <h2 className="text-base font-semibold text-foreground mb-4">История</h2>
               <div className="relative">
-                <div className="absolute left-2 top-0 bottom-0 w-px bg-gray-100" />
+                <div className="absolute left-2 top-0 bottom-0 w-px bg-border" />
                 <div className="space-y-4">
                   {timeline.map((event, i) => (
                     <div key={i} className="flex items-start gap-3 pl-6 relative">
                       <div className="absolute left-0 top-1 w-4 h-4 rounded-full bg-blue-100 border-2 border-blue-400 flex-shrink-0" />
                       <div>
-                        <p className="text-sm font-medium text-gray-900">{event.label}</p>
+                        <p className="text-sm font-medium text-foreground">{event.label}</p>
                         {event.date && (
-                          <p className="text-xs text-gray-500">{formatDateTime(event.date)}</p>
+                          <p className="text-xs text-muted-foreground">{formatDateTime(event.date)}</p>
                         )}
                       </div>
                     </div>
@@ -342,8 +342,8 @@ export default async function BookingDetailPage({
           )}
 
           {/* Action buttons */}
-          <div className="bg-white rounded-xl border border-gray-200 p-6">
-            <h2 className="text-base font-semibold text-gray-900 mb-4">Действия</h2>
+          <div className="bg-card rounded-xl border border-border p-6">
+            <h2 className="text-base font-semibold text-foreground mb-4">Действия</h2>
             <div className="space-y-2">
               <BookingActions
                 bookingId={booking.id}

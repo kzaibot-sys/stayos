@@ -60,10 +60,10 @@ export default async function GuestProfilePage({ params }: Props) {
           </Button>
         </Link>
         <div className="flex-1">
-          <h1 className="font-heading text-2xl font-semibold text-gray-900">
+          <h1 className="font-heading text-2xl font-semibold text-foreground">
             {guest.firstName} {guest.lastName}
           </h1>
-          <p className="text-sm text-gray-500 mt-0.5">
+          <p className="text-sm text-muted-foreground mt-0.5">
             Профиль гостя
           </p>
         </div>
@@ -98,48 +98,48 @@ export default async function GuestProfilePage({ params }: Props) {
         <div className="lg:col-span-2 space-y-6">
           {/* Stats cards */}
           <div className="grid grid-cols-3 gap-4">
-            <div className="bg-white rounded-xl border border-gray-200 p-4">
-              <p className="text-sm text-gray-500 mb-1">Всего визитов</p>
-              <p className="text-2xl font-bold text-gray-900">{totalVisits}</p>
+            <div className="bg-card rounded-xl border border-border p-4">
+              <p className="text-sm text-muted-foreground mb-1">Всего визитов</p>
+              <p className="text-2xl font-bold text-foreground">{totalVisits}</p>
             </div>
-            <div className="bg-white rounded-xl border border-gray-200 p-4">
-              <p className="text-sm text-gray-500 mb-1">Итого потрачено</p>
-              <p className="text-2xl font-bold text-gray-900">
+            <div className="bg-card rounded-xl border border-border p-4">
+              <p className="text-sm text-muted-foreground mb-1">Итого потрачено</p>
+              <p className="text-2xl font-bold text-foreground">
                 {new Intl.NumberFormat("ru-RU", { maximumFractionDigits: 0 }).format(totalSpent)} ₸
               </p>
             </div>
-            <div className="bg-white rounded-xl border border-gray-200 p-4">
-              <p className="text-sm text-gray-500 mb-1">Средний чек</p>
-              <p className="text-2xl font-bold text-gray-900">
+            <div className="bg-card rounded-xl border border-border p-4">
+              <p className="text-sm text-muted-foreground mb-1">Средний чек</p>
+              <p className="text-2xl font-bold text-foreground">
                 {new Intl.NumberFormat("ru-RU", { maximumFractionDigits: 0 }).format(avgCheck)} ₸
               </p>
             </div>
           </div>
 
           {/* Booking history */}
-          <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-            <div className="px-4 py-3 border-b border-gray-100">
-              <h2 className="font-medium text-gray-900">История бронирований</h2>
+          <div className="bg-card rounded-xl border border-border overflow-hidden">
+            <div className="px-4 py-3 border-b border-border">
+              <h2 className="font-medium text-foreground">История бронирований</h2>
             </div>
             {guest.bookings.length === 0 ? (
               <div className="p-12 text-center">
-                <CalendarDays className="size-8 text-gray-300 mx-auto mb-3" />
-                <p className="text-sm text-gray-500">Нет бронирований</p>
+                <CalendarDays className="size-8 text-muted-foreground/40 mx-auto mb-3" />
+                <p className="text-sm text-muted-foreground">Нет бронирований</p>
               </div>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="border-b border-gray-100 bg-gray-50">
-                      <th className="text-left px-4 py-3 font-medium text-gray-500">№ брони</th>
-                      <th className="text-left px-4 py-3 font-medium text-gray-500">Номер</th>
-                      <th className="text-left px-4 py-3 font-medium text-gray-500">Заезд</th>
-                      <th className="text-left px-4 py-3 font-medium text-gray-500">Выезд</th>
-                      <th className="text-left px-4 py-3 font-medium text-gray-500">Статус</th>
-                      <th className="text-right px-4 py-3 font-medium text-gray-500">Сумма</th>
+                    <tr className="border-b border-border bg-muted">
+                      <th className="text-left px-4 py-3 font-medium text-muted-foreground">№ брони</th>
+                      <th className="text-left px-4 py-3 font-medium text-muted-foreground">Номер</th>
+                      <th className="text-left px-4 py-3 font-medium text-muted-foreground">Заезд</th>
+                      <th className="text-left px-4 py-3 font-medium text-muted-foreground">Выезд</th>
+                      <th className="text-left px-4 py-3 font-medium text-muted-foreground">Статус</th>
+                      <th className="text-right px-4 py-3 font-medium text-muted-foreground">Сумма</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-gray-100">
+                  <tbody className="divide-y divide-border">
                     {guest.bookings.map((booking) => {
                       const statusConfig: Record<string, { label: string; className: string }> = {
                         PENDING: { label: "Ожидает", className: "bg-yellow-100 text-yellow-700" },
@@ -152,7 +152,7 @@ export default async function GuestProfilePage({ params }: Props) {
                       const sc = statusConfig[booking.status] ?? statusConfig["PENDING"]
 
                       return (
-                        <tr key={booking.id} className="hover:bg-gray-50 transition-colors">
+                        <tr key={booking.id} className="hover:bg-muted transition-colors">
                           <td className="px-4 py-3">
                             <Link
                               href={`/dashboard/bookings/${booking.id}`}
@@ -161,13 +161,13 @@ export default async function GuestProfilePage({ params }: Props) {
                               {booking.bookingNumber}
                             </Link>
                           </td>
-                          <td className="px-4 py-3 text-gray-700">
+                          <td className="px-4 py-3 text-foreground">
                             {booking.room.name}
                           </td>
-                          <td className="px-4 py-3 text-gray-600 whitespace-nowrap">
+                          <td className="px-4 py-3 text-muted-foreground whitespace-nowrap">
                             {format(booking.checkIn, "d MMM yyyy", { locale: ru })}
                           </td>
-                          <td className="px-4 py-3 text-gray-600 whitespace-nowrap">
+                          <td className="px-4 py-3 text-muted-foreground whitespace-nowrap">
                             {format(booking.checkOut, "d MMM yyyy", { locale: ru })}
                           </td>
                           <td className="px-4 py-3">
@@ -175,7 +175,7 @@ export default async function GuestProfilePage({ params }: Props) {
                               {sc.label}
                             </span>
                           </td>
-                          <td className="px-4 py-3 text-right font-medium text-gray-900 whitespace-nowrap">
+                          <td className="px-4 py-3 text-right font-medium text-foreground whitespace-nowrap">
                             {new Intl.NumberFormat("ru-RU", { maximumFractionDigits: 0 }).format(booking.totalPrice)} ₸
                           </td>
                         </tr>

@@ -144,11 +144,11 @@ export function RoomGrid({ rooms }: RoomGridProps) {
           return (
             <div
               key={room.id}
-              className="group relative bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-md transition-shadow"
+              className="group relative bg-card rounded-xl border border-border overflow-hidden hover:shadow-md transition-shadow"
             >
               {/* Photo placeholder */}
-              <div className="h-40 bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
-                <BedDouble className="size-10 text-gray-300" />
+              <div className="h-40 bg-muted flex items-center justify-center">
+                <BedDouble className="size-10 text-muted-foreground/40" />
               </div>
 
               {/* Status badge overlay */}
@@ -190,21 +190,21 @@ export function RoomGrid({ rooms }: RoomGridProps) {
               <div className="p-4">
                 <div className="flex items-start justify-between gap-2 mb-2">
                   <div>
-                    <h3 className="font-semibold text-gray-900 leading-tight">
+                    <h3 className="font-semibold text-foreground leading-tight">
                       {room.name}
                       {room.roomNumber && (
-                        <span className="text-gray-400 font-normal ml-1 text-sm">
+                        <span className="text-muted-foreground font-normal ml-1 text-sm">
                           #{room.roomNumber}
                         </span>
                       )}
                     </h3>
-                    <span className="inline-flex items-center mt-1 px-2 py-0.5 rounded bg-gray-100 text-gray-600 text-xs font-medium">
+                    <span className="inline-flex items-center mt-1 px-2 py-0.5 rounded bg-muted text-muted-foreground text-xs font-medium">
                       {typeLabel}
                     </span>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-4 mt-3 text-sm text-gray-500">
+                <div className="flex items-center gap-4 mt-3 text-sm text-muted-foreground">
                   <span className="flex items-center gap-1">
                     <Users className="size-3.5" />
                     {room.capacity} гостей
@@ -214,11 +214,11 @@ export function RoomGrid({ rooms }: RoomGridProps) {
                   )}
                 </div>
 
-                <div className="mt-3 pt-3 border-t border-gray-100 flex items-center justify-between">
-                  <span className="flex items-center gap-1 text-sm font-semibold text-gray-900">
-                    <Banknote className="size-4 text-gray-400" />
+                <div className="mt-3 pt-3 border-t border-border flex items-center justify-between">
+                  <span className="flex items-center gap-1 text-sm font-semibold text-foreground">
+                    <Banknote className="size-4 text-muted-foreground" />
                     {formatPrice(room.pricePerNight)}
-                    <span className="text-xs text-gray-400 font-normal">
+                    <span className="text-xs text-muted-foreground font-normal">
                       /ночь
                     </span>
                   </span>

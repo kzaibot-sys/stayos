@@ -100,7 +100,7 @@ export function PaymentForm({
 
   return (
     <>
-      <div className="border-t border-gray-100 pt-3 mt-3">
+      <div className="border-t border-border pt-3 mt-3">
         {remaining > 0 && (
           <p className="text-sm font-semibold text-red-600 mb-3">
             Осталось к оплате: {formatPrice(remaining)}
@@ -132,7 +132,7 @@ export function PaymentForm({
             )}
 
             <div className="space-y-1.5">
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-foreground">
                 Сумма (₸) <span className="text-red-500">*</span>
               </label>
               <input
@@ -142,18 +142,18 @@ export function PaymentForm({
                 min={1}
                 step={1}
                 required
-                className="w-full h-10 rounded-lg border border-gray-200 bg-white px-3 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full h-10 rounded-lg border border-border bg-background px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
 
             <div className="space-y-1.5">
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-foreground">
                 Метод оплаты
               </label>
               <select
                 value={method}
                 onChange={(e) => setMethod(e.target.value)}
-                className="w-full h-10 rounded-lg border border-gray-200 bg-white px-3 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full h-10 rounded-lg border border-border bg-background px-3 text-sm text-foreground focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
                 {PAYMENT_METHODS.map((m) => (
                   <option key={m.value} value={m.value}>
@@ -164,23 +164,23 @@ export function PaymentForm({
             </div>
 
             {method === "KASPI" && (
-              <div className="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center space-y-3 bg-gray-50">
-                <div className="w-20 h-20 mx-auto bg-white border border-gray-200 rounded-lg flex items-center justify-center">
-                  <svg className="w-12 h-12 text-gray-300" fill="currentColor" viewBox="0 0 24 24">
+              <div className="border-2 border-dashed border-border rounded-xl p-6 text-center space-y-3 bg-muted">
+                <div className="w-20 h-20 mx-auto bg-card border border-border rounded-lg flex items-center justify-center">
+                  <svg className="w-12 h-12 text-muted-foreground/40" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M3 3h7v7H3V3zm0 11h7v7H3v-7zm11-11h7v7h-7V3zm0 11h7v7h-7v-7zM5 5v3h3V5H5zm0 11v3h3v-3H5zm11-11v3h3V5h-3zm0 11v3h3v-3h-3z"/>
                   </svg>
                 </div>
-                <p className="text-sm font-medium text-gray-700">
+                <p className="text-sm font-medium text-foreground">
                   Покажите QR код гостю для оплаты через Kaspi
                 </p>
-                <p className="text-xs text-gray-400">
+                <p className="text-xs text-muted-foreground">
                   Интеграция с Kaspi QR будет добавлена в следующем обновлении
                 </p>
               </div>
             )}
 
             <div className="space-y-1.5">
-              <label className="block text-sm font-medium text-gray-700">
+              <label className="block text-sm font-medium text-foreground">
                 Заметка (необязательно)
               </label>
               <textarea
@@ -188,7 +188,7 @@ export function PaymentForm({
                 onChange={(e) => setNotes(e.target.value)}
                 rows={2}
                 placeholder="Комментарий к оплате..."
-                className="w-full rounded-lg border border-gray-200 bg-white px-3 py-2 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
               />
             </div>
 

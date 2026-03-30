@@ -56,13 +56,13 @@ export function Topbar({ user, hotelName, onMenuClick }: TopbarProps) {
   const breadcrumbs = getBreadcrumbs(pathname)
 
   return (
-    <header className="flex h-16 items-center justify-between border-b border-gray-200 bg-white px-4 shadow-sm">
+    <header className="flex h-16 items-center justify-between border-b border-border bg-card px-4 shadow-sm">
       {/* Left side */}
       <div className="flex items-center gap-3 min-w-0">
         {/* Hamburger - mobile only */}
         <button
           onClick={onMenuClick}
-          className="lg:hidden flex items-center justify-center rounded-md p-1.5 text-gray-500 hover:bg-gray-100 hover:text-gray-700 transition-colors shrink-0"
+          className="lg:hidden flex items-center justify-center rounded-md p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors shrink-0"
           aria-label="Open navigation menu"
         >
           <Menu className="size-5" />
@@ -75,19 +75,19 @@ export function Topbar({ user, hotelName, onMenuClick }: TopbarProps) {
             return (
               <div key={crumb.href} className="flex items-center gap-1 min-w-0">
                 {i === 0 && (
-                  <Home className="size-3.5 text-gray-400 shrink-0" />
+                  <Home className="size-3.5 text-muted-foreground shrink-0" />
                 )}
                 {i > 0 && (
-                  <ChevronRight className="size-3.5 text-gray-300 shrink-0" />
+                  <ChevronRight className="size-3.5 text-muted-foreground shrink-0" />
                 )}
                 {isLast ? (
-                  <span className="font-semibold text-gray-900 truncate">
+                  <span className="font-semibold text-foreground truncate">
                     {crumb.label}
                   </span>
                 ) : (
                   <Link
                     href={crumb.href}
-                    className="text-gray-500 hover:text-gray-700 transition-colors truncate"
+                    className="text-muted-foreground hover:text-foreground transition-colors truncate"
                   >
                     {crumb.label}
                   </Link>
@@ -98,7 +98,7 @@ export function Topbar({ user, hotelName, onMenuClick }: TopbarProps) {
         </nav>
 
         {/* Hotel name - mobile only */}
-        <span className="md:hidden font-heading text-sm font-semibold text-gray-900 truncate">
+        <span className="md:hidden font-heading text-sm font-semibold text-foreground truncate">
           {hotelName}
         </span>
       </div>

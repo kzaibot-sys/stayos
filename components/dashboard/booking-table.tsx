@@ -155,7 +155,7 @@ export function BookingTable({ bookings, total, page, limit }: BookingTableProps
           return (
             <div
               key={booking.id}
-              className="bg-white rounded-xl border border-gray-200 p-4 space-y-3 shadow-sm"
+              className="bg-card rounded-xl border border-border p-4 space-y-3 shadow-sm"
             >
               <div className="flex items-start justify-between gap-2">
                 <div>
@@ -165,11 +165,11 @@ export function BookingTable({ bookings, total, page, limit }: BookingTableProps
                   >
                     {booking.bookingNumber}
                   </Link>
-                  <p className="font-semibold text-gray-900 text-sm mt-0.5">
+                  <p className="font-semibold text-foreground text-sm mt-0.5">
                     {booking.guestFirstName} {booking.guestLastName}
                   </p>
                   {booking.guestPhone && (
-                    <p className="text-xs text-gray-400">{booking.guestPhone}</p>
+                    <p className="text-xs text-muted-foreground">{booking.guestPhone}</p>
                   )}
                 </div>
                 <span
@@ -179,19 +179,19 @@ export function BookingTable({ bookings, total, page, limit }: BookingTableProps
                 </span>
               </div>
 
-              <div className="flex items-center gap-2 text-xs text-gray-600">
-                <span className="bg-gray-100 rounded px-2 py-0.5 font-medium">
+              <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                <span className="bg-muted rounded px-2 py-0.5 font-medium">
                   {booking.room.name}
                   {booking.room.roomNumber ? ` #${booking.room.roomNumber}` : ""}
                 </span>
-                <span className="text-gray-400">•</span>
+                <span className="text-muted-foreground">•</span>
                 <span>{formatDate(booking.checkIn)} — {formatDate(booking.checkOut)}</span>
-                <span className="text-gray-400">•</span>
+                <span className="text-muted-foreground">•</span>
                 <span>{booking.nights} н.</span>
               </div>
 
-              <div className="flex items-center justify-between pt-1 border-t border-gray-100">
-                <span className="font-bold text-gray-900 text-sm">
+              <div className="flex items-center justify-between pt-1 border-t border-border">
+                <span className="font-bold text-foreground text-sm">
                   {formatPrice(booking.totalPrice)}
                 </span>
                 <Link
@@ -220,7 +220,7 @@ export function BookingTable({ bookings, total, page, limit }: BookingTableProps
             >
               Назад
             </Button>
-            <span className="text-sm text-gray-500">
+            <span className="text-sm text-muted-foreground">
               {page} / {Math.ceil(total / limit)}
             </span>
             <Button
@@ -240,44 +240,44 @@ export function BookingTable({ bookings, total, page, limit }: BookingTableProps
       </div>
 
       {/* Desktop table layout */}
-      <div className="hidden md:block rounded-xl border border-gray-200 bg-white overflow-hidden">
+      <div className="hidden md:block rounded-xl border border-border bg-card overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-gray-100 bg-gray-50">
-                <th className="text-left px-4 py-3 font-medium text-gray-500 whitespace-nowrap">
+              <tr className="border-b border-border bg-muted">
+                <th className="text-left px-4 py-3 font-medium text-muted-foreground whitespace-nowrap">
                   № брони
                 </th>
-                <th className="text-left px-4 py-3 font-medium text-gray-500 whitespace-nowrap">
+                <th className="text-left px-4 py-3 font-medium text-muted-foreground whitespace-nowrap">
                   Гость
                 </th>
-                <th className="text-left px-4 py-3 font-medium text-gray-500 whitespace-nowrap">
+                <th className="text-left px-4 py-3 font-medium text-muted-foreground whitespace-nowrap">
                   Номер
                 </th>
-                <th className="text-left px-4 py-3 font-medium text-gray-500 whitespace-nowrap">
+                <th className="text-left px-4 py-3 font-medium text-muted-foreground whitespace-nowrap">
                   Заезд
                 </th>
-                <th className="text-left px-4 py-3 font-medium text-gray-500 whitespace-nowrap">
+                <th className="text-left px-4 py-3 font-medium text-muted-foreground whitespace-nowrap">
                   Выезд
                 </th>
-                <th className="text-left px-4 py-3 font-medium text-gray-500 whitespace-nowrap">
+                <th className="text-left px-4 py-3 font-medium text-muted-foreground whitespace-nowrap">
                   Ночей
                 </th>
-                <th className="text-left px-4 py-3 font-medium text-gray-500 whitespace-nowrap">
+                <th className="text-left px-4 py-3 font-medium text-muted-foreground whitespace-nowrap">
                   Статус
                 </th>
-                <th className="text-left px-4 py-3 font-medium text-gray-500 whitespace-nowrap">
+                <th className="text-left px-4 py-3 font-medium text-muted-foreground whitespace-nowrap">
                   Оплата
                 </th>
-                <th className="text-left px-4 py-3 font-medium text-gray-500 whitespace-nowrap">
+                <th className="text-left px-4 py-3 font-medium text-muted-foreground whitespace-nowrap">
                   Сумма
                 </th>
-                <th className="text-right px-4 py-3 font-medium text-gray-500 whitespace-nowrap">
+                <th className="text-right px-4 py-3 font-medium text-muted-foreground whitespace-nowrap">
                   Действия
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+            <tbody className="divide-y divide-border">
               {bookings.map((booking) => {
                 const statusCfg = bookingStatusConfig[booking.status] ?? bookingStatusConfig["PENDING"]
                 const paymentCfg = paymentStatusConfig[booking.paymentStatus] ?? paymentStatusConfig["UNPAID"]
@@ -286,7 +286,7 @@ export function BookingTable({ bookings, total, page, limit }: BookingTableProps
                 return (
                   <tr
                     key={booking.id}
-                    className="hover:bg-gray-50 transition-colors"
+                    className="hover:bg-muted transition-colors"
                   >
                     <td className="px-4 py-3">
                       <Link
@@ -297,28 +297,28 @@ export function BookingTable({ bookings, total, page, limit }: BookingTableProps
                       </Link>
                     </td>
                     <td className="px-4 py-3">
-                      <div className="font-medium text-gray-900">
+                      <div className="font-medium text-foreground">
                         {booking.guestFirstName} {booking.guestLastName}
                       </div>
                       {booking.guestPhone && (
-                        <div className="text-xs text-gray-400">{booking.guestPhone}</div>
+                        <div className="text-xs text-muted-foreground">{booking.guestPhone}</div>
                       )}
                     </td>
-                    <td className="px-4 py-3 text-gray-700">
+                    <td className="px-4 py-3 text-foreground">
                       {booking.room.name}
                       {booking.room.roomNumber && (
-                        <span className="text-gray-400 ml-1 text-xs">
+                        <span className="text-muted-foreground ml-1 text-xs">
                           #{booking.room.roomNumber}
                         </span>
                       )}
                     </td>
-                    <td className="px-4 py-3 text-gray-600 whitespace-nowrap">
+                    <td className="px-4 py-3 text-muted-foreground whitespace-nowrap">
                       {formatDate(booking.checkIn)}
                     </td>
-                    <td className="px-4 py-3 text-gray-600 whitespace-nowrap">
+                    <td className="px-4 py-3 text-muted-foreground whitespace-nowrap">
                       {formatDate(booking.checkOut)}
                     </td>
-                    <td className="px-4 py-3 text-center text-gray-700 font-medium">
+                    <td className="px-4 py-3 text-center text-foreground font-medium">
                       {booking.nights}
                     </td>
                     <td className="px-4 py-3">
@@ -335,13 +335,13 @@ export function BookingTable({ bookings, total, page, limit }: BookingTableProps
                         {paymentCfg.label}
                       </span>
                     </td>
-                    <td className="px-4 py-3 font-medium text-gray-900 whitespace-nowrap">
+                    <td className="px-4 py-3 font-medium text-foreground whitespace-nowrap">
                       {formatPrice(booking.totalPrice)}
                     </td>
                     <td className="px-4 py-3 text-right">
                       <DropdownMenu>
                         <DropdownMenuTrigger
-                          className="inline-flex items-center justify-center h-8 w-8 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors disabled:opacity-50"
+                          className="inline-flex items-center justify-center h-8 w-8 rounded-md text-muted-foreground hover:text-foreground hover:bg-muted transition-colors disabled:opacity-50"
                           disabled={isLoading}
                         >
                           <MoreVertical className="size-4" />
@@ -406,8 +406,8 @@ export function BookingTable({ bookings, total, page, limit }: BookingTableProps
 
         {/* Pagination */}
         {totalPages > 1 && (
-          <div className="border-t border-gray-100 px-4 py-3 flex items-center justify-between">
-            <span className="text-sm text-gray-500">
+          <div className="border-t border-border px-4 py-3 flex items-center justify-between">
+            <span className="text-sm text-muted-foreground">
               Показано {Math.min((page - 1) * limit + 1, total)}–
               {Math.min(page * limit, total)} из {total}
             </span>
@@ -424,7 +424,7 @@ export function BookingTable({ bookings, total, page, limit }: BookingTableProps
               >
                 Назад
               </Button>
-              <span className="text-sm text-gray-600">
+              <span className="text-sm text-muted-foreground">
                 {page} / {totalPages}
               </span>
               <Button

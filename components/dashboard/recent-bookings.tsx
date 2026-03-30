@@ -55,60 +55,60 @@ export async function RecentBookings({ hotelId }: RecentBookingsProps) {
 
   return (
     <div className="mt-8">
-      <h2 className="text-lg font-semibold text-gray-900 mb-4">
+      <h2 className="text-lg font-semibold text-foreground mb-4">
         Ближайшие брони
       </h2>
 
       {bookings.length === 0 ? (
-        <div className="rounded-xl border border-dashed border-gray-200 bg-white p-8 text-center">
+        <div className="rounded-xl border border-dashed border-border bg-card p-8 text-center">
           <p className="text-sm text-muted-foreground">
             Нет предстоящих броней
           </p>
         </div>
       ) : (
-        <div className="rounded-xl border border-gray-200 bg-white overflow-hidden">
+        <div className="rounded-xl border border-border bg-card overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-gray-100 bg-gray-50">
-                  <th className="text-left px-4 py-3 font-medium text-gray-500">
+                <tr className="border-b border-border bg-muted">
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">
                     Гость
                   </th>
-                  <th className="text-left px-4 py-3 font-medium text-gray-500">
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">
                     Номер
                   </th>
-                  <th className="text-left px-4 py-3 font-medium text-gray-500">
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">
                     Заезд
                   </th>
-                  <th className="text-left px-4 py-3 font-medium text-gray-500">
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">
                     Выезд
                   </th>
-                  <th className="text-left px-4 py-3 font-medium text-gray-500">
+                  <th className="text-left px-4 py-3 font-medium text-muted-foreground">
                     Статус
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-100">
+              <tbody className="divide-y divide-border">
                 {bookings.map((booking) => {
                   const config =
                     statusConfig[booking.status] ?? statusConfig["PENDING"]
                   return (
-                    <tr key={booking.id} className="hover:bg-gray-50 transition-colors">
-                      <td className="px-4 py-3 font-medium text-gray-900">
+                    <tr key={booking.id} className="hover:bg-muted transition-colors">
+                      <td className="px-4 py-3 font-medium text-foreground">
                         {booking.guestFirstName} {booking.guestLastName}
                       </td>
-                      <td className="px-4 py-3 text-gray-600">
+                      <td className="px-4 py-3 text-muted-foreground">
                         {booking.room.name}
                         {booking.room.roomNumber
                           ? ` (${booking.room.roomNumber})`
                           : ""}
                       </td>
-                      <td className="px-4 py-3 text-gray-600">
+                      <td className="px-4 py-3 text-muted-foreground">
                         {format(new Date(booking.checkIn), "d MMM", {
                           locale: ru,
                         })}
                       </td>
-                      <td className="px-4 py-3 text-gray-600">
+                      <td className="px-4 py-3 text-muted-foreground">
                         {format(new Date(booking.checkOut), "d MMM", {
                           locale: ru,
                         })}

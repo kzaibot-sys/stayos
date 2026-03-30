@@ -104,9 +104,9 @@ export function GuestProfileClient({ guest }: Props) {
   }
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-      <div className="flex items-center justify-between px-4 py-3 border-b border-gray-100">
-        <h2 className="font-medium text-gray-900">Информация о госте</h2>
+    <div className="bg-card rounded-xl border border-border overflow-hidden">
+      <div className="flex items-center justify-between px-4 py-3 border-b border-border">
+        <h2 className="font-medium text-foreground">Информация о госте</h2>
         {!isEditing ? (
           <Button
             variant="outline"
@@ -140,7 +140,7 @@ export function GuestProfileClient({ guest }: Props) {
           <>
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs font-medium text-gray-500 mb-1">
+                <label className="block text-xs font-medium text-muted-foreground mb-1">
                   Имя
                 </label>
                 <input
@@ -149,11 +149,11 @@ export function GuestProfileClient({ guest }: Props) {
                   onChange={(e) =>
                     setForm((f) => ({ ...f, firstName: e.target.value }))
                   }
-                  className="w-full px-3 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-1.5 text-sm border border-border bg-background text-foreground rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-gray-500 mb-1">
+                <label className="block text-xs font-medium text-muted-foreground mb-1">
                   Фамилия
                 </label>
                 <input
@@ -162,13 +162,13 @@ export function GuestProfileClient({ guest }: Props) {
                   onChange={(e) =>
                     setForm((f) => ({ ...f, lastName: e.target.value }))
                   }
-                  className="w-full px-3 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-1.5 text-sm border border-border bg-background text-foreground rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-gray-500 mb-1">
+              <label className="block text-xs font-medium text-muted-foreground mb-1">
                 Email
               </label>
               <input
@@ -177,12 +177,12 @@ export function GuestProfileClient({ guest }: Props) {
                 onChange={(e) =>
                   setForm((f) => ({ ...f, email: e.target.value }))
                 }
-                className="w-full px-3 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-1.5 text-sm border border-border bg-background text-foreground rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-gray-500 mb-1">
+              <label className="block text-xs font-medium text-muted-foreground mb-1">
                 Телефон
               </label>
               <input
@@ -191,12 +191,12 @@ export function GuestProfileClient({ guest }: Props) {
                 onChange={(e) =>
                   setForm((f) => ({ ...f, phone: e.target.value }))
                 }
-                className="w-full px-3 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-1.5 text-sm border border-border bg-background text-foreground rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-gray-500 mb-1">
+              <label className="block text-xs font-medium text-muted-foreground mb-1">
                 Паспорт / ИИН
               </label>
               <input
@@ -205,13 +205,13 @@ export function GuestProfileClient({ guest }: Props) {
                 onChange={(e) =>
                   setForm((f) => ({ ...f, passportNumber: e.target.value }))
                 }
-                className="w-full px-3 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-1.5 text-sm border border-border bg-background text-foreground rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
 
             <div className="grid grid-cols-2 gap-3">
               <div>
-                <label className="block text-xs font-medium text-gray-500 mb-1">
+                <label className="block text-xs font-medium text-muted-foreground mb-1">
                   Гражданство
                 </label>
                 <input
@@ -220,11 +220,11 @@ export function GuestProfileClient({ guest }: Props) {
                   onChange={(e) =>
                     setForm((f) => ({ ...f, nationality: e.target.value }))
                   }
-                  className="w-full px-3 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-1.5 text-sm border border-border bg-background text-foreground rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-gray-500 mb-1">
+                <label className="block text-xs font-medium text-muted-foreground mb-1">
                   Дата рождения
                 </label>
                 <input
@@ -233,13 +233,13 @@ export function GuestProfileClient({ guest }: Props) {
                   onChange={(e) =>
                     setForm((f) => ({ ...f, birthDate: e.target.value }))
                   }
-                  className="w-full px-3 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-1.5 text-sm border border-border bg-background text-foreground rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-xs font-medium text-gray-500 mb-1">
+              <label className="block text-xs font-medium text-muted-foreground mb-1">
                 Заметки
               </label>
               <textarea
@@ -248,7 +248,7 @@ export function GuestProfileClient({ guest }: Props) {
                   setForm((f) => ({ ...f, notes: e.target.value }))
                 }
                 rows={3}
-                className="w-full px-3 py-1.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+                className="w-full px-3 py-1.5 text-sm border border-border bg-background text-foreground rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
               />
             </div>
           </>
@@ -269,8 +269,8 @@ export function GuestProfileClient({ guest }: Props) {
             />
             {guest.notes && (
               <div>
-                <p className="text-xs font-medium text-gray-500 mb-1">Заметки</p>
-                <p className="text-sm text-gray-700 whitespace-pre-wrap">
+                <p className="text-xs font-medium text-muted-foreground mb-1">Заметки</p>
+                <p className="text-sm text-foreground whitespace-pre-wrap">
                   {guest.notes}
                 </p>
               </div>
@@ -281,7 +281,7 @@ export function GuestProfileClient({ guest }: Props) {
         {/* Tags */}
         <div>
           <div className="flex items-center justify-between mb-2">
-            <p className="text-xs font-medium text-gray-500">Теги</p>
+            <p className="text-xs font-medium text-muted-foreground">Теги</p>
             <button
               onClick={() => setShowTagPicker((v) => !v)}
               className="inline-flex items-center text-xs text-blue-600 hover:text-blue-700"
@@ -307,12 +307,12 @@ export function GuestProfileClient({ guest }: Props) {
               </span>
             ))}
             {tags.length === 0 && (
-              <span className="text-xs text-gray-400">Нет тегов</span>
+              <span className="text-xs text-muted-foreground">Нет тегов</span>
             )}
           </div>
 
           {showTagPicker && (
-            <div className="flex flex-wrap gap-1 pt-2 border-t border-gray-100">
+            <div className="flex flex-wrap gap-1 pt-2 border-t border-border">
               {PRESET_TAGS.filter((t) => !tags.includes(t)).map((tag) => (
                 <button
                   key={tag}
@@ -342,9 +342,9 @@ function InfoRow({
 }) {
   return (
     <div>
-      <p className="text-xs font-medium text-gray-500 mb-0.5">{label}</p>
-      <p className="text-sm text-gray-800">
-        {value ?? <span className="text-gray-300">—</span>}
+      <p className="text-xs font-medium text-muted-foreground mb-0.5">{label}</p>
+      <p className="text-sm text-foreground">
+        {value ?? <span className="text-muted-foreground/50">—</span>}
       </p>
     </div>
   )

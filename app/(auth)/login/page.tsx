@@ -41,22 +41,22 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#f9fafb] flex items-center justify-center px-4">
+    <div className="min-h-screen bg-background flex items-center justify-center px-4">
       <div className="w-full max-w-md mx-auto mt-20">
         {/* Logo */}
         <div className="flex items-center justify-center gap-2 mb-8">
           <div className="flex items-center justify-center w-10 h-10 rounded-lg bg-[#1a56db]">
             <BedDouble className="w-6 h-6 text-white" />
           </div>
-          <span className="text-2xl font-bold text-[#111827] font-heading">StayOS</span>
+          <span className="text-2xl font-bold text-foreground font-heading">StayOS</span>
         </div>
 
-        <Card className="shadow-sm border border-gray-200">
+        <Card className="shadow-sm">
           <CardHeader className="space-y-1 pb-4">
-            <CardTitle className="text-2xl font-bold text-[#111827] text-center">
+            <CardTitle className="text-2xl font-bold text-foreground text-center">
               Войти в аккаунт
             </CardTitle>
-            <CardDescription className="text-center text-gray-500">
+            <CardDescription className="text-center">
               Введите ваши данные для входа
             </CardDescription>
           </CardHeader>
@@ -64,7 +64,7 @@ export default function LoginPage() {
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="email" className="text-[#111827] font-medium">
+                <Label htmlFor="email" className="font-medium">
                   Email
                 </Label>
                 <Input
@@ -80,7 +80,7 @@ export default function LoginPage() {
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="password" className="text-[#111827] font-medium">
+                <Label htmlFor="password" className="font-medium">
                   Пароль
                 </Label>
                 <Input
@@ -111,7 +111,7 @@ export default function LoginPage() {
               </Button>
             </form>
 
-            <div className="mt-6 text-center text-sm text-gray-500">
+            <div className="mt-6 text-center text-sm text-muted-foreground">
               Нет аккаунта?{" "}
               <Link
                 href="/register"

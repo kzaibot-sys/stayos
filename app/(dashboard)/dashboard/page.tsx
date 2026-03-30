@@ -199,7 +199,7 @@ export default async function DashboardPage() {
     <div className="space-y-6">
       {/* Page header */}
       <div className="mb-2">
-        <h1 className="font-heading text-2xl font-semibold text-gray-900">
+        <h1 className="font-heading text-2xl font-semibold text-foreground">
           Панель управления
         </h1>
         {hotel && (
@@ -210,10 +210,10 @@ export default async function DashboardPage() {
       {/* Onboarding banner for new hotels */}
       {isNewHotel && (
         <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl border border-blue-100 p-6">
-          <h2 className="text-xl font-bold text-gray-900 mb-1">
+          <h2 className="text-xl font-bold text-foreground mb-1">
             Добро пожаловать в StayOS!
           </h2>
-          <p className="text-sm text-gray-600 mb-5">
+          <p className="text-sm text-muted-foreground mb-5">
             Давайте настроим ваш отель за три шага.
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
@@ -243,7 +243,7 @@ export default async function DashboardPage() {
                 className={`flex items-center gap-3 rounded-lg border p-4 transition-all hover:shadow-sm ${
                   done
                     ? "border-green-200 bg-green-50"
-                    : "border-gray-200 bg-white hover:border-blue-300"
+                    : "border-border bg-card hover:border-blue-300"
                 }`}
               >
                 <div
@@ -255,10 +255,10 @@ export default async function DashboardPage() {
                 >
                   {done ? "✓" : step}
                 </div>
-                <span className={`text-sm font-medium ${done ? "text-green-700 line-through" : "text-gray-800"}`}>
+                <span className={`text-sm font-medium ${done ? "text-green-700 line-through" : "text-foreground"}`}>
                   {label}
                 </span>
-                {!done && <ArrowRight className="size-4 text-gray-400 ml-auto shrink-0" />}
+                {!done && <ArrowRight className="size-4 text-muted-foreground ml-auto shrink-0" />}
               </Link>
             ))}
           </div>
@@ -292,7 +292,7 @@ export default async function DashboardPage() {
 
       {/* Quick actions */}
       <div>
-        <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">
+        <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-3">
           Быстрые действия
         </h2>
         <div className="flex flex-wrap gap-3">
@@ -305,14 +305,14 @@ export default async function DashboardPage() {
           </Link>
           <Link
             href="/dashboard/rooms/new"
-            className="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+            className="inline-flex items-center gap-2 rounded-lg border border-border bg-card px-4 py-2.5 text-sm font-medium text-foreground hover:bg-muted transition-colors"
           >
             <BedDouble className="size-4" />
             Новый номер
           </Link>
           <Link
             href="/dashboard/settings"
-            className="inline-flex items-center gap-2 rounded-lg border border-gray-200 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+            className="inline-flex items-center gap-2 rounded-lg border border-border bg-card px-4 py-2.5 text-sm font-medium text-foreground hover:bg-muted transition-colors"
           >
             <Settings className="size-4" />
             Настройки
@@ -384,9 +384,9 @@ export default async function DashboardPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {/* Check-ins */}
           {checkInsList.length > 0 && (
-            <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-              <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
-                <h3 className="font-semibold text-gray-900 flex items-center gap-2">
+            <div className="bg-card rounded-xl border border-border overflow-hidden">
+              <div className="flex items-center justify-between px-5 py-4 border-b border-border">
+                <h3 className="font-semibold text-foreground flex items-center gap-2">
                   <CalendarCheck className="size-4 text-blue-600" />
                   Заезды сегодня
                 </h3>
@@ -394,14 +394,14 @@ export default async function DashboardPage() {
                   {checkInsList.length}
                 </span>
               </div>
-              <ul className="divide-y divide-gray-100">
+              <ul className="divide-y divide-border">
                 {checkInsList.map((b) => (
                   <li key={b.id} className="px-5 py-3 flex items-center justify-between gap-3">
                     <div>
-                      <p className="text-sm font-medium text-gray-900">
+                      <p className="text-sm font-medium text-foreground">
                         {b.guestFirstName} {b.guestLastName}
                       </p>
-                      <p className="text-xs text-gray-500">
+                      <p className="text-xs text-muted-foreground">
                         {b.room.name}
                         {b.room.roomNumber ? ` #${b.room.roomNumber}` : ""}
                       </p>
@@ -420,9 +420,9 @@ export default async function DashboardPage() {
 
           {/* Check-outs */}
           {checkOutsList.length > 0 && (
-            <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-              <div className="flex items-center justify-between px-5 py-4 border-b border-gray-100">
-                <h3 className="font-semibold text-gray-900 flex items-center gap-2">
+            <div className="bg-card rounded-xl border border-border overflow-hidden">
+              <div className="flex items-center justify-between px-5 py-4 border-b border-border">
+                <h3 className="font-semibold text-foreground flex items-center gap-2">
                   <LogOut className="size-4 text-orange-500" />
                   Выезды сегодня
                 </h3>
@@ -430,14 +430,14 @@ export default async function DashboardPage() {
                   {checkOutsList.length}
                 </span>
               </div>
-              <ul className="divide-y divide-gray-100">
+              <ul className="divide-y divide-border">
                 {checkOutsList.map((b) => (
                   <li key={b.id} className="px-5 py-3 flex items-center justify-between gap-3">
                     <div>
-                      <p className="text-sm font-medium text-gray-900">
+                      <p className="text-sm font-medium text-foreground">
                         {b.guestFirstName} {b.guestLastName}
                       </p>
-                      <p className="text-xs text-gray-500">
+                      <p className="text-xs text-muted-foreground">
                         {b.room.name}
                         {b.room.roomNumber ? ` #${b.room.roomNumber}` : ""}
                       </p>
@@ -462,25 +462,25 @@ export default async function DashboardPage() {
       {/* Recent activity log */}
       {recentActivity.length > 0 && (
         <div>
-          <h2 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3 flex items-center gap-2">
+          <h2 className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-3 flex items-center gap-2">
             <Activity className="size-4" />
             Последние действия
           </h2>
-          <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-            <ul className="divide-y divide-gray-100">
+          <div className="bg-card rounded-xl border border-border overflow-hidden">
+            <ul className="divide-y divide-border">
               {recentActivity.map((log) => {
                 const Icon = activityIcon(log.action)
                 return (
                   <li key={log.id} className="flex items-center gap-3 px-5 py-3">
-                    <div className="size-8 rounded-full bg-gray-100 flex items-center justify-center shrink-0">
-                      <Icon className="size-4 text-gray-500" />
+                    <div className="size-8 rounded-full bg-muted flex items-center justify-center shrink-0">
+                      <Icon className="size-4 text-muted-foreground" />
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-gray-900">
+                      <p className="text-sm font-medium text-foreground">
                         {activityLabel(log.action)}
                       </p>
                       {log.details && (
-                        <p className="text-xs text-gray-400 truncate">
+                        <p className="text-xs text-muted-foreground truncate">
                           {(() => {
                             try {
                               const d = JSON.parse(log.details)
@@ -494,7 +494,7 @@ export default async function DashboardPage() {
                         </p>
                       )}
                     </div>
-                    <time className="text-xs text-gray-400 shrink-0">
+                    <time className="text-xs text-muted-foreground shrink-0">
                       {format(new Date(log.createdAt), "d MMM, HH:mm", { locale: ru })}
                     </time>
                   </li>

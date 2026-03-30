@@ -377,7 +377,7 @@ export function RoomForm({ mode, roomId, defaultValues }: RoomFormProps) {
                   checked={selectedAmenities.includes(amenity)}
                   onCheckedChange={() => toggleAmenity(amenity)}
                 />
-                <span className="text-sm text-gray-700 group-hover:text-gray-900 select-none">
+                <span className="text-sm text-foreground select-none">
                   {amenity}
                 </span>
               </label>

@@ -20,7 +20,7 @@ export function DashboardShell({ user, hotelName, children }: DashboardShellProp
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background">
       <NotificationSound />
       {/* Desktop sidebar - fixed left */}
       <aside className="hidden lg:flex fixed inset-y-0 left-0 z-40">
