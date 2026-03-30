@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import { prisma } from "@/lib/prisma"
+import { calculateDynamicPrice } from "@/lib/dynamic-pricing"
 
 export async function GET(
   req: Request,
@@ -47,24 +48,46 @@ export async function GET(
     orderBy: { sortOrder: "asc" },
   })
 
-  // Parse amenities and photos from JSON strings
-  const parsedRooms = rooms.map((room) => ({
-    ...room,
-    amenities: (() => {
-      try {
-        return JSON.parse(room.amenities)
-      } catch {
-        return []
-      }
-    })(),
-    photos: (() => {
-      try {
-        return JSON.parse(room.photos)
-      } catch {
-        return []
-      }
-    })(),
-  }))
+  // Calculate current occupancy for dynamic pricing
+  const totalRooms = await prisma.room.count({
+    where: { hotelId: hotel.id, isActive: true },
+  })
+
+  const now = new Date()
+  const occupiedCount = await prisma.booking.count({
+    where: {
+      hotelId: hotel.id,
+      status: { in: ["CONFIRMED", "CHECKED_IN"] },
+      checkIn: { lte: now },
+      checkOut: { gte: now },
+    },
+  })
+
+  const occupancyPercent = totalRooms > 0 ? (occupiedCount / totalRooms) * 100 : 0
+
+  // Parse amenities and photos from JSON strings, apply dynamic pricing
+  const parsedRooms = rooms.map((room) => {
+    const dynamicPrice = calculateDynamicPrice(room.pricePerNight, occupancyPercent)
+    return {
+      ...room,
+      basePrice: room.pricePerNight,
+      dynamicPrice: dynamicPrice !== room.pricePerNight ? dynamicPrice : null,
+      amenities: (() => {
+        try {
+          return JSON.parse(room.amenities)
+        } catch {
+          return []
+        }
+      })(),
+      photos: (() => {
+        try {
+          return JSON.parse(room.photos)
+        } catch {
+          return []
+        }
+      })(),
+    }
+  })
 
   return NextResponse.json(parsedRooms)
 }

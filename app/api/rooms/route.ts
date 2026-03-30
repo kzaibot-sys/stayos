@@ -22,6 +22,7 @@ const roomSchema = z.object({
   status: z
     .enum(["AVAILABLE", "OCCUPIED", "MAINTENANCE", "BLOCKED"])
     .default("AVAILABLE"),
+  minNights: z.number().int().min(1).default(1),
 })
 
 export async function GET() {
@@ -116,6 +117,7 @@ export async function POST(req: Request) {
       amenities: JSON.stringify(data.amenities),
       photos: JSON.stringify(data.photos),
       status: data.status,
+      minNights: data.minNights,
     },
   })
 

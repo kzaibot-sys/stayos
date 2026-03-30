@@ -71,10 +71,11 @@ function formatDate(dateStr: string): string {
 interface StepPaymentProps {
   bookingData: BookingData
   slug: string
+  prepaymentPercent?: number
   onBack: () => void
 }
 
-export function StepPayment({ bookingData, slug, onBack }: StepPaymentProps) {
+export function StepPayment({ bookingData, slug, prepaymentPercent = 0, onBack }: StepPaymentProps) {
   const router = useRouter()
   const [paymentMethod, setPaymentMethod] = useState<"on_arrival" | "online">("on_arrival")
   const [loading, setLoading] = useState(false)
@@ -303,6 +304,18 @@ export function StepPayment({ bookingData, slug, onBack }: StepPaymentProps) {
             <span>Итого</span>
             <span className="text-[#1a56db]">{formatPrice(totalPrice)}</span>
           </div>
+          {prepaymentPercent > 0 && (
+            <>
+              <div className="flex justify-between text-sm text-amber-700 bg-amber-50 rounded-lg px-3 py-2 mt-2">
+                <span>Предоплата ({prepaymentPercent}%)</span>
+                <span className="font-semibold">{formatPrice(Math.round(totalPrice * prepaymentPercent / 100))}</span>
+              </div>
+              <div className="flex justify-between text-sm text-gray-500 px-3">
+                <span>Остаток при заезде</span>
+                <span>{formatPrice(totalPrice - Math.round(totalPrice * prepaymentPercent / 100))}</span>
+              </div>
+            </>
+          )}
         </div>
       </div>
 

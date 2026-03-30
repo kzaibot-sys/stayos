@@ -26,10 +26,12 @@ interface Room {
   capacity: number
   bedType?: string | null
   pricePerNight: number
+  dynamicPrice?: number | null
   weekendPrice?: number | null
   amenities: string[]
   photos: string[]
   description?: string | null
+  minNights?: number
 }
 
 interface StepDatesProps {
@@ -111,10 +113,26 @@ export function StepDates({
     }
   }
 
+  function getNights(ci: string, co: string): number {
+    if (!ci || !co) return 0
+    return Math.max(0, Math.round((new Date(co).getTime() - new Date(ci).getTime()) / 86400000))
+  }
+
   function handleSelectRoom(room: Room) {
+    const nights = getNights(checkIn, checkOut)
+    const minN = room.minNights ?? 1
+    if (nights < minN) {
+      setDateError(`Минимальное количество ночей для этого номера: ${minN}`)
+      return
+    }
+    setDateError("")
     setSelectedRoomId(room.id)
     if (checkIn && checkOut) {
-      onNext({ checkIn, checkOut, roomId: room.id, room, adults, children })
+      // Use dynamic price if available
+      const roomWithPrice = room.dynamicPrice
+        ? { ...room, pricePerNight: room.dynamicPrice }
+        : room
+      onNext({ checkIn, checkOut, roomId: room.id, room: roomWithPrice, adults, children })
     }
   }
 
@@ -316,18 +334,46 @@ export function StepDates({
                 )}
                 <div className="flex items-end justify-between gap-4">
                   <div>
-                    <p className="text-xl font-bold text-gray-900">
-                      {formatPrice(room.pricePerNight)}
-                      <span className="text-sm font-normal text-gray-500">
-                        /ночь
-                      </span>
-                    </p>
+                    {room.dynamicPrice && room.dynamicPrice !== room.pricePerNight ? (
+                      <div>
+                        <div className="flex items-baseline gap-2">
+                          <p className="text-sm text-gray-400 line-through">
+                            {formatPrice(room.pricePerNight)}
+                          </p>
+                          <p className="text-xl font-bold text-gray-900">
+                            {formatPrice(room.dynamicPrice)}
+                            <span className="text-sm font-normal text-gray-500">/ночь</span>
+                          </p>
+                        </div>
+                        {room.dynamicPrice < room.pricePerNight ? (
+                          <Badge className="text-xs bg-green-100 text-green-700 border-green-200 mt-1">
+                            Скидка за низкую загрузку
+                          </Badge>
+                        ) : (
+                          <Badge className="text-xs bg-orange-100 text-orange-700 border-orange-200 mt-1">
+                            Высокий сезон +{Math.round((room.dynamicPrice / room.pricePerNight - 1) * 100)}%
+                          </Badge>
+                        )}
+                      </div>
+                    ) : (
+                      <p className="text-xl font-bold text-gray-900">
+                        {formatPrice(room.pricePerNight)}
+                        <span className="text-sm font-normal text-gray-500">
+                          /ночь
+                        </span>
+                      </p>
+                    )}
                     {room.weekendPrice &&
                       room.weekendPrice !== room.pricePerNight && (
-                        <p className="text-xs text-gray-400">
+                        <p className="text-xs text-gray-400 mt-1">
                           Выходные: {formatPrice(room.weekendPrice)}/ночь
                         </p>
                       )}
+                    {room.minNights && room.minNights > 1 && (
+                      <p className="text-xs text-amber-600 mt-1">
+                        Мин. {room.minNights} ноч.
+                      </p>
+                    )}
                   </div>
                   <Button
                     onClick={() => handleSelectRoom(room)}

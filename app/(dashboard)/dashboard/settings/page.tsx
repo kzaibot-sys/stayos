@@ -97,6 +97,7 @@ export default function SettingsPage() {
     language: "ru",
     timezone: "Asia/Almaty",
     amenities: [] as string[],
+    prepaymentPercent: 0,
   })
 
   useEffect(() => {
@@ -121,6 +122,7 @@ export default function SettingsPage() {
             language: data.language || "ru",
             timezone: data.timezone || "Asia/Almaty",
             amenities: Array.isArray(data.amenities) ? data.amenities : [],
+            prepaymentPercent: data.prepaymentPercent ?? 0,
           })
         }
       })
@@ -435,6 +437,35 @@ export default function SettingsPage() {
                 <span className="text-sm text-gray-700">{amenity}</span>
               </label>
             ))}
+          </div>
+        </section>
+
+        {/* Booking settings */}
+        <section className="bg-white rounded-xl border border-gray-200 p-6 space-y-5">
+          <h2 className="text-base font-semibold text-gray-900">Настройки бронирования</h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Предоплата при бронировании (%)
+              </label>
+              <div className="flex items-center gap-2">
+                <input
+                  type="number"
+                  min={0}
+                  max={100}
+                  value={form.prepaymentPercent}
+                  onChange={(e) =>
+                    setForm({ ...form, prepaymentPercent: Math.min(100, Math.max(0, parseInt(e.target.value) || 0)) })
+                  }
+                  className="w-32 rounded-lg border border-gray-300 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+                <span className="text-sm text-gray-500">% от суммы бронирования</span>
+              </div>
+              <p className="text-xs text-gray-400 mt-1">
+                0 — полная оплата при заезде, 100 — полная предоплата
+              </p>
+            </div>
           </div>
         </section>
 

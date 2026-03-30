@@ -62,6 +62,7 @@ interface RoomFormProps {
     bedType?: string
     pricePerNight?: number
     weekendPrice?: number | null
+    minNights?: number
     description?: string
     amenities?: string[]
     photos?: string[]
@@ -104,6 +105,9 @@ export function RoomForm({ mode, roomId, defaultValues }: RoomFormProps) {
   )
   const [photos, setPhotos] = useState<string[]>(defaultValues?.photos ?? [])
   const [status, setStatus] = useState(defaultValues?.status ?? "AVAILABLE")
+  const [minNights, setMinNights] = useState(
+    String(defaultValues?.minNights ?? 1)
+  )
 
   const toggleAmenity = (amenity: string) => {
     setSelectedAmenities((prev) =>
@@ -141,6 +145,7 @@ export function RoomForm({ mode, roomId, defaultValues }: RoomFormProps) {
       amenities: selectedAmenities,
       photos,
       status,
+      minNights: parseInt(minNights, 10) || 1,
     }
 
     try {
@@ -258,7 +263,7 @@ export function RoomForm({ mode, roomId, defaultValues }: RoomFormProps) {
           <CardTitle>Параметры номера</CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
             <div className="space-y-1.5">
               <Label htmlFor="floor">Этаж</Label>
               <Input
@@ -302,6 +307,17 @@ export function RoomForm({ mode, roomId, defaultValues }: RoomFormProps) {
                 value={bedType}
                 onChange={(e) => setBedType(e.target.value)}
                 placeholder="Двуспальная"
+              />
+            </div>
+
+            <div className="space-y-1.5">
+              <Label htmlFor="minNights">Мин. ночей</Label>
+              <Input
+                id="minNights"
+                type="number"
+                value={minNights}
+                onChange={(e) => setMinNights(e.target.value)}
+                min={1}
               />
             </div>
           </div>

@@ -39,6 +39,7 @@ export async function GET() {
       planExpiresAt: true,
       telegramBotToken: true,
       telegramChatId: true,
+      prepaymentPercent: true,
     },
   })
 
@@ -75,6 +76,7 @@ const hotelUpdateSchema = z.object({
   timezone: z.string().optional(),
   language: z.string().optional(),
   amenities: z.array(z.string()).optional(),
+  prepaymentPercent: z.number().int().min(0).max(100).optional(),
 })
 
 export async function PUT(req: Request) {

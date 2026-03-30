@@ -163,6 +163,22 @@ export function PaymentForm({
               </select>
             </div>
 
+            {method === "KASPI" && (
+              <div className="border-2 border-dashed border-gray-300 rounded-xl p-6 text-center space-y-3 bg-gray-50">
+                <div className="w-20 h-20 mx-auto bg-white border border-gray-200 rounded-lg flex items-center justify-center">
+                  <svg className="w-12 h-12 text-gray-300" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M3 3h7v7H3V3zm0 11h7v7H3v-7zm11-11h7v7h-7V3zm0 11h7v7h-7v-7zM5 5v3h3V5H5zm0 11v3h3v-3H5zm11-11v3h3V5h-3zm0 11v3h3v-3h-3z"/>
+                  </svg>
+                </div>
+                <p className="text-sm font-medium text-gray-700">
+                  Покажите QR код гостю для оплаты через Kaspi
+                </p>
+                <p className="text-xs text-gray-400">
+                  Интеграция с Kaspi QR будет добавлена в следующем обновлении
+                </p>
+              </div>
+            )}
+
             <div className="space-y-1.5">
               <label className="block text-sm font-medium text-gray-700">
                 Заметка (необязательно)

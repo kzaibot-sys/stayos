@@ -1,7 +1,8 @@
 "use client"
 
 import { useState, useEffect, useCallback } from "react"
-import { TrendingUp, Hotel, BarChart3, Percent, Calendar, XCircle } from "lucide-react"
+import Link from "next/link"
+import { TrendingUp, Hotel, BarChart3, Percent, Calendar, XCircle, DollarSign, Download } from "lucide-react"
 import { RevenueChart } from "@/components/dashboard/revenue-chart"
 import { OccupancyChart } from "@/components/dashboard/occupancy-chart"
 import { SourceChart } from "@/components/dashboard/source-chart"
@@ -153,6 +154,15 @@ export default function ReportsPage() {
         <h1 className="font-heading text-2xl font-semibold text-gray-900">
           Аналитика и отчёты
         </h1>
+        <div className="flex items-center gap-2">
+          <Link href="/dashboard/reports/finance">
+            <button className="flex items-center gap-2 text-sm font-medium text-gray-700 bg-white border border-gray-200 hover:bg-gray-50 rounded-lg px-3 py-2 transition-colors">
+              <DollarSign className="size-4" />
+              Финансы
+            </button>
+          </Link>
+          <ExportDropdown />
+        </div>
       </div>
 
       {/* Period selector */}
@@ -270,6 +280,50 @@ function StatCard({
         <Icon className={`size-4 ${iconClassName ?? "text-gray-400"}`} />
       </div>
       <p className="text-xl font-bold text-gray-900">{value}</p>
+    </div>
+  )
+}
+
+const EXPORT_OPTIONS = [
+  { label: "Бронирования", type: "bookings" },
+  { label: "Гости", type: "guests" },
+  { label: "Платежи", type: "payments" },
+  { label: "Номера", type: "rooms" },
+]
+
+function ExportDropdown() {
+  const [open, setOpen] = useState(false)
+
+  function handleExport(type: string) {
+    window.open(`/api/reports/export?type=${type}`, "_blank")
+    setOpen(false)
+  }
+
+  return (
+    <div className="relative">
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="flex items-center gap-2 text-sm font-medium text-gray-700 bg-white border border-gray-200 hover:bg-gray-50 rounded-lg px-3 py-2 transition-colors"
+      >
+        <Download className="size-4" />
+        Экспорт
+      </button>
+      {open && (
+        <>
+          <div className="fixed inset-0 z-10" onClick={() => setOpen(false)} />
+          <div className="absolute right-0 top-full mt-1 w-44 bg-white rounded-lg border border-gray-200 shadow-lg z-20 py-1">
+            {EXPORT_OPTIONS.map((opt) => (
+              <button
+                key={opt.type}
+                onClick={() => handleExport(opt.type)}
+                className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+              >
+                {opt.label}
+              </button>
+            ))}
+          </div>
+        </>
+      )}
     </div>
   )
 }

@@ -30,6 +30,7 @@ interface Hotel {
   phone?: string | null
   email?: string | null
   address?: string | null
+  prepaymentPercent?: number
   rooms: Room[]
 }
 
@@ -255,6 +256,7 @@ export function BookingWizard({ hotel, slug }: { hotel: Hotel; slug: string }) {
                 specialRequests: bookingData.specialRequests,
               }}
               slug={slug}
+              prepaymentPercent={hotel.prepaymentPercent ?? 0}
               onBack={() => setCurrentStep(2)}
             />
           )}

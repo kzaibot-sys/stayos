@@ -11,8 +11,20 @@ export default async function BookPage({
 
   const hotel = await prisma.hotel.findUnique({
     where: { slug },
-    include: {
-      rooms: { where: { isActive: true }, orderBy: { sortOrder: "asc" } },
+    select: {
+      id: true,
+      name: true,
+      slug: true,
+      checkInTime: true,
+      checkOutTime: true,
+      phone: true,
+      email: true,
+      address: true,
+      prepaymentPercent: true,
+      rooms: {
+        where: { isActive: true },
+        orderBy: { sortOrder: "asc" },
+      },
     },
   })
 

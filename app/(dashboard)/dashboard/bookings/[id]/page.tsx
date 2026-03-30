@@ -4,10 +4,11 @@ import { redirect, notFound } from "next/navigation"
 import Link from "next/link"
 import { format } from "date-fns"
 import { ru } from "date-fns/locale"
-import { ArrowLeft, Mail } from "lucide-react"
+import { ArrowLeft, Mail, Printer } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { BookingActions } from "@/components/dashboard/booking-actions"
 import { PaymentForm } from "@/components/dashboard/payment-form"
+import { RefundButton } from "@/components/dashboard/refund-button"
 
 const bookingStatusConfig: Record<string, { label: string; className: string }> = {
   PENDING: { label: "Ожидает", className: "bg-yellow-100 text-yellow-700" },
@@ -254,9 +255,9 @@ export default async function BookingDetailPage({
                 {booking.payments.map((payment) => (
                   <div
                     key={payment.id}
-                    className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0"
+                    className="flex items-center justify-between py-2 border-b border-gray-50 last:border-0 gap-3"
                   >
-                    <div>
+                    <div className="flex-1 min-w-0">
                       <p className="text-sm font-medium text-gray-900">
                         {payment.method}
                       </p>
@@ -264,12 +265,15 @@ export default async function BookingDetailPage({
                         {formatDateTime(payment.createdAt)}
                       </p>
                     </div>
-                    <div className="text-right">
-                      <p className="font-medium text-gray-900">
-                        {formatPrice(payment.amount)}
+                    <div className="text-right shrink-0">
+                      <p className={`font-medium ${payment.amount < 0 ? "text-red-600" : "text-gray-900"}`}>
+                        {payment.amount < 0 ? "-" : ""}{formatPrice(Math.abs(payment.amount))}
                       </p>
                       <p className="text-xs text-gray-500">{payment.status}</p>
                     </div>
+                    {payment.amount > 0 && payment.status !== "refunded" && (
+                      <RefundButton paymentId={payment.id} maxAmount={payment.amount} />
+                    )}
                   </div>
                 ))}
               </div>
@@ -355,6 +359,12 @@ export default async function BookingDetailPage({
                 checkIn={booking.checkIn}
                 checkOut={booking.checkOut}
               />
+              <a href={`/api/invoices/${booking.id}`} target="_blank" rel="noopener noreferrer">
+                <Button variant="outline" size="sm" className="w-full">
+                  <Printer className="size-4 mr-2" />
+                  Печать счёта
+                </Button>
+              </a>
               {emailConfigured && (
                 <Button variant="outline" size="sm" className="w-full" disabled>
                   <Mail className="size-4 mr-2" />

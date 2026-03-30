@@ -17,12 +17,25 @@ export async function generateMetadata({
   const { slug } = await params
   const hotel = await prisma.hotel.findUnique({ where: { slug } })
   if (!hotel) return {}
+  const description =
+    hotel.shortDescription ||
+    hotel.description ||
+    `Забронируйте номер в ${hotel.name}`
   return {
     title: `${hotel.name} — StayOS`,
-    description:
-      hotel.shortDescription ||
-      hotel.description ||
-      `Забронируйте номер в ${hotel.name}`,
+    description,
+    openGraph: {
+      title: hotel.name,
+      description,
+      type: "website",
+      locale: "ru_RU",
+      images: hotel.coverImageUrl ? [{ url: hotel.coverImageUrl }] : [],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: hotel.name,
+      description,
+    },
   }
 }
 
@@ -80,6 +93,27 @@ export default async function HotelPage({
 
   const hasContacts = hotel.phone || hotel.email || hotel.address
 
+  // Minimum room price for "best price" widget
+  const minRoomPrice = rooms.length > 0
+    ? Math.min(...rooms.map((r) => r.pricePerNight))
+    : null
+
+  // JSON-LD structured data
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Hotel",
+    name: hotel.name,
+    description: hotel.description,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: hotel.address,
+      addressLocality: hotel.city,
+      addressCountry: hotel.country,
+    },
+    telephone: hotel.phone,
+    email: hotel.email,
+  }
+
   // Build WhatsApp and Telegram links
   const whatsappLink = hotel.phone
     ? `https://wa.me/${hotel.phone.replace(/\D/g, "")}`
@@ -90,8 +124,14 @@ export default async function HotelPage({
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
+      {/* JSON-LD structured data */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+
       {/* Hero */}
-      <HotelHero hotel={hotel} />
+      <HotelHero hotel={hotel} minPrice={minRoomPrice} />
 
       {/* Main content */}
       <main className="flex-1">
@@ -221,6 +261,50 @@ export default async function HotelPage({
               </div>
             </section>
           )}
+
+          {/* FAQ section */}
+          <section>
+            <h2 className="text-2xl font-heading font-bold text-gray-900 mb-6">
+              Часто задаваемые вопросы
+            </h2>
+            <div className="space-y-3">
+              {[
+                {
+                  q: "Как забронировать номер?",
+                  a: "Выберите номер и даты, заполните форму бронирования — подтверждение придёт на email.",
+                },
+                {
+                  q: "Какие способы оплаты принимаются?",
+                  a: "Принимаем оплату онлайн, Kaspi, наличными или банковским переводом при заезде.",
+                },
+                {
+                  q: "Можно ли отменить бронирование?",
+                  a: hotel.cancellationHours > 0
+                    ? `Бронирование можно отменить бесплатно за ${hotel.cancellationHours} ч. до заезда. При более поздней отмене может применяться штраф.`
+                    : "Пожалуйста, свяжитесь с нами для уточнения условий отмены.",
+                },
+                {
+                  q: "Во сколько заезд и выезд?",
+                  a: `Заезд с ${hotel.checkInTime}, выезд до ${hotel.checkOutTime}. Ранний заезд и поздний выезд возможны по запросу.`,
+                },
+              ].map(({ q, a }) => (
+                <details
+                  key={q}
+                  className="group bg-white rounded-xl border border-gray-200 overflow-hidden"
+                >
+                  <summary className="flex items-center justify-between p-5 cursor-pointer list-none font-medium text-gray-900 hover:bg-gray-50 transition-colors">
+                    {q}
+                    <span className="shrink-0 ml-4 text-gray-400 group-open:rotate-180 transition-transform duration-200">
+                      ▾
+                    </span>
+                  </summary>
+                  <div className="px-5 pb-5 text-gray-600 text-sm leading-relaxed border-t border-gray-100 pt-4">
+                    {a}
+                  </div>
+                </details>
+              ))}
+            </div>
+          </section>
 
           {/* Contacts section */}
           {hasContacts && (

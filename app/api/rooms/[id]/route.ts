@@ -21,6 +21,7 @@ const roomUpdateSchema = z.object({
   status: z
     .enum(["AVAILABLE", "OCCUPIED", "MAINTENANCE", "BLOCKED"])
     .optional(),
+  minNights: z.number().int().min(1).optional(),
 })
 
 async function getVerifiedRoom(id: string, hotelId: string) {
@@ -119,6 +120,7 @@ export async function PUT(
   if (data.photos !== undefined)
     updateData.photos = JSON.stringify(data.photos)
   if (data.status !== undefined) updateData.status = data.status
+  if (data.minNights !== undefined) updateData.minNights = data.minNights
 
   const room = await prisma.room.update({
     where: { id },

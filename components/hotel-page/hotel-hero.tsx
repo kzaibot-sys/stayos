@@ -17,9 +17,10 @@ interface HotelHeroProps {
     checkInTime: string
     checkOutTime: string
   }
+  minPrice?: number | null
 }
 
-export function HotelHero({ hotel }: HotelHeroProps) {
+export function HotelHero({ hotel, minPrice }: HotelHeroProps) {
   const hasCover = !!hotel.coverImageUrl
 
   return (
@@ -77,16 +78,23 @@ export function HotelHero({ hotel }: HotelHeroProps) {
           </div>
         </div>
 
-        {/* CTA */}
-        <Link
-          href={`/${hotel.slug}/book`}
-          className={cn(
-            buttonVariants({ size: "lg" }),
-            "bg-white text-[#1a56db] hover:bg-white/90 font-semibold text-base px-8"
+        {/* CTA + Best price */}
+        <div className="flex flex-wrap items-center gap-4">
+          <Link
+            href={`/${hotel.slug}/book`}
+            className={cn(
+              buttonVariants({ size: "lg" }),
+              "bg-white text-[#1a56db] hover:bg-white/90 font-semibold text-base px-8"
+            )}
+          >
+            Забронировать
+          </Link>
+          {minPrice != null && (
+            <div className="bg-white/15 backdrop-blur-sm border border-white/20 rounded-full px-4 py-2 text-white text-sm font-medium">
+              от {new Intl.NumberFormat("ru-RU").format(minPrice)} ₸ / ночь
+            </div>
           )}
-        >
-          Забронировать
-        </Link>
+        </div>
       </div>
     </section>
   )
