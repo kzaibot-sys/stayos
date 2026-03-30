@@ -246,22 +246,18 @@ export function BookingTable({ bookings, total, page, limit }: BookingTableProps
                     </td>
                     <td className="px-4 py-3 text-right">
                       <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            className="h-8 w-8 p-0"
-                            disabled={isLoading}
-                          >
-                            <MoreVertical className="size-4" />
-                          </Button>
+                        <DropdownMenuTrigger
+                          className="inline-flex items-center justify-center h-8 w-8 rounded-md text-gray-500 hover:text-gray-700 hover:bg-gray-100 transition-colors disabled:opacity-50"
+                          disabled={isLoading}
+                        >
+                          <MoreVertical className="size-4" />
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                          <DropdownMenuItem asChild>
-                            <Link href={`/dashboard/bookings/${booking.id}`}>
-                              <Eye className="size-4 mr-2" />
-                              Просмотр
-                            </Link>
+                          <DropdownMenuItem
+                            onClick={() => router.push(`/dashboard/bookings/${booking.id}`)}
+                          >
+                            <Eye className="size-4 mr-2" />
+                            Просмотр
                           </DropdownMenuItem>
 
                           {booking.status === "CONFIRMED" && (
