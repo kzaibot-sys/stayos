@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { Users } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { EmptyState } from "@/components/shared/empty-state"
 
 const TAG_COLORS: Record<string, string> = {
   VIP: "bg-purple-100 text-purple-700",
@@ -49,15 +50,11 @@ export function GuestTable({ guests, total, page, limit }: GuestTableProps) {
 
   if (guests.length === 0) {
     return (
-      <div className="rounded-xl border border-dashed border-gray-200 bg-white p-16 text-center">
-        <Users className="size-10 text-gray-300 mx-auto mb-4" />
-        <p className="text-base font-medium text-gray-600 mb-1">
-          Гостей не найдено
-        </p>
-        <p className="text-sm text-muted-foreground">
-          Попробуйте изменить фильтры поиска
-        </p>
-      </div>
+      <EmptyState
+        icon={<Users className="size-12" />}
+        title="Гостей не найдено"
+        description="Попробуйте изменить фильтры поиска"
+      />
     )
   }
 

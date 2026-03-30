@@ -13,6 +13,7 @@ import {
   XCircle,
   CalendarOff,
 } from "lucide-react"
+import { EmptyState } from "@/components/shared/empty-state"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -134,13 +135,12 @@ export function BookingTable({ bookings, total, page, limit }: BookingTableProps
 
   if (bookings.length === 0) {
     return (
-      <div className="rounded-xl border border-dashed border-gray-200 bg-white p-16 text-center">
-        <CalendarOff className="size-10 text-gray-300 mx-auto mb-4" />
-        <p className="text-base font-medium text-gray-600 mb-1">Броней не найдено</p>
-        <p className="text-sm text-muted-foreground">
-          Попробуйте изменить фильтры или создайте новую бронь
-        </p>
-      </div>
+      <EmptyState
+        icon={<CalendarOff className="size-12" />}
+        title="Броней не найдено"
+        description="Попробуйте изменить фильтры или создайте новую бронь"
+        action={{ label: "Создать бронь", href: "/dashboard/bookings/new" }}
+      />
     )
   }
 

@@ -11,6 +11,7 @@ import {
   Users,
   Banknote,
 } from "lucide-react"
+import { EmptyState } from "@/components/shared/empty-state"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -123,18 +124,12 @@ export function RoomGrid({ rooms }: RoomGridProps) {
 
   if (rooms.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-gray-200 bg-white p-16 text-center">
-        <BedDouble className="size-10 text-gray-300 mb-4" />
-        <p className="text-base font-medium text-gray-600 mb-1">
-          Номеров пока нет
-        </p>
-        <p className="text-sm text-muted-foreground mb-4">
-          Добавьте первый номер, чтобы начать принимать брони
-        </p>
-        <Link href="/dashboard/rooms/new">
-          <Button size="sm">Добавить номер</Button>
-        </Link>
-      </div>
+      <EmptyState
+        icon={<BedDouble className="size-12" />}
+        title="Номеров пока нет"
+        description="Добавьте первый номер, чтобы начать принимать брони"
+        action={{ label: "Добавить номер", href: "/dashboard/rooms/new" }}
+      />
     )
   }
 
