@@ -3,6 +3,8 @@ import { auth } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { z } from "zod"
 import { differenceInDays, isWeekend, eachDayOfInterval } from "date-fns"
+import { sendBookingConfirmationEmail } from "@/lib/resend"
+import { sendTelegramNotification, formatNewBookingMessage } from "@/lib/telegram"
 
 const createBookingSchema = z.object({
   roomId: z.string(),
@@ -215,6 +217,62 @@ export async function POST(req: Request) {
       room: { select: { id: true, name: true, roomNumber: true, type: true } },
       guest: true,
     },
+  })
+
+  // Send notifications (non-blocking)
+  prisma.hotel.findUnique({
+    where: { id: hotelId },
+    select: {
+      telegramBotToken: true,
+      telegramChatId: true,
+      name: true,
+      address: true,
+      phone: true,
+      checkInTime: true,
+    },
+  }).then((hotel) => {
+    if (!hotel) return
+
+    // Send Telegram notification
+    if (hotel.telegramBotToken && hotel.telegramChatId) {
+      const message = formatNewBookingMessage({
+        bookingNumber: booking.bookingNumber,
+        guestFirstName: booking.guestFirstName,
+        guestLastName: booking.guestLastName,
+        guestPhone: booking.guestPhone,
+        room: { name: booking.room.name },
+        checkIn: booking.checkIn,
+        checkOut: booking.checkOut,
+        nights: booking.nights,
+        totalPrice: booking.totalPrice,
+        paymentStatus: booking.paymentStatus,
+      })
+      sendTelegramNotification(hotel.telegramBotToken, hotel.telegramChatId, message).catch((err) => {
+        console.error('[Telegram] Failed to send booking notification:', err)
+      })
+    }
+
+    // Send email confirmation if guest has email
+    if (booking.guestEmail) {
+      const fmt = new Intl.DateTimeFormat('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })
+      sendBookingConfirmationEmail(booking.guestEmail, {
+        bookingNumber: booking.bookingNumber,
+        guestName: `${booking.guestFirstName} ${booking.guestLastName}`,
+        hotelName: hotel.name,
+        roomName: booking.room.name,
+        checkIn: fmt.format(booking.checkIn),
+        checkOut: fmt.format(booking.checkOut),
+        nights: booking.nights,
+        totalPrice: new Intl.NumberFormat('ru-RU').format(booking.totalPrice) + ' ₸',
+        hotelAddress: hotel.address || undefined,
+        hotelPhone: hotel.phone || undefined,
+        checkInTime: hotel.checkInTime,
+      }).catch((err) => {
+        console.error('[Email] Failed to send booking confirmation:', err)
+      })
+    }
+  }).catch((err) => {
+    console.error('[Notifications] Failed to fetch hotel settings:', err)
   })
 
   return NextResponse.json(booking, { status: 201 })

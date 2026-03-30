@@ -2,6 +2,7 @@ import { NextResponse } from "next/server"
 import { auth } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { z } from "zod"
+import { sendTelegramNotification, formatCancelledBookingMessage } from "@/lib/telegram"
 
 const updateBookingSchema = z.object({
   status: z
@@ -125,6 +126,30 @@ export async function PUT(
       payments: { orderBy: { createdAt: "desc" } },
     },
   })
+
+  // Send Telegram cancellation notification (non-blocking)
+  if (data.status === "CANCELLED") {
+    prisma.hotel.findUnique({
+      where: { id: hotelId },
+      select: { telegramBotToken: true, telegramChatId: true },
+    }).then((hotel) => {
+      if (hotel?.telegramBotToken && hotel?.telegramChatId) {
+        const message = formatCancelledBookingMessage({
+          bookingNumber: booking.bookingNumber,
+          guestFirstName: booking.guestFirstName,
+          guestLastName: booking.guestLastName,
+          room: { name: booking.room.name },
+          checkIn: booking.checkIn,
+          checkOut: booking.checkOut,
+        })
+        sendTelegramNotification(hotel.telegramBotToken, hotel.telegramChatId, message).catch((err) => {
+          console.error('[Telegram] Failed to send cancellation notification:', err)
+        })
+      }
+    }).catch((err) => {
+      console.error('[Telegram] Failed to fetch hotel for notification:', err)
+    })
+  }
 
   return NextResponse.json(booking)
 }
