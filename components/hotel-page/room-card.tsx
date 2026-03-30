@@ -1,3 +1,5 @@
+"use client"
+
 import Link from "next/link"
 import { BedDouble, Users } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
