@@ -70,6 +70,7 @@ const settingsTabs = [
   { label: "Интеграции", href: "/dashboard/settings/integrations", icon: Plug },
   { label: "Команда", href: "/dashboard/settings/team", icon: Users },
   { label: "Тариф и оплата", href: "/dashboard/settings/billing", icon: CreditCard },
+  { label: "Тарифные планы", href: "/dashboard/settings/rate-plans", icon: CreditCard },
 ]
 
 export default function SettingsPage() {

@@ -163,19 +163,35 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Номер занят на выбранные даты" }, { status: 409 })
   }
 
+  // Find applicable rate plan (active plan covering the booking date range)
+  const applicableRatePlan = await prisma.ratePlan.findFirst({
+    where: {
+      hotelId,
+      isActive: true,
+      dateFrom: { lte: checkOut },
+      dateTo: { gte: checkIn },
+    },
+    orderBy: { createdAt: "desc" },
+  })
+
   // Calculate pricing
   const nights = differenceInDays(checkOut, checkIn)
   const days = eachDayOfInterval({ start: checkIn, end: new Date(checkOut.getTime() - 86400000) })
 
   let subtotal = 0
-  const pricePerNight = data.priceOverride ?? room.pricePerNight
+  const basePrice = data.priceOverride ?? room.pricePerNight
+  const multiplier = applicableRatePlan ? applicableRatePlan.multiplier : 1.0
+
   for (const day of days) {
+    let dayPrice: number
     if (isWeekend(day) && room.weekendPrice && !data.priceOverride) {
-      subtotal += room.weekendPrice
+      dayPrice = room.weekendPrice
     } else {
-      subtotal += pricePerNight
+      dayPrice = basePrice
     }
+    subtotal += dayPrice * multiplier
   }
+  const pricePerNight = basePrice * multiplier
   const totalPrice = subtotal
 
   // Generate booking number
@@ -236,6 +252,7 @@ export async function POST(req: Request) {
       totalPrice,
       specialRequests: data.specialRequests ?? null,
       internalNotes: data.internalNotes ?? null,
+      ratePlanId: applicableRatePlan?.id ?? null,
       ...statusTimestamps,
     },
     include: {
