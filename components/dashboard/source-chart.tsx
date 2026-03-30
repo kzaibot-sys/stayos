@@ -39,9 +39,9 @@ const COLORS = [
 function CustomTooltip({ active, payload }: any) {
   if (!active || !payload?.length) return null
   return (
-    <div className="bg-white border border-gray-200 rounded-lg shadow-sm p-3 text-sm">
-      <p className="font-medium text-gray-700">{payload[0]?.name}</p>
-      <p className="text-gray-500">Броней: {payload[0]?.value}</p>
+    <div className="bg-card border border-border rounded-lg shadow-sm p-3 text-sm">
+      <p className="font-medium text-foreground">{payload[0]?.name}</p>
+      <p className="text-muted-foreground">Броней: {payload[0]?.value}</p>
     </div>
   )
 }
@@ -49,7 +49,7 @@ function CustomTooltip({ active, payload }: any) {
 export function SourceChart({ data }: Props) {
   if (!data || data.length === 0) {
     return (
-      <div className="flex items-center justify-center h-64 text-gray-400 text-sm">
+      <div className="flex items-center justify-center h-64 text-muted-foreground text-sm">
         Нет данных
       </div>
     )
@@ -84,7 +84,7 @@ export function SourceChart({ data }: Props) {
         <Tooltip content={<CustomTooltip />} />
         <Legend
           formatter={(value) => (
-            <span className="text-xs text-gray-600">{value}</span>
+            <span className="text-xs text-muted-foreground">{value}</span>
           )}
         />
       </PieChart>

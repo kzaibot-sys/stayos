@@ -14,7 +14,7 @@ const TAG_COLORS: Record<string, string> = {
 }
 
 function getTagColor(tag: string) {
-  return TAG_COLORS[tag] ?? "bg-gray-100 text-gray-700"
+  return TAG_COLORS[tag] ?? "bg-muted text-foreground"
 }
 
 function formatPrice(amount: number) {

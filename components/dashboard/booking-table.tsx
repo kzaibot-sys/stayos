@@ -38,7 +38,7 @@ const bookingStatusConfig: Record<string, { label: string; className: string }> 
   PENDING: { label: "Ожидает", className: "bg-yellow-100 text-yellow-700" },
   CONFIRMED: { label: "Подтверждена", className: "bg-blue-100 text-blue-700" },
   CHECKED_IN: { label: "Заселён", className: "bg-green-100 text-green-700" },
-  CHECKED_OUT: { label: "Выселился", className: "bg-gray-100 text-gray-700" },
+  CHECKED_OUT: { label: "Выселился", className: "bg-muted text-foreground" },
   CANCELLED: { label: "Отменена", className: "bg-red-100 text-red-700" },
   NO_SHOW: { label: "Не приехал", className: "bg-orange-100 text-orange-700" },
 }
@@ -47,7 +47,7 @@ const paymentStatusConfig: Record<string, { label: string; className: string }> 
   UNPAID: { label: "Не оплачено", className: "bg-red-100 text-red-700" },
   PARTIAL: { label: "Частично", className: "bg-yellow-100 text-yellow-700" },
   PAID: { label: "Оплачено", className: "bg-green-100 text-green-700" },
-  REFUNDED: { label: "Возврат", className: "bg-gray-100 text-gray-700" },
+  REFUNDED: { label: "Возврат", className: "bg-muted text-foreground" },
 }
 
 // ─── Types ─────────────────────────────────────────────────────────────────

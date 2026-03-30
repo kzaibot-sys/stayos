@@ -84,18 +84,18 @@ export default function FinanceDashboardPage() {
       {/* Header */}
       <div className="flex items-center gap-4 mb-6">
         <Link href="/dashboard/reports">
-          <button className="flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700 transition-colors">
+          <button className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors">
             <ArrowLeft className="size-4" />
             Отчёты
           </button>
         </Link>
-        <h1 className="font-heading text-2xl font-semibold text-gray-900">
+        <h1 className="font-heading text-2xl font-semibold text-foreground">
           Финансовый дашборд
         </h1>
       </div>
 
       {loading ? (
-        <div className="flex items-center justify-center h-64 text-gray-400">
+        <div className="flex items-center justify-center h-64 text-muted-foreground">
           Загрузка...
         </div>
       ) : (
@@ -133,11 +133,11 @@ export default function FinanceDashboardPage() {
           {/* Charts row */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Monthly revenue bar chart */}
-            <div className="bg-white rounded-xl border border-gray-200 p-5">
-              <h2 className="font-medium text-gray-900 mb-4">Выручка по месяцам (последние 6 мес.)</h2>
+            <div className="bg-card rounded-xl border border-border p-5">
+              <h2 className="font-medium text-foreground mb-4">Выручка по месяцам (последние 6 мес.)</h2>
               <ResponsiveContainer width="100%" height={260}>
                 <BarChart data={data?.monthlyTotals ?? []}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#f3f4f6" />
+                  <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
                   <XAxis dataKey="month" tick={{ fontSize: 12 }} />
                   <YAxis
                     tick={{ fontSize: 12 }}
@@ -158,10 +158,10 @@ export default function FinanceDashboardPage() {
             </div>
 
             {/* Revenue by payment method pie */}
-            <div className="bg-white rounded-xl border border-gray-200 p-5">
-              <h2 className="font-medium text-gray-900 mb-4">Выручка по методу оплаты</h2>
+            <div className="bg-card rounded-xl border border-border p-5">
+              <h2 className="font-medium text-foreground mb-4">Выручка по методу оплаты</h2>
               {pieData.length === 0 ? (
-                <div className="h-60 flex items-center justify-center text-gray-400 text-sm">
+                <div className="h-60 flex items-center justify-center text-muted-foreground text-sm">
                   Нет данных
                 </div>
               ) : (
@@ -191,28 +191,28 @@ export default function FinanceDashboardPage() {
           </div>
 
           {/* Top rooms table */}
-          <div className="bg-white rounded-xl border border-gray-200 p-5">
-            <h2 className="font-medium text-gray-900 mb-4">Топ номеров по выручке</h2>
+          <div className="bg-card rounded-xl border border-border p-5">
+            <h2 className="font-medium text-foreground mb-4">Топ номеров по выручке</h2>
             {(data?.topRooms ?? []).length === 0 ? (
-              <p className="text-gray-400 text-sm">Нет данных</p>
+              <p className="text-muted-foreground text-sm">Нет данных</p>
             ) : (
               <table className="w-full text-sm">
                 <thead>
-                  <tr className="border-b border-gray-100">
-                    <th className="text-left py-2 pr-4 font-medium text-gray-500">Номер</th>
-                    <th className="text-right py-2 pr-4 font-medium text-gray-500">Броней</th>
-                    <th className="text-right py-2 font-medium text-gray-500">Выручка</th>
+                  <tr className="border-b border-border">
+                    <th className="text-left py-2 pr-4 font-medium text-muted-foreground">Номер</th>
+                    <th className="text-right py-2 pr-4 font-medium text-muted-foreground">Броней</th>
+                    <th className="text-right py-2 font-medium text-muted-foreground">Выручка</th>
                   </tr>
                 </thead>
                 <tbody>
                   {data?.topRooms.map((room, i) => (
                     <tr key={room.roomId} className="border-b border-gray-50 last:border-0">
-                      <td className="py-2.5 pr-4 font-medium text-gray-900">
-                        <span className="text-gray-400 mr-2">#{i + 1}</span>
+                      <td className="py-2.5 pr-4 font-medium text-foreground">
+                        <span className="text-muted-foreground mr-2">#{i + 1}</span>
                         {room.roomName}
                       </td>
-                      <td className="text-right py-2.5 pr-4 text-gray-600">{room.bookings}</td>
-                      <td className="text-right py-2.5 font-semibold text-gray-900">
+                      <td className="text-right py-2.5 pr-4 text-muted-foreground">{room.bookings}</td>
+                      <td className="text-right py-2.5 font-semibold text-foreground">
                         {formatPrice(room.revenue)}
                       </td>
                     </tr>
@@ -241,13 +241,13 @@ function SummaryCard({
   note?: string
 }) {
   return (
-    <div className="bg-white rounded-xl border border-gray-200 p-4">
+    <div className="bg-card rounded-xl border border-border p-4">
       <div className="flex items-center justify-between mb-2">
-        <p className="text-sm text-gray-500">{label}</p>
+        <p className="text-sm text-muted-foreground">{label}</p>
         <Icon className={`size-4 ${color}`} />
       </div>
-      <p className="text-xl font-bold text-gray-900">{value}</p>
-      {note && <p className="text-xs text-gray-400 mt-1">{note}</p>}
+      <p className="text-xl font-bold text-foreground">{value}</p>
+      {note && <p className="text-xs text-muted-foreground mt-1">{note}</p>}
     </div>
   )
 }

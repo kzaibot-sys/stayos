@@ -43,7 +43,7 @@ export function RoomCard({ room, slug, onOpenModal }: RoomCardProps) {
 
   return (
     <div
-      className="flex flex-col md:flex-row rounded-xl border border-gray-200 bg-white overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer"
+      className="flex flex-col md:flex-row rounded-xl border border-border bg-card overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer"
       onClick={onOpenModal}
       role={onOpenModal ? "button" : undefined}
       tabIndex={onOpenModal ? 0 : undefined}
@@ -68,7 +68,7 @@ export function RoomCard({ room, slug, onOpenModal }: RoomCardProps) {
         <div>
           {/* Name + type badge */}
           <div className="flex flex-wrap items-start gap-3 mb-2">
-            <h3 className="text-xl font-heading font-semibold text-gray-900">
+            <h3 className="text-xl font-heading font-semibold text-foreground">
               {room.name}
             </h3>
             <Badge variant="secondary" className="text-xs">
@@ -78,20 +78,20 @@ export function RoomCard({ room, slug, onOpenModal }: RoomCardProps) {
 
           {/* Description */}
           {room.description && (
-            <p className="text-sm text-gray-500 mb-3 line-clamp-2">
+            <p className="text-sm text-muted-foreground mb-3 line-clamp-2">
               {room.description}
             </p>
           )}
 
           {/* Capacity & bed */}
-          <div className="flex flex-wrap items-center gap-4 text-sm text-gray-600 mb-4">
+          <div className="flex flex-wrap items-center gap-4 text-sm text-muted-foreground mb-4">
             <span className="flex items-center gap-1.5">
-              <Users className="size-4 text-gray-400" />
+              <Users className="size-4 text-muted-foreground" />
               До {room.capacity} гостей
             </span>
             {room.bedType && (
               <span className="flex items-center gap-1.5">
-                <BedDouble className="size-4 text-gray-400" />
+                <BedDouble className="size-4 text-muted-foreground" />
                 {room.bedType}
               </span>
             )}
@@ -109,7 +109,7 @@ export function RoomCard({ room, slug, onOpenModal }: RoomCardProps) {
                 </span>
               ))}
               {room.amenities.length > 5 && (
-                <span className="inline-block text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-500">
+                <span className="inline-block text-xs px-2 py-0.5 rounded-full bg-muted text-muted-foreground">
                   +{room.amenities.length - 5}
                 </span>
               )}
@@ -118,14 +118,14 @@ export function RoomCard({ room, slug, onOpenModal }: RoomCardProps) {
         </div>
 
         {/* Price + CTA */}
-        <div className="flex flex-wrap items-end justify-between gap-4 pt-4 border-t border-gray-100">
+        <div className="flex flex-wrap items-end justify-between gap-4 pt-4 border-t border-border">
           <div>
-            <p className="text-2xl font-bold text-gray-900">
+            <p className="text-2xl font-bold text-foreground">
               {formatPrice(room.pricePerNight)}
-              <span className="text-sm font-normal text-gray-500">/ночь</span>
+              <span className="text-sm font-normal text-muted-foreground">/ночь</span>
             </p>
             {room.weekendPrice && room.weekendPrice !== room.pricePerNight && (
-              <p className="text-xs text-gray-500 mt-0.5">
+              <p className="text-xs text-muted-foreground mt-0.5">
                 Выходные: {formatPrice(room.weekendPrice)}/ночь
               </p>
             )}

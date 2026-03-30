@@ -19,15 +19,15 @@ export default function BookingsLoading() {
       </div>
 
       {/* Table skeleton */}
-      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+      <div className="bg-card rounded-xl border border-border overflow-hidden">
         {/* Header */}
-        <div className="flex gap-4 px-4 py-3 border-b border-gray-100 bg-gray-50">
+        <div className="flex gap-4 px-4 py-3 border-b border-border bg-muted">
           {[80, 120, 140, 100, 80, 80, 80].map((w, i) => (
             <Skeleton key={i} className={`h-4 w-${w === 80 ? '20' : w === 120 ? '28' : w === 140 ? '32' : '24'}`} />
           ))}
         </div>
         {/* Rows */}
-        <div className="divide-y divide-gray-100">
+        <div className="divide-y divide-border">
           {Array.from({ length: 10 }).map((_, i) => (
             <div key={i} className="flex items-center gap-4 px-4 py-4">
               <Skeleton className="h-4 w-20" />

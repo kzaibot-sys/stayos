@@ -135,14 +135,14 @@ export function BookingWizard({ hotel, slug }: { hotel: Hotel; slug: string }) {
   }
 
   return (
-    <div className={`flex flex-col bg-gray-50 ${isEmbedded ? "" : "min-h-screen"}`}>
+    <div className={`flex flex-col bg-muted ${isEmbedded ? "" : "min-h-screen"}`}>
       {/* Header — hidden in embedded mode */}
       {!isEmbedded && (
-        <header className="bg-white border-b border-gray-200 px-4 py-4">
+        <header className="bg-card border-b border-border px-4 py-4">
           <div className="max-w-2xl mx-auto flex items-center justify-between">
             <Link
               href={`/${slug}`}
-              className="flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700 transition-colors"
+              className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
             >
               ← Вернуться
             </Link>
@@ -177,7 +177,7 @@ export function BookingWizard({ hotel, slug }: { hotel: Hotel; slug: string }) {
                           ? "bg-green-500 border-green-500 text-white"
                           : isActive
                           ? "bg-[#1a56db] border-[#1a56db] text-white"
-                          : "bg-white border-gray-300 text-gray-400"
+                          : "bg-card border-border text-muted-foreground"
                       }`}
                     >
                       {isCompleted ? (
@@ -192,7 +192,7 @@ export function BookingWizard({ hotel, slug }: { hotel: Hotel; slug: string }) {
                           ? "text-[#1a56db]"
                           : isCompleted
                           ? "text-green-600"
-                          : "text-gray-400"
+                          : "text-muted-foreground"
                       }`}
                     >
                       {step.label}
@@ -203,7 +203,7 @@ export function BookingWizard({ hotel, slug }: { hotel: Hotel; slug: string }) {
                   {index < steps.length - 1 && (
                     <div
                       className={`h-0.5 w-16 sm:w-24 mx-2 mb-5 rounded-full transition-all ${
-                        currentStep > stepNum ? "bg-green-400" : "bg-gray-200"
+                        currentStep > stepNum ? "bg-green-400" : "bg-muted"
                       }`}
                     />
                   )}
@@ -265,8 +265,8 @@ export function BookingWizard({ hotel, slug }: { hotel: Hotel; slug: string }) {
 
       {/* Footer — hidden in embedded mode */}
       {!isEmbedded && (
-        <footer className="border-t border-gray-200 bg-white py-4">
-          <div className="max-w-2xl mx-auto px-4 flex items-center justify-center gap-2 text-sm text-gray-400">
+        <footer className="border-t border-border bg-card py-4">
+          <div className="max-w-2xl mx-auto px-4 flex items-center justify-center gap-2 text-sm text-muted-foreground">
             <span>Powered by</span>
             <Link
               href="/"

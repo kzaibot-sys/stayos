@@ -42,13 +42,13 @@ function CustomTooltip({ active, payload, label }: any) {
   if (!active || !payload?.length) return null
 
   return (
-    <div className="bg-white border border-gray-200 rounded-lg shadow-sm p-3 text-sm">
-      <p className="font-medium text-gray-700 mb-1">{formatDate(label)}</p>
+    <div className="bg-card border border-border rounded-lg shadow-sm p-3 text-sm">
+      <p className="font-medium text-foreground mb-1">{formatDate(label)}</p>
       <p className="text-blue-600">
         Выручка: {formatPrice(payload[0]?.value ?? 0)}
       </p>
       {payload[1] && (
-        <p className="text-gray-500">Броней: {payload[1]?.value}</p>
+        <p className="text-muted-foreground">Броней: {payload[1]?.value}</p>
       )}
     </div>
   )
@@ -57,7 +57,7 @@ function CustomTooltip({ active, payload, label }: any) {
 export function RevenueChart({ data }: Props) {
   if (!data || data.length === 0) {
     return (
-      <div className="flex items-center justify-center h-64 text-gray-400 text-sm">
+      <div className="flex items-center justify-center h-64 text-muted-foreground text-sm">
         Нет данных за выбранный период
       </div>
     )
@@ -69,11 +69,11 @@ export function RevenueChart({ data }: Props) {
         data={data}
         margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
       >
-        <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+        <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
         <XAxis
           dataKey="date"
           tickFormatter={formatDate}
-          tick={{ fontSize: 12, fill: "#9ca3af" }}
+          tick={{ fontSize: 12, fill: "var(--muted-foreground)" }}
           tickLine={false}
           axisLine={false}
           interval="preserveStartEnd"
@@ -84,7 +84,7 @@ export function RevenueChart({ data }: Props) {
               v
             )
           }
-          tick={{ fontSize: 12, fill: "#9ca3af" }}
+          tick={{ fontSize: 12, fill: "var(--muted-foreground)" }}
           tickLine={false}
           axisLine={false}
           width={80}

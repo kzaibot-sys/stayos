@@ -75,7 +75,7 @@ export default function LoginPage() {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                   autoComplete="email"
-                  className="border-gray-300 focus:border-[#1a56db] focus:ring-[#1a56db]"
+                  className="border-border focus:border-[#1a56db] focus:ring-[#1a56db]"
                 />
               </div>
 
@@ -91,7 +91,7 @@ export default function LoginPage() {
                   onChange={(e) => setPassword(e.target.value)}
                   required
                   autoComplete="current-password"
-                  className="border-gray-300 focus:border-[#1a56db] focus:ring-[#1a56db]"
+                  className="border-border focus:border-[#1a56db] focus:ring-[#1a56db]"
                 />
               </div>
 

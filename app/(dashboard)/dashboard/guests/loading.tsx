@@ -17,9 +17,9 @@ export default function GuestsLoading() {
       </div>
 
       {/* Table skeleton */}
-      <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
+      <div className="bg-card rounded-xl border border-border overflow-hidden">
         {/* Header */}
-        <div className="flex gap-4 px-4 py-3 border-b border-gray-100 bg-gray-50">
+        <div className="flex gap-4 px-4 py-3 border-b border-border bg-muted">
           <Skeleton className="h-4 w-32" />
           <Skeleton className="h-4 w-40" />
           <Skeleton className="h-4 w-28" />
@@ -27,7 +27,7 @@ export default function GuestsLoading() {
           <Skeleton className="h-4 w-20" />
         </div>
         {/* Rows */}
-        <div className="divide-y divide-gray-100">
+        <div className="divide-y divide-border">
           {Array.from({ length: 10 }).map((_, i) => (
             <div key={i} className="flex items-center gap-4 px-4 py-4">
               <div className="flex items-center gap-3">

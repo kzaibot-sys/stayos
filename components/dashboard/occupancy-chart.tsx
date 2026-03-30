@@ -37,11 +37,11 @@ function CustomTooltip({ active, payload, label }: any) {
   const d = payload[0]?.payload as DataPoint | undefined
 
   return (
-    <div className="bg-white border border-gray-200 rounded-lg shadow-sm p-3 text-sm">
-      <p className="font-medium text-gray-700 mb-1">{formatDate(label)}</p>
+    <div className="bg-card border border-border rounded-lg shadow-sm p-3 text-sm">
+      <p className="font-medium text-foreground mb-1">{formatDate(label)}</p>
       <p className="text-green-600">Занятость: {payload[0]?.value}%</p>
       {d && (
-        <p className="text-gray-500">
+        <p className="text-muted-foreground">
           Номеров: {d.rooms_occupied} / {d.rooms_total}
         </p>
       )}
@@ -52,7 +52,7 @@ function CustomTooltip({ active, payload, label }: any) {
 export function OccupancyChart({ data }: Props) {
   if (!data || data.length === 0) {
     return (
-      <div className="flex items-center justify-center h-64 text-gray-400 text-sm">
+      <div className="flex items-center justify-center h-64 text-muted-foreground text-sm">
         Нет данных за выбранный период
       </div>
     )
@@ -64,11 +64,11 @@ export function OccupancyChart({ data }: Props) {
         data={data}
         margin={{ top: 5, right: 10, left: 10, bottom: 5 }}
       >
-        <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" vertical={false} />
+        <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" vertical={false} />
         <XAxis
           dataKey="date"
           tickFormatter={formatDate}
-          tick={{ fontSize: 11, fill: "#9ca3af" }}
+          tick={{ fontSize: 11, fill: "var(--muted-foreground)" }}
           tickLine={false}
           axisLine={false}
           interval="preserveStartEnd"
@@ -76,7 +76,7 @@ export function OccupancyChart({ data }: Props) {
         <YAxis
           domain={[0, 100]}
           tickFormatter={(v) => `${v}%`}
-          tick={{ fontSize: 11, fill: "#9ca3af" }}
+          tick={{ fontSize: 11, fill: "var(--muted-foreground)" }}
           tickLine={false}
           axisLine={false}
           width={40}

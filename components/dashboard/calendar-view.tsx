@@ -51,17 +51,17 @@ export function CalendarView({ rooms, startDate, endDate }: CalendarViewProps) {
   const days = eachDayOfInterval({ start: startDate, end: endDate })
 
   return (
-    <div className="rounded-xl border border-gray-200 bg-white overflow-hidden">
+    <div className="rounded-xl border border-border bg-card overflow-hidden">
       <div className="overflow-x-auto">
         <div style={{ minWidth: LEFT_COL + days.length * COL_WIDTH }}>
           {/* Header row: day columns */}
-          <div className="flex border-b border-gray-200 bg-gray-50 sticky top-0 z-10">
+          <div className="flex border-b border-border bg-muted sticky top-0 z-10">
             {/* Top-left corner */}
             <div
-              className="flex-shrink-0 border-r border-gray-200 flex items-center px-3"
+              className="flex-shrink-0 border-r border-border flex items-center px-3"
               style={{ width: LEFT_COL, minWidth: LEFT_COL }}
             >
-              <span className="text-xs font-medium text-gray-500">Номер</span>
+              <span className="text-xs font-medium text-muted-foreground">Номер</span>
             </div>
 
             {/* Day headers */}
@@ -70,14 +70,14 @@ export function CalendarView({ rooms, startDate, endDate }: CalendarViewProps) {
               return (
                 <div
                   key={day.toISOString()}
-                  className={`flex-shrink-0 border-r border-gray-100 flex flex-col items-center justify-center py-2 ${
+                  className={`flex-shrink-0 border-r border-border flex flex-col items-center justify-center py-2 ${
                     isCurrentDay ? "bg-blue-50" : ""
                   }`}
                   style={{ width: COL_WIDTH, minWidth: COL_WIDTH }}
                 >
                   <span
                     className={`text-xs font-medium ${
-                      isCurrentDay ? "text-blue-600" : "text-gray-500"
+                      isCurrentDay ? "text-blue-600" : "text-muted-foreground"
                     }`}
                   >
                     {format(day, "EE", { locale: ru })}
@@ -86,7 +86,7 @@ export function CalendarView({ rooms, startDate, endDate }: CalendarViewProps) {
                     className={`text-sm font-semibold ${
                       isCurrentDay
                         ? "text-blue-600 bg-blue-100 rounded-full w-6 h-6 flex items-center justify-center"
-                        : "text-gray-900"
+                        : "text-foreground"
                     }`}
                   >
                     {format(day, "d")}
@@ -98,26 +98,26 @@ export function CalendarView({ rooms, startDate, endDate }: CalendarViewProps) {
 
           {/* Rooms rows */}
           {rooms.length === 0 ? (
-            <div className="p-8 text-center text-sm text-gray-500">
+            <div className="p-8 text-center text-sm text-muted-foreground">
               Нет номеров для отображения
             </div>
           ) : (
             rooms.map((room) => (
               <div
                 key={room.id}
-                className="flex border-b border-gray-100 last:border-0 hover:bg-gray-50/50 transition-colors"
+                className="flex border-b border-border last:border-0 hover:bg-muted/50 transition-colors"
                 style={{ height: ROW_HEIGHT }}
               >
                 {/* Room name column */}
                 <div
-                  className="flex-shrink-0 border-r border-gray-200 flex flex-col justify-center px-3 sticky left-0 bg-white z-10"
+                  className="flex-shrink-0 border-r border-border flex flex-col justify-center px-3 sticky left-0 bg-card z-10"
                   style={{ width: LEFT_COL, minWidth: LEFT_COL }}
                 >
-                  <span className="text-sm font-medium text-gray-900 truncate leading-tight">
+                  <span className="text-sm font-medium text-foreground truncate leading-tight">
                     {room.name}
                   </span>
                   {room.roomNumber && (
-                    <span className="text-xs text-gray-400">#{room.roomNumber}</span>
+                    <span className="text-xs text-muted-foreground">#{room.roomNumber}</span>
                   )}
                 </div>
 
@@ -130,8 +130,8 @@ export function CalendarView({ rooms, startDate, endDate }: CalendarViewProps) {
                       <Link
                         key={day.toISOString()}
                         href={`/dashboard/bookings/new?roomId=${room.id}&date=${format(day, "yyyy-MM-dd")}`}
-                        className={`flex-shrink-0 border-r border-gray-100 h-full ${
-                          isCurrentDay ? "bg-blue-50/50" : "hover:bg-gray-100/50"
+                        className={`flex-shrink-0 border-r border-border h-full ${
+                          isCurrentDay ? "bg-blue-50/50" : "hover:bg-muted/50"
                         } transition-colors`}
                         style={{ width: COL_WIDTH, minWidth: COL_WIDTH }}
                       />
