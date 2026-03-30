@@ -3,30 +3,31 @@
 import { useLang } from "@/lib/language-context"
 import type { Language } from "@/lib/translations"
 
-const LANGUAGES: { code: Language; label: string; flag: string }[] = [
-  { code: "ru", label: "RU", flag: "🇷🇺" },
-  { code: "en", label: "EN", flag: "🇬🇧" },
-  { code: "kz", label: "KZ", flag: "🇰🇿" },
+const LANGUAGES: { code: Language; label: string }[] = [
+  { code: "ru", label: "RU" },
+  { code: "en", label: "EN" },
+  { code: "kz", label: "KZ" },
 ]
 
-export function LanguageSwitcher() {
+export function LanguageSwitcher({ dark = false }: { dark?: boolean }) {
   const { lang, setLang } = useLang()
 
   return (
-    <div className="flex items-center gap-1 bg-white/90 backdrop-blur-sm border border-gray-200 rounded-lg p-1 shadow-sm">
-      {LANGUAGES.map(({ code, label, flag }) => (
+    <div className={`flex items-center gap-0.5 rounded-lg p-0.5 ${dark ? "bg-white/10" : "bg-[#1b4332]/10"}`}>
+      {LANGUAGES.map(({ code, label }) => (
         <button
           key={code}
           onClick={() => setLang(code)}
-          className={`flex items-center gap-1 px-2 py-1 rounded text-xs font-medium transition-all ${
+          className={`px-2.5 py-1 rounded text-xs font-semibold tracking-wide transition-all ${
             lang === code
-              ? "bg-[#1a56db] text-white shadow-sm"
-              : "text-gray-600 hover:bg-gray-100"
+              ? "bg-[#d4a373] text-white shadow-sm"
+              : dark
+              ? "text-white/70 hover:text-white"
+              : "text-[#1b4332]/70 hover:text-[#1b4332]"
           }`}
           title={code.toUpperCase()}
         >
-          <span>{flag}</span>
-          <span>{label}</span>
+          {label}
         </button>
       ))}
     </div>

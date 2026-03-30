@@ -46,9 +46,11 @@ export function AmenitiesList({ amenities }: AmenitiesListProps) {
         return (
           <div
             key={amenity}
-            className="flex items-center gap-3 p-3 rounded-lg bg-gray-50 border border-gray-100"
+            className="flex items-center gap-3 p-4 rounded-xl bg-[#1b4332]/5 border border-[#1b4332]/10 hover:border-[#d4a373]/30 hover:bg-[#1b4332]/8 transition-all duration-200"
           >
-            <Icon className="size-5 text-[#1a56db] shrink-0" />
+            <div className="size-10 rounded-lg bg-[#1b4332]/10 flex items-center justify-center shrink-0">
+              <Icon className="size-5 text-[#1b4332]" />
+            </div>
             <span className="text-sm font-medium text-gray-700">{amenity}</span>
           </div>
         )
