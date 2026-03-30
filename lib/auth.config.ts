@@ -9,10 +9,11 @@ export const authConfig: NextAuthConfig = {
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user
-      const isOnDashboard = nextUrl.pathname.startsWith("/dashboard")
-      if (isOnDashboard) {
-        if (isLoggedIn) return true
-        return false
+      const isProtected =
+        nextUrl.pathname.startsWith("/dashboard") ||
+        nextUrl.pathname.startsWith("/admin")
+      if (isProtected) {
+        return isLoggedIn
       }
       return true
     },

@@ -9,7 +9,10 @@ export default auth((req) => {
     req.nextUrl.pathname.startsWith("/admin")
 
   if (!req.auth && isProtected) {
-    const loginUrl = new URL("/login", req.nextUrl.origin)
+    const host = req.headers.get("x-forwarded-host") || req.headers.get("host") || req.nextUrl.host
+    const proto = req.headers.get("x-forwarded-proto") || "https"
+    const origin = `${proto}://${host}`
+    const loginUrl = new URL("/login", origin)
     return Response.redirect(loginUrl)
   }
 })
