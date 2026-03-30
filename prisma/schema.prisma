@@ -1,0 +1,274 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+enum Plan {
+  FREE
+  STARTER
+  PRO
+  ENTERPRISE
+}
+
+enum UserRole {
+  SUPER_ADMIN
+  OWNER
+  ADMIN
+  STAFF
+}
+
+model Hotel {
+  id                 String    @id @default(cuid())
+  name               String
+  slug               String    @unique
+  description        String?
+  shortDescription   String?
+  address            String?
+  city               String?
+  country            String    @default("KZ")
+  phone              String?
+  email              String?
+  website            String?
+  logoUrl            String?
+  coverImageUrl      String?
+  galleryUrls        String    @default("[]")
+  amenities          String    @default("[]")
+  checkInTime        String    @default("14:00")
+  checkOutTime       String    @default("12:00")
+  currency           String    @default("KZT")
+  timezone           String    @default("Asia/Almaty")
+  language           String    @default("ru")
+  plan               Plan      @default(FREE)
+  stripeCustomerId   String?
+  stripeSubId        String?
+  planExpiresAt      DateTime?
+  telegramBotToken   String?
+  telegramChatId     String?
+  stripeAccountId    String?
+  ownerId            String
+  owner              User      @relation("HotelOwner", fields: [ownerId], references: [id])
+  members            HotelMember[]
+  rooms              Room[]
+  bookings           Booking[]
+  guests             Guest[]
+  ratePlans          RatePlan[]
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  password      String?
+  image         String?
+  role          UserRole  @default(OWNER)
+  hotels        Hotel[]   @relation("HotelOwner")
+  memberships   HotelMember[]
+  accounts      Account[]
+  sessions      Session[]
+  createdAt     DateTime  @default(now())
+}
+
+model HotelMember {
+  id        String   @id @default(cuid())
+  hotelId   String
+  userId    String
+  role      UserRole @default(STAFF)
+  hotel     Hotel    @relation(fields: [hotelId], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
+  createdAt DateTime @default(now())
+  @@unique([hotelId, userId])
+}
+
+enum RoomType {
+  STANDARD
+  DELUXE
+  SUITE
+  APARTMENT
+  DORMITORY
+  VILLA
+}
+
+enum RoomStatus {
+  AVAILABLE
+  OCCUPIED
+  MAINTENANCE
+  BLOCKED
+}
+
+model Room {
+  id            String     @id @default(cuid())
+  hotelId       String
+  hotel         Hotel      @relation(fields: [hotelId], references: [id])
+  name          String
+  roomNumber    String?
+  type          RoomType   @default(STANDARD)
+  status        RoomStatus @default(AVAILABLE)
+  floor         Int?
+  capacity      Int        @default(2)
+  bedCount      Int        @default(1)
+  bedType       String?
+  pricePerNight Float
+  weekendPrice  Float?
+  description   String?
+  amenities     String     @default("[]")
+  photos        String     @default("[]")
+  isActive      Boolean    @default(true)
+  sortOrder     Int        @default(0)
+  bookings      Booking[]
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+}
+
+model Guest {
+  id             String    @id @default(cuid())
+  hotelId        String
+  hotel          Hotel     @relation(fields: [hotelId], references: [id])
+  firstName      String
+  lastName       String
+  email          String?
+  phone          String?
+  passportNumber String?
+  nationality    String?
+  birthDate      DateTime?
+  notes          String?
+  tags           String    @default("[]")
+  totalVisits    Int       @default(0)
+  totalSpent     Float     @default(0)
+  bookings       Booking[]
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  @@unique([hotelId, email])
+}
+
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  CHECKED_IN
+  CHECKED_OUT
+  CANCELLED
+  NO_SHOW
+}
+
+enum PaymentStatus {
+  UNPAID
+  PARTIAL
+  PAID
+  REFUNDED
+}
+
+enum BookingSource {
+  DIRECT
+  WIDGET
+  MANUAL
+  BOOKING_COM
+  AIRBNB
+  OTHER
+}
+
+model Booking {
+  id              String        @id @default(cuid())
+  bookingNumber   String        @unique
+  hotelId         String
+  hotel           Hotel         @relation(fields: [hotelId], references: [id])
+  roomId          String
+  room            Room          @relation(fields: [roomId], references: [id])
+  guestId         String?
+  guest           Guest?        @relation(fields: [guestId], references: [id])
+  guestFirstName  String
+  guestLastName   String
+  guestEmail      String?
+  guestPhone      String?
+  checkIn         DateTime
+  checkOut        DateTime
+  nights          Int
+  adults          Int           @default(2)
+  children        Int           @default(0)
+  status          BookingStatus @default(PENDING)
+  paymentStatus   PaymentStatus @default(UNPAID)
+  source          BookingSource @default(DIRECT)
+  pricePerNight   Float
+  subtotal        Float
+  discount        Float         @default(0)
+  taxes           Float         @default(0)
+  totalPrice      Float
+  paidAmount      Float         @default(0)
+  specialRequests String?
+  internalNotes   String?
+  ratePlanId      String?
+  ratePlan        RatePlan?     @relation(fields: [ratePlanId], references: [id])
+  stripeSessionId String?
+  payments        Payment[]
+  cancelledAt     DateTime?
+  cancelReason    String?
+  checkedInAt     DateTime?
+  checkedOutAt    DateTime?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+}
+
+enum PaymentMethod {
+  STRIPE
+  KASPI
+  CASH
+  BANK_TRANSFER
+  OTHER
+}
+
+model Payment {
+  id                String        @id @default(cuid())
+  bookingId         String
+  booking           Booking       @relation(fields: [bookingId], references: [id])
+  amount            Float
+  currency          String        @default("KZT")
+  method            PaymentMethod @default(STRIPE)
+  status            String
+  stripePaymentId   String?
+  stripeReceiptUrl  String?
+  notes             String?
+  createdAt         DateTime      @default(now())
+}
+
+model RatePlan {
+  id          String    @id @default(cuid())
+  hotelId     String
+  hotel       Hotel     @relation(fields: [hotelId], references: [id])
+  name        String
+  description String?
+  dateFrom    DateTime
+  dateTo      DateTime
+  multiplier  Float     @default(1.0)
+  isActive    Boolean   @default(true)
+  bookings    Booking[]
+  createdAt   DateTime  @default(now())
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
