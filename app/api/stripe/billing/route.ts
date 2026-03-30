@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server"
 import { auth } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
-import { stripe } from "@/lib/stripe"
+import { getStripe } from "@/lib/stripe"
 
 export const dynamic = 'force-dynamic'
 
@@ -53,7 +53,7 @@ export async function POST(req: Request) {
 
     // Create Stripe customer if not exists
     if (!customerId) {
-      const customer = await stripe.customers.create({
+      const customer = await getStripe().customers.create({
         name: hotel.name,
         email: hotel.email || undefined,
         metadata: { hotelId: hotel.id },
@@ -66,7 +66,7 @@ export async function POST(req: Request) {
       })
     }
 
-    const checkoutSession = await stripe.checkout.sessions.create({
+    const checkoutSession = await getStripe().checkout.sessions.create({
       customer: customerId,
       mode: 'subscription',
       payment_method_types: ['card'],
@@ -89,7 +89,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "No Stripe customer found" }, { status: 400 })
     }
 
-    const portalSession = await stripe.billingPortal.sessions.create({
+    const portalSession = await getStripe().billingPortal.sessions.create({
       customer: hotel.stripeCustomerId,
       return_url: `${baseUrl}/dashboard/settings/billing`,
     })
