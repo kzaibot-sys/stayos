@@ -1,7 +1,8 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, useCallback } from "react"
 import Link from "next/link"
+import { useSearchParams } from "next/navigation"
 import { Check, BedDouble } from "lucide-react"
 import { StepDates } from "./step-dates"
 import { StepGuest } from "./step-guest"
@@ -54,7 +55,19 @@ const steps = [
   { label: "Подтверждение" },
 ]
 
+function sendResizeMessage() {
+  if (typeof window !== "undefined" && window.parent !== window) {
+    window.parent.postMessage(
+      { type: "stayos-resize", height: document.body.scrollHeight },
+      "*"
+    )
+  }
+}
+
 export function BookingWizard({ hotel, slug }: { hotel: Hotel; slug: string }) {
+  const searchParams = useSearchParams()
+  const isEmbedded = searchParams.get("embedded") === "true"
+
   const [currentStep, setCurrentStep] = useState(1)
   const [bookingData, setBookingData] = useState<BookingData>({
     checkIn: "",
@@ -69,6 +82,33 @@ export function BookingWizard({ hotel, slug }: { hotel: Hotel; slug: string }) {
     phone: "",
     specialRequests: "",
   })
+
+  // Send resize on mount and whenever step changes
+  const handleResize = useCallback(() => {
+    if (isEmbedded) {
+      // Small delay to let DOM settle after step transition
+      setTimeout(sendResizeMessage, 50)
+    }
+  }, [isEmbedded])
+
+  useEffect(() => {
+    handleResize()
+  }, [currentStep, handleResize])
+
+  useEffect(() => {
+    if (!isEmbedded) return
+    // Send initial resize after first paint
+    sendResizeMessage()
+    // Also observe body size changes
+    const observer =
+      typeof ResizeObserver !== "undefined"
+        ? new ResizeObserver(() => sendResizeMessage())
+        : null
+    if (observer) observer.observe(document.body)
+    return () => {
+      if (observer) observer.disconnect()
+    }
+  }, [isEmbedded])
 
   function handleStep1Next(data: {
     checkIn: string
@@ -94,26 +134,28 @@ export function BookingWizard({ hotel, slug }: { hotel: Hotel; slug: string }) {
   }
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50">
-      {/* Header */}
-      <header className="bg-white border-b border-gray-200 px-4 py-4">
-        <div className="max-w-2xl mx-auto flex items-center justify-between">
-          <Link
-            href={`/${slug}`}
-            className="flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700 transition-colors"
-          >
-            ← Вернуться
-          </Link>
-          <Link
-            href={`/${slug}`}
-            className="flex items-center gap-1.5 font-semibold text-[#1a56db]"
-          >
-            <BedDouble className="size-5" />
-            {hotel.name}
-          </Link>
-          <div className="w-20" /> {/* spacer */}
-        </div>
-      </header>
+    <div className={`flex flex-col bg-gray-50 ${isEmbedded ? "" : "min-h-screen"}`}>
+      {/* Header — hidden in embedded mode */}
+      {!isEmbedded && (
+        <header className="bg-white border-b border-gray-200 px-4 py-4">
+          <div className="max-w-2xl mx-auto flex items-center justify-between">
+            <Link
+              href={`/${slug}`}
+              className="flex items-center gap-2 text-sm text-gray-500 hover:text-gray-700 transition-colors"
+            >
+              ← Вернуться
+            </Link>
+            <Link
+              href={`/${slug}`}
+              className="flex items-center gap-1.5 font-semibold text-[#1a56db]"
+            >
+              <BedDouble className="size-5" />
+              {hotel.name}
+            </Link>
+            <div className="w-20" /> {/* spacer */}
+          </div>
+        </header>
+      )}
 
       <main className="flex-1 py-8 px-4">
         <div className="max-w-2xl mx-auto space-y-8">
@@ -219,19 +261,21 @@ export function BookingWizard({ hotel, slug }: { hotel: Hotel; slug: string }) {
         </div>
       </main>
 
-      {/* Footer */}
-      <footer className="border-t border-gray-200 bg-white py-4">
-        <div className="max-w-2xl mx-auto px-4 flex items-center justify-center gap-2 text-sm text-gray-400">
-          <span>Powered by</span>
-          <Link
-            href="/"
-            className="flex items-center gap-1 font-semibold text-[#1a56db] hover:underline"
-          >
-            <BedDouble className="size-4" />
-            StayOS
-          </Link>
-        </div>
-      </footer>
+      {/* Footer — hidden in embedded mode */}
+      {!isEmbedded && (
+        <footer className="border-t border-gray-200 bg-white py-4">
+          <div className="max-w-2xl mx-auto px-4 flex items-center justify-center gap-2 text-sm text-gray-400">
+            <span>Powered by</span>
+            <Link
+              href="/"
+              className="flex items-center gap-1 font-semibold text-[#1a56db] hover:underline"
+            >
+              <BedDouble className="size-4" />
+              StayOS
+            </Link>
+          </div>
+        </footer>
+      )}
     </div>
   )
 }
