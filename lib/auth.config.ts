@@ -2,6 +2,7 @@ import type { NextAuthConfig } from "next-auth"
 
 // Edge-compatible auth config (no Prisma, no Node.js-only modules)
 export const authConfig: NextAuthConfig = {
+  trustHost: true,
   session: { strategy: "jwt" },
   pages: { signIn: "/login" },
   providers: [],
