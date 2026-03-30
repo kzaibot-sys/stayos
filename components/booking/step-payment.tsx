@@ -72,6 +72,7 @@ export function StepPayment({ bookingData, slug, onBack }: StepPaymentProps) {
   async function handleConfirm() {
     setLoading(true)
     try {
+      // Step 1: Create the booking
       const res = await fetch("/api/bookings/public", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -101,6 +102,29 @@ export function StepPayment({ bookingData, slug, onBack }: StepPaymentProps) {
         return
       }
 
+      // Step 2: If online payment, create Stripe checkout session
+      if (paymentMethod === "online") {
+        const checkoutRes = await fetch("/api/stripe/checkout", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ bookingId: data.id }),
+        })
+
+        const checkoutData = await checkoutRes.json()
+
+        if (!checkoutRes.ok || !checkoutData.url) {
+          toast.error(checkoutData.error || "Ошибка создания сессии оплаты")
+          // Fall back to success page even if Stripe fails
+          router.push(`/${slug}/book/success?booking=${data.bookingNumber}`)
+          return
+        }
+
+        // Redirect to Stripe Checkout
+        window.location.href = checkoutData.url
+        return
+      }
+
+      // On arrival: redirect to success page
       router.push(`/${slug}/book/success?booking=${data.bookingNumber}`)
     } catch {
       toast.error("Произошла ошибка. Попробуйте ещё раз.")
@@ -211,25 +235,37 @@ export function StepPayment({ bookingData, slug, onBack }: StepPaymentProps) {
             </div>
           </label>
 
-          <label className="flex items-center gap-4 p-4 rounded-lg border-2 border-gray-200 opacity-60 cursor-not-allowed">
+          <label
+            className={`flex items-center gap-4 p-4 rounded-lg border-2 cursor-pointer transition-all ${
+              paymentMethod === "online"
+                ? "border-[#1a56db] bg-blue-50"
+                : "border-gray-200 hover:border-gray-300"
+            }`}
+          >
             <input
               type="radio"
               name="payment"
               value="online"
-              disabled
+              checked={paymentMethod === "online"}
+              onChange={() => setPaymentMethod("online")}
               className="sr-only"
             />
-            <div className="size-5 rounded-full border-2 border-gray-300 flex items-center justify-center shrink-0" />
-            <div>
-              <div className="flex items-center gap-2">
-                <p className="font-medium text-gray-900">Оплатить онлайн</p>
-                <span className="text-xs text-gray-400 bg-gray-100 px-2 py-0.5 rounded-full">
-                  скоро
-                </span>
-              </div>
-              <p className="text-sm text-gray-500">Банковской картой онлайн</p>
+            <div
+              className={`size-5 rounded-full border-2 flex items-center justify-center shrink-0 ${
+                paymentMethod === "online"
+                  ? "border-[#1a56db]"
+                  : "border-gray-300"
+              }`}
+            >
+              {paymentMethod === "online" && (
+                <div className="size-2.5 rounded-full bg-[#1a56db]" />
+              )}
             </div>
-            <CreditCard className="size-5 text-gray-300 ml-auto shrink-0" />
+            <div>
+              <p className="font-medium text-gray-900">Оплатить онлайн</p>
+              <p className="text-sm text-gray-500">Банковской картой онлайн через Stripe</p>
+            </div>
+            <CreditCard className="size-5 text-[#1a56db] ml-auto shrink-0" />
           </label>
         </div>
       </div>
@@ -253,8 +289,10 @@ export function StepPayment({ bookingData, slug, onBack }: StepPaymentProps) {
           {loading ? (
             <>
               <Loader2 className="size-4 animate-spin mr-2" />
-              Подтверждение...
+              {paymentMethod === "online" ? "Переход к оплате..." : "Подтверждение..."}
             </>
+          ) : paymentMethod === "online" ? (
+            "Оплатить онлайн"
           ) : (
             "Подтвердить бронирование"
           )}
