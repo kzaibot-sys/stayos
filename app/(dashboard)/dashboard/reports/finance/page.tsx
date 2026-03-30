@@ -206,7 +206,7 @@ export default function FinanceDashboardPage() {
                 </thead>
                 <tbody>
                   {data?.topRooms.map((room, i) => (
-                    <tr key={room.roomId} className="border-b border-gray-50 last:border-0">
+                    <tr key={room.roomId} className="border-b border-border last:border-0">
                       <td className="py-2.5 pr-4 font-medium text-foreground">
                         <span className="text-muted-foreground mr-2">#{i + 1}</span>
                         {room.roomName}

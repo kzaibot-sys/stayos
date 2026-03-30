@@ -1,15 +1,7 @@
 import { prisma } from "@/lib/prisma"
 import { notFound } from "next/navigation"
 import { Metadata } from "next"
-import Link from "next/link"
-import { BedDouble, Mail, Phone, MapPin, MessageCircle, Send, Star, Tag, ExternalLink } from "lucide-react"
-import { HotelHero } from "@/components/hotel-page/hotel-hero"
-import { AmenitiesList } from "@/components/hotel-page/amenities-list"
-import { RoomsSection } from "@/components/hotel-page/rooms-section"
-import { PhotoGallery } from "@/components/hotel-page/photo-gallery"
-import { LanguageSwitcher } from "@/components/hotel-page/language-switcher"
-import { format } from "date-fns"
-import { ru } from "date-fns/locale"
+import { HotelPageClient } from "@/components/hotel-page/hotel-page-client"
 
 export async function generateMetadata({
   params,
@@ -58,21 +50,18 @@ export default async function HotelPage({
 
   if (!hotel) notFound()
 
-  // Fetch active promo codes for promotions banner
+  // Fetch active promo codes
   const activePromos = await prisma.promoCode.findMany({
     where: {
       hotelId: hotel.id,
       isActive: true,
-      OR: [
-        { validTo: null },
-        { validTo: { gte: new Date() } },
-      ],
+      OR: [{ validTo: null }, { validTo: { gte: new Date() } }],
     },
     orderBy: { createdAt: "desc" },
     take: 3,
   })
 
-  // Parse hotel amenities from JSON string
+  // Parse hotel amenities
   let hotelAmenities: string[] = []
   try {
     hotelAmenities = JSON.parse(hotel.amenities)
@@ -80,7 +69,7 @@ export default async function HotelPage({
     hotelAmenities = []
   }
 
-  // Parse gallery URLs from JSON string
+  // Parse gallery URLs
   let galleryUrls: string[] = []
   try {
     if ((hotel as any).galleryUrls) {
@@ -90,7 +79,7 @@ export default async function HotelPage({
     galleryUrls = []
   }
 
-  // Parse room amenities and photos for each room
+  // Parse room amenities and photos
   const rooms = hotel.rooms.map((room) => {
     let amenities: string[] = []
     let photos: string[] = []
@@ -107,12 +96,25 @@ export default async function HotelPage({
     return { ...room, amenities, photos }
   })
 
-  const hasContacts = hotel.phone || hotel.email || hotel.address
+  const minRoomPrice =
+    rooms.length > 0 ? Math.min(...rooms.map((r) => r.pricePerNight)) : null
 
-  // Minimum room price for "best price" widget
-  const minRoomPrice = rooms.length > 0
-    ? Math.min(...rooms.map((r) => r.pricePerNight))
-    : null
+  // Serialize reviews for client
+  const reviews = (hotel.reviews ?? []).map((r) => ({
+    id: r.id,
+    guestName: r.guestName,
+    rating: r.rating,
+    comment: r.comment,
+    createdAt: r.createdAt.toISOString(),
+  }))
+
+  // Serialize promos
+  const promos = activePromos.map((p) => ({
+    id: p.id,
+    code: p.code,
+    discountType: p.discountType,
+    discountValue: p.discountValue,
+  }))
 
   // JSON-LD structured data
   const jsonLd = {
@@ -130,326 +132,36 @@ export default async function HotelPage({
     email: hotel.email,
   }
 
-  // Build WhatsApp and Telegram links
-  const whatsappLink = hotel.phone
-    ? `https://wa.me/${hotel.phone.replace(/\D/g, "")}`
-    : null
-  const telegramLink = hotel.phone
-    ? `https://t.me/${hotel.phone.replace(/\D/g, "")}`
-    : null
+  const hotelData = {
+    id: hotel.id,
+    name: hotel.name,
+    slug: hotel.slug,
+    city: hotel.city,
+    country: hotel.country,
+    shortDescription: hotel.shortDescription,
+    description: hotel.description,
+    coverImageUrl: hotel.coverImageUrl,
+    checkInTime: hotel.checkInTime,
+    checkOutTime: hotel.checkOutTime,
+    phone: hotel.phone,
+    email: hotel.email,
+    address: hotel.address,
+    cancellationHours: hotel.cancellationHours,
+    amenities: hotelAmenities,
+    galleryUrls,
+    rooms,
+    reviews,
+    activePromos: promos,
+    minRoomPrice,
+  }
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50">
-      {/* JSON-LD structured data */}
+    <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-
-      {/* Language switcher bar */}
-      <div className="absolute top-4 right-4 z-20">
-        <LanguageSwitcher />
-      </div>
-
-      {/* Hero */}
-      <HotelHero hotel={hotel} minPrice={minRoomPrice} />
-
-      {/* Main content */}
-      <main className="flex-1">
-        <div className="max-w-6xl mx-auto px-4 py-12 space-y-14">
-
-          {/* About / Description section */}
-          {hotel.description && (
-            <section>
-              <h2 className="text-2xl font-heading font-bold text-gray-900 mb-4">
-                Об отеле
-              </h2>
-              <p className="text-gray-700 leading-relaxed max-w-3xl text-base">
-                {hotel.description}
-              </p>
-            </section>
-          )}
-
-          {/* Gallery section */}
-          {galleryUrls.length > 0 && (
-            <section>
-              <h2 className="text-2xl font-heading font-bold text-gray-900 mb-6">
-                Галерея
-              </h2>
-              <PhotoGallery photos={galleryUrls} hotelName={hotel.name} />
-            </section>
-          )}
-
-          {/* Amenities section */}
-          {hotelAmenities.length > 0 && (
-            <section>
-              <h2 className="text-2xl font-heading font-bold text-gray-900 mb-6">
-                Удобства
-              </h2>
-              <AmenitiesList amenities={hotelAmenities} />
-            </section>
-          )}
-
-          {/* Promotions banner */}
-          {activePromos.length > 0 && (
-            <section>
-              <div className="bg-gradient-to-r from-amber-400 via-orange-400 to-red-400 rounded-2xl p-6 text-white relative overflow-hidden">
-                <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent" />
-                <div className="relative z-10">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Tag className="size-5" />
-                    <span className="font-bold text-lg">Специальное предложение!</span>
-                  </div>
-                  <div className="space-y-2">
-                    {activePromos.map((promo) => (
-                      <div key={promo.id} className="flex flex-wrap items-center gap-3">
-                        <div>
-                          <p className="text-white/90 text-sm">
-                            {promo.discountType === "PERCENT"
-                              ? `Скидка ${promo.discountValue}% на бронирование`
-                              : `Скидка ${new Intl.NumberFormat("ru-RU").format(promo.discountValue)} ₸ на бронирование`
-                            }
-                          </p>
-                          <p className="font-semibold text-base">
-                            Используйте код:{" "}
-                            <span className="bg-white/20 rounded px-2 py-0.5 font-mono tracking-wider">
-                              {promo.code}
-                            </span>
-                          </p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                  <p className="text-white/70 text-xs mt-3">
-                    Введите промокод на этапе оплаты при бронировании
-                  </p>
-                </div>
-              </div>
-            </section>
-          )}
-
-          {/* Rooms section */}
-          <section>
-            <h2 className="text-2xl font-heading font-bold text-gray-900 mb-6">
-              Номера
-            </h2>
-            {rooms.length > 0 ? (
-              <RoomsSection rooms={rooms} slug={slug} />
-            ) : (
-              <p className="text-gray-500">Номера не найдены.</p>
-            )}
-          </section>
-
-          {/* Reviews section */}
-          {hotel.reviews && hotel.reviews.length > 0 && (() => {
-            const reviews = hotel.reviews!
-            const avgRating = reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length
-            return (
-              <section>
-                <div className="flex items-center gap-3 mb-6">
-                  <h2 className="text-2xl font-heading font-bold text-gray-900">Отзывы</h2>
-                  <div className="flex items-center gap-1.5 bg-amber-50 border border-amber-200 rounded-full px-3 py-1">
-                    <Star className="size-4 text-amber-400 fill-amber-400" />
-                    <span className="font-semibold text-gray-900">{avgRating.toFixed(1)}</span>
-                    <span className="text-sm text-gray-500">({reviews.length})</span>
-                  </div>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {reviews.map((review) => (
-                    <div key={review.id} className="bg-white rounded-xl border border-gray-200 p-5 space-y-3">
-                      <div className="flex items-start justify-between gap-2">
-                        <div>
-                          <p className="font-semibold text-gray-900">{review.guestName}</p>
-                          <p className="text-xs text-gray-400">
-                            {format(review.createdAt, "d MMMM yyyy", { locale: ru })}
-                          </p>
-                        </div>
-                        <div className="flex items-center gap-0.5 shrink-0">
-                          {Array.from({ length: 5 }).map((_, i) => (
-                            <Star
-                              key={i}
-                              className={`size-4 ${i < review.rating ? "text-amber-400 fill-amber-400" : "text-gray-200 fill-gray-200"}`}
-                            />
-                          ))}
-                        </div>
-                      </div>
-                      {review.comment && (
-                        <p className="text-sm text-gray-700 leading-relaxed">{review.comment}</p>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </section>
-            )
-          })()}
-
-          {/* Map section */}
-          {hotel.address && (
-            <section>
-              <h2 className="text-2xl font-heading font-bold text-gray-900 mb-6">
-                Расположение
-              </h2>
-              <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
-                <div className="p-5 flex items-start gap-3 border-b border-gray-100">
-                  <MapPin className="size-5 text-[#1a56db] shrink-0 mt-0.5" />
-                  <p className="text-gray-700">{hotel.address}</p>
-                </div>
-                <div className="w-full h-64 bg-gradient-to-br from-blue-50 via-indigo-50 to-sky-50 flex flex-col items-center justify-center gap-4 relative overflow-hidden">
-                  {/* Decorative grid lines */}
-                  <div className="absolute inset-0 opacity-10" style={{
-                    backgroundImage: "linear-gradient(#1a56db 1px, transparent 1px), linear-gradient(90deg, #1a56db 1px, transparent 1px)",
-                    backgroundSize: "40px 40px"
-                  }} />
-                  <div className="relative z-10 flex flex-col items-center gap-3">
-                    <div className="size-16 rounded-full bg-white/80 backdrop-blur shadow-lg flex items-center justify-center">
-                      <MapPin className="size-8 text-[#1a56db]" />
-                    </div>
-                    <div className="text-center">
-                      <p className="text-sm font-medium text-gray-700 mb-1">
-                        {hotel.address}{hotel.city ? `, ${hotel.city}` : ""}
-                      </p>
-                      <a
-                        href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent((hotel.address || "") + (hotel.city ? " " + hotel.city : ""))}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1.5 bg-[#1a56db] text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-[#1e429f] transition-colors shadow-sm"
-                      >
-                        <ExternalLink className="size-3.5" />
-                        Открыть в Google Maps
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </section>
-          )}
-
-          {/* FAQ section */}
-          <section>
-            <h2 className="text-2xl font-heading font-bold text-gray-900 mb-6">
-              Часто задаваемые вопросы
-            </h2>
-            <div className="space-y-3">
-              {[
-                {
-                  q: "Как забронировать номер?",
-                  a: "Выберите номер и даты, заполните форму бронирования — подтверждение придёт на email.",
-                },
-                {
-                  q: "Какие способы оплаты принимаются?",
-                  a: "Принимаем оплату онлайн, Kaspi, наличными или банковским переводом при заезде.",
-                },
-                {
-                  q: "Можно ли отменить бронирование?",
-                  a: hotel.cancellationHours > 0
-                    ? `Бронирование можно отменить бесплатно за ${hotel.cancellationHours} ч. до заезда. При более поздней отмене может применяться штраф.`
-                    : "Пожалуйста, свяжитесь с нами для уточнения условий отмены.",
-                },
-                {
-                  q: "Во сколько заезд и выезд?",
-                  a: `Заезд с ${hotel.checkInTime}, выезд до ${hotel.checkOutTime}. Ранний заезд и поздний выезд возможны по запросу.`,
-                },
-              ].map(({ q, a }) => (
-                <details
-                  key={q}
-                  className="group bg-white rounded-xl border border-gray-200 overflow-hidden"
-                >
-                  <summary className="flex items-center justify-between p-5 cursor-pointer list-none font-medium text-gray-900 hover:bg-gray-50 transition-colors">
-                    {q}
-                    <span className="shrink-0 ml-4 text-gray-400 group-open:rotate-180 transition-transform duration-200">
-                      ▾
-                    </span>
-                  </summary>
-                  <div className="px-5 pb-5 text-gray-600 text-sm leading-relaxed border-t border-gray-100 pt-4">
-                    {a}
-                  </div>
-                </details>
-              ))}
-            </div>
-          </section>
-
-          {/* Contacts section */}
-          {hasContacts && (
-            <section>
-              <h2 className="text-2xl font-heading font-bold text-gray-900 mb-6">
-                Контакты
-              </h2>
-              <div className="bg-white rounded-xl border border-gray-200 p-6 space-y-4">
-                {hotel.phone && (
-                  <div className="flex items-center gap-3 text-gray-700">
-                    <Phone className="size-5 text-[#1a56db] shrink-0" />
-                    <a
-                      href={`tel:${hotel.phone}`}
-                      className="hover:text-[#1a56db] transition-colors font-medium"
-                    >
-                      {hotel.phone}
-                    </a>
-                  </div>
-                )}
-                {hotel.email && (
-                  <div className="flex items-center gap-3 text-gray-700">
-                    <Mail className="size-5 text-[#1a56db] shrink-0" />
-                    <a
-                      href={`mailto:${hotel.email}`}
-                      className="hover:text-[#1a56db] transition-colors"
-                    >
-                      {hotel.email}
-                    </a>
-                  </div>
-                )}
-                {hotel.address && (
-                  <div className="flex items-start gap-3 text-gray-700">
-                    <MapPin className="size-5 text-[#1a56db] shrink-0 mt-0.5" />
-                    <span>{hotel.address}</span>
-                  </div>
-                )}
-
-                {/* WhatsApp / Telegram buttons */}
-                {hotel.phone && (
-                  <div className="flex flex-wrap gap-3 pt-2">
-                    {whatsappLink && (
-                      <a
-                        href={whatsappLink}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 rounded-lg bg-green-500 hover:bg-green-600 text-white px-4 py-2.5 text-sm font-medium transition-colors"
-                      >
-                        <MessageCircle className="size-4" />
-                        WhatsApp
-                      </a>
-                    )}
-                    {telegramLink && (
-                      <a
-                        href={`https://t.me/+${hotel.phone.replace(/\D/g, "")}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 rounded-lg bg-[#2AABEE] hover:bg-[#229ED9] text-white px-4 py-2.5 text-sm font-medium transition-colors"
-                      >
-                        <Send className="size-4" />
-                        Telegram
-                      </a>
-                    )}
-                  </div>
-                )}
-              </div>
-            </section>
-          )}
-        </div>
-      </main>
-
-      {/* Footer */}
-      <footer className="border-t border-gray-200 bg-white py-6">
-        <div className="max-w-6xl mx-auto px-4 flex items-center justify-center gap-2 text-sm text-gray-400">
-          <span>Powered by</span>
-          <Link
-            href="/"
-            className="flex items-center gap-1 font-semibold text-[#1a56db] hover:underline"
-          >
-            <BedDouble className="size-4" />
-            StayOS
-          </Link>
-        </div>
-      </footer>
-    </div>
+      <HotelPageClient hotel={hotelData} />
+    </>
   )
 }

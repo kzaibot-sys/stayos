@@ -65,26 +65,26 @@ const CLEANING_STATUS_CONFIG: Record<
 > = {
   CLEAN: {
     label: "Чисто",
-    bg: "bg-green-100",
-    text: "text-green-800",
+    bg: "bg-green-100 dark:bg-green-900",
+    text: "text-green-800 dark:text-green-200",
     dot: "bg-green-500",
   },
   DIRTY: {
     label: "Грязно",
-    bg: "bg-red-100",
-    text: "text-red-800",
+    bg: "bg-red-100 dark:bg-red-900",
+    text: "text-red-800 dark:text-red-200",
     dot: "bg-red-500",
   },
   CLEANING: {
     label: "Уборка",
-    bg: "bg-yellow-100",
-    text: "text-yellow-800",
+    bg: "bg-yellow-100 dark:bg-yellow-900",
+    text: "text-yellow-800 dark:text-yellow-200",
     dot: "bg-yellow-500",
   },
   INSPECTION: {
     label: "Инспекция",
-    bg: "bg-blue-100",
-    text: "text-blue-800",
+    bg: "bg-blue-100 dark:bg-blue-900",
+    text: "text-blue-800 dark:text-blue-200",
     dot: "bg-blue-500",
   },
 }
@@ -175,9 +175,9 @@ export default function HousekeepingPage() {
 
   const priorityColors: Record<TaskPriority, string> = {
     LOW: "bg-muted text-muted-foreground",
-    MEDIUM: "bg-blue-100 text-blue-700",
-    HIGH: "bg-orange-100 text-orange-700",
-    URGENT: "bg-red-100 text-red-700",
+    MEDIUM: "bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300",
+    HIGH: "bg-orange-100 text-orange-700 dark:bg-orange-900 dark:text-orange-300",
+    URGENT: "bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300",
   }
 
   const taskStatusIcons: Record<TaskStatus, React.ReactNode> = {
@@ -350,7 +350,7 @@ export default function HousekeepingPage() {
                         {task.status === "PENDING" && (
                           <button
                             onClick={() => updateTaskStatus(task.id, "IN_PROGRESS")}
-                            className="rounded px-2 py-1 text-xs bg-yellow-50 text-yellow-700 hover:bg-yellow-100 transition-colors"
+                            className="rounded px-2 py-1 text-xs bg-yellow-50 text-yellow-700 dark:bg-yellow-950 dark:text-yellow-300 hover:bg-yellow-100 dark:hover:bg-yellow-900 transition-colors"
                           >
                             В работу
                           </button>
@@ -358,7 +358,7 @@ export default function HousekeepingPage() {
                         {task.status === "IN_PROGRESS" && (
                           <button
                             onClick={() => updateTaskStatus(task.id, "COMPLETED")}
-                            className="rounded px-2 py-1 text-xs bg-green-50 text-green-700 hover:bg-green-100 transition-colors"
+                            className="rounded px-2 py-1 text-xs bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-300 hover:bg-green-100 dark:hover:bg-green-900 transition-colors"
                           >
                             Завершить
                           </button>
@@ -366,7 +366,7 @@ export default function HousekeepingPage() {
                         {(task.status === "PENDING" || task.status === "IN_PROGRESS") && (
                           <button
                             onClick={() => updateTaskStatus(task.id, "CANCELLED")}
-                            className="rounded px-2 py-1 text-xs bg-red-50 text-red-600 hover:bg-red-100 transition-colors"
+                            className="rounded px-2 py-1 text-xs bg-red-50 text-red-600 dark:bg-red-950 dark:text-red-300 hover:bg-red-100 dark:hover:bg-red-900 transition-colors"
                           >
                             Отменить
                           </button>
