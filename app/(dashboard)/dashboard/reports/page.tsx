@@ -150,7 +150,6 @@ export default function ReportsPage() {
       setForecastData(forecastJson.data ?? [])
       setTopRooms(topRoomsJson.byRevenue ?? [])
 
-      // Source distribution from bookings
       const sourceMap: Record<string, number> = {}
       for (const b of (bookingsJson.bookings ?? []) as any[]) {
         const s = b.source ?? "OTHER"
@@ -162,7 +161,6 @@ export default function ReportsPage() {
       }))
       setSourceData(srcArr)
 
-      // Compute stats
       const totalRevenue = revenueJson.total?.revenue ?? 0
       const totalBookings = revenueJson.total?.bookings ?? 0
 
@@ -195,7 +193,6 @@ export default function ReportsPage() {
         cancellationRate,
       })
 
-      // Fetch previous period for comparison
       if (compareMode) {
         const prevRes = await fetch(
           `/api/reports/revenue?period=${period}&shift=prev`
@@ -236,14 +233,12 @@ export default function ReportsPage() {
     return `${sign}${Math.round(pct)}%`
   }
 
-  // Merge revenue data for comparison chart
   const mergedRevenueData = revenueData.map((d, i) => ({
     date: d.date,
     revenue: d.revenue,
     prevRevenue: prevRevenueData[i]?.revenue ?? undefined,
   }))
 
-  // Forecast color logic
   function getForecastColor(occupancy: number) {
     if (occupancy >= 80) return "#ef4444"
     if (occupancy >= 60) return "#f59e0b"
@@ -254,12 +249,12 @@ export default function ReportsPage() {
     <div>
       {/* Page header */}
       <div className="flex items-center justify-between mb-6">
-        <h1 className="font-heading text-2xl font-semibold text-gray-900">
+        <h1 className="font-heading text-2xl font-semibold text-foreground">
           Аналитика и отчёты
         </h1>
         <div className="flex items-center gap-2">
           <Link href="/dashboard/reports/finance">
-            <button className="flex items-center gap-2 text-sm font-medium text-gray-700 bg-white border border-gray-200 hover:bg-gray-50 rounded-lg px-3 py-2 transition-colors">
+            <button className="flex items-center gap-2 text-sm font-medium text-foreground bg-card border border-border hover:bg-muted rounded-lg px-3 py-2 transition-colors">
               <DollarSign className="size-4" />
               Финансы
             </button>
@@ -270,15 +265,15 @@ export default function ReportsPage() {
 
       {/* Period selector + compare toggle */}
       <div className="flex flex-wrap items-center gap-3 mb-6">
-        <div className="flex gap-1 bg-gray-100 rounded-lg p-1">
+        <div className="flex gap-1 bg-muted rounded-lg p-1">
           {PERIODS.map((p) => (
             <button
               key={p.value}
               onClick={() => setPeriod(p.value)}
               className={`px-4 py-1.5 text-sm font-medium rounded-md transition-colors ${
                 period === p.value
-                  ? "bg-white text-gray-900 shadow-sm"
-                  : "text-gray-500 hover:text-gray-700"
+                  ? "bg-card text-foreground shadow-sm"
+                  : "text-muted-foreground hover:text-foreground"
               }`}
             >
               {p.label}
@@ -290,8 +285,8 @@ export default function ReportsPage() {
           onClick={() => setCompareMode((v) => !v)}
           className={`flex items-center gap-2 text-sm font-medium rounded-lg px-3 py-1.5 border transition-colors ${
             compareMode
-              ? "bg-blue-50 border-blue-300 text-blue-700"
-              : "bg-white border-gray-200 text-gray-700 hover:bg-gray-50"
+              ? "bg-blue-50 border-blue-300 text-blue-700 dark:bg-blue-950 dark:border-blue-800 dark:text-blue-300"
+              : "bg-card border-border text-foreground hover:bg-muted"
           }`}
         >
           <TrendingUp className="size-4" />
@@ -353,10 +348,10 @@ export default function ReportsPage() {
       </div>
 
       {/* Revenue chart */}
-      <div className="bg-white rounded-xl border border-gray-200 p-5 mb-6">
-        <h2 className="font-medium text-gray-900 mb-4">Выручка по дням</h2>
+      <div className="bg-card rounded-xl border border-border p-5 mb-6">
+        <h2 className="font-medium text-foreground mb-4">Выручка по дням</h2>
         {isLoading ? (
-          <div className="h-72 flex items-center justify-center text-gray-400 text-sm">
+          <div className="h-72 flex items-center justify-center text-muted-foreground text-sm">
             Загрузка...
           </div>
         ) : compareMode && prevRevenueData.length > 0 ? (
@@ -372,17 +367,18 @@ export default function ReportsPage() {
                   <stop offset="95%" stopColor="#94a3b8" stopOpacity={0} />
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+              <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
               <XAxis
                 dataKey="date"
                 tickFormatter={formatShortDate}
-                tick={{ fontSize: 11, fill: "#94a3b8" }}
+                tick={{ fontSize: 11, fill: "var(--muted-foreground)" }}
               />
               <YAxis
                 tickFormatter={(v) => `${Math.round(v / 1000)}к`}
-                tick={{ fontSize: 11, fill: "#94a3b8" }}
+                tick={{ fontSize: 11, fill: "var(--muted-foreground)" }}
               />
               <Tooltip
+                contentStyle={{ backgroundColor: "var(--card)", border: "1px solid var(--border)", borderRadius: "8px", color: "var(--foreground)" }}
                 formatter={(v: any, name: any) => [
                   formatPrice(Number(v)),
                   name === "revenue" ? "Текущий период" : "Прошлый период",
@@ -413,10 +409,10 @@ export default function ReportsPage() {
 
       {/* Occupancy + Source */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-        <div className="bg-white rounded-xl border border-gray-200 p-5">
-          <h2 className="font-medium text-gray-900 mb-4">Занятость номеров</h2>
+        <div className="bg-card rounded-xl border border-border p-5">
+          <h2 className="font-medium text-foreground mb-4">Занятость номеров</h2>
           {isLoading ? (
-            <div className="h-60 flex items-center justify-center text-gray-400 text-sm">
+            <div className="h-60 flex items-center justify-center text-muted-foreground text-sm">
               Загрузка...
             </div>
           ) : (
@@ -424,12 +420,12 @@ export default function ReportsPage() {
           )}
         </div>
 
-        <div className="bg-white rounded-xl border border-gray-200 p-5">
-          <h2 className="font-medium text-gray-900 mb-4">
+        <div className="bg-card rounded-xl border border-border p-5">
+          <h2 className="font-medium text-foreground mb-4">
             Источники бронирований
           </h2>
           {isLoading ? (
-            <div className="h-60 flex items-center justify-center text-gray-400 text-sm">
+            <div className="h-60 flex items-center justify-center text-muted-foreground text-sm">
               Загрузка...
             </div>
           ) : (
@@ -439,21 +435,21 @@ export default function ReportsPage() {
       </div>
 
       {/* Forecast chart */}
-      <div className="bg-white rounded-xl border border-gray-200 p-5 mb-6">
-        <h2 className="font-medium text-gray-900 mb-4">
+      <div className="bg-card rounded-xl border border-border p-5 mb-6">
+        <h2 className="font-medium text-foreground mb-4">
           Прогноз занятости (следующие 30 дней)
         </h2>
         {isLoading ? (
-          <div className="h-60 flex items-center justify-center text-gray-400 text-sm">
+          <div className="h-60 flex items-center justify-center text-muted-foreground text-sm">
             Загрузка...
           </div>
         ) : forecastData.length === 0 ? (
-          <div className="h-60 flex items-center justify-center text-gray-400 text-sm">
+          <div className="h-60 flex items-center justify-center text-muted-foreground text-sm">
             Нет данных
           </div>
         ) : (
           <>
-            <div className="flex items-center gap-4 mb-3 text-xs text-gray-500">
+            <div className="flex items-center gap-4 mb-3 text-xs text-muted-foreground">
               <span className="flex items-center gap-1">
                 <span className="inline-block w-3 h-3 rounded-full bg-green-500" />
                 {"< 60%"}
@@ -475,18 +471,19 @@ export default function ReportsPage() {
                     <stop offset="95%" stopColor="#22c55e" stopOpacity={0} />
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
+                <CartesianGrid strokeDasharray="3 3" stroke="var(--border)" />
                 <XAxis
                   dataKey="date"
                   tickFormatter={formatShortDate}
-                  tick={{ fontSize: 11, fill: "#94a3b8" }}
+                  tick={{ fontSize: 11, fill: "var(--muted-foreground)" }}
                 />
                 <YAxis
                   domain={[0, 100]}
                   tickFormatter={(v) => `${v}%`}
-                  tick={{ fontSize: 11, fill: "#94a3b8" }}
+                  tick={{ fontSize: 11, fill: "var(--muted-foreground)" }}
                 />
                 <Tooltip
+                  contentStyle={{ backgroundColor: "var(--card)", border: "1px solid var(--border)", borderRadius: "8px", color: "var(--foreground)" }}
                   formatter={(v: any) => [`${v}%`, "Занятость"]}
                   labelFormatter={(label: any) => formatShortDate(String(label))}
                 />
@@ -517,51 +514,51 @@ export default function ReportsPage() {
       </div>
 
       {/* Top rooms table */}
-      <div className="bg-white rounded-xl border border-gray-200 p-5">
-        <h2 className="font-medium text-gray-900 mb-4">Топ номеров</h2>
+      <div className="bg-card rounded-xl border border-border p-5">
+        <h2 className="font-medium text-foreground mb-4">Топ номеров</h2>
         {isLoading ? (
-          <div className="h-40 flex items-center justify-center text-gray-400 text-sm">
+          <div className="h-40 flex items-center justify-center text-muted-foreground text-sm">
             Загрузка...
           </div>
         ) : topRooms.length === 0 ? (
-          <p className="text-sm text-gray-400">Нет данных за период</p>
+          <p className="text-sm text-muted-foreground">Нет данных за период</p>
         ) : (
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-gray-100 text-left">
-                  <th className="pb-2 font-medium text-gray-500 text-xs uppercase tracking-wide">
+                <tr className="border-b border-border text-left">
+                  <th className="pb-2 font-medium text-muted-foreground text-xs uppercase tracking-wide">
                     Номер
                   </th>
-                  <th className="pb-2 font-medium text-gray-500 text-xs uppercase tracking-wide text-right">
+                  <th className="pb-2 font-medium text-muted-foreground text-xs uppercase tracking-wide text-right">
                     Брони
                   </th>
-                  <th className="pb-2 font-medium text-gray-500 text-xs uppercase tracking-wide text-right">
+                  <th className="pb-2 font-medium text-muted-foreground text-xs uppercase tracking-wide text-right">
                     Выручка
                   </th>
-                  <th className="pb-2 font-medium text-gray-500 text-xs uppercase tracking-wide text-right">
+                  <th className="pb-2 font-medium text-muted-foreground text-xs uppercase tracking-wide text-right">
                     Загруженность
                   </th>
-                  <th className="pb-2 font-medium text-gray-500 text-xs uppercase tracking-wide text-right">
+                  <th className="pb-2 font-medium text-muted-foreground text-xs uppercase tracking-wide text-right">
                     Ср. чек
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-50">
+              <tbody className="divide-y divide-border">
                 {topRooms.slice(0, 10).map((room) => (
-                  <tr key={room.roomId} className="hover:bg-gray-50 transition-colors">
-                    <td className="py-2.5 font-medium text-gray-900">
+                  <tr key={room.roomId} className="hover:bg-muted transition-colors">
+                    <td className="py-2.5 font-medium text-foreground">
                       {room.roomName}
                       {room.roomNumber && (
-                        <span className="text-gray-400 font-normal ml-1">
+                        <span className="text-muted-foreground font-normal ml-1">
                           #{room.roomNumber}
                         </span>
                       )}
                     </td>
-                    <td className="py-2.5 text-right text-gray-700">
+                    <td className="py-2.5 text-right text-foreground">
                       {room.bookings}
                     </td>
-                    <td className="py-2.5 text-right text-gray-700">
+                    <td className="py-2.5 text-right text-foreground">
                       {formatPrice(room.revenue)}
                     </td>
                     <td className="py-2.5 text-right">
@@ -577,7 +574,7 @@ export default function ReportsPage() {
                         {room.occupancy}%
                       </span>
                     </td>
-                    <td className="py-2.5 text-right text-gray-700">
+                    <td className="py-2.5 text-right text-foreground">
                       {formatPrice(room.avgPrice)}
                     </td>
                   </tr>
@@ -608,12 +605,12 @@ function StatCard({
   const isNegative = delta?.startsWith("-")
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 p-4">
+    <div className="bg-card rounded-xl border border-border p-4">
       <div className="flex items-center justify-between mb-2">
-        <p className="text-sm text-gray-500">{label}</p>
-        <Icon className={`size-4 ${iconClassName ?? "text-gray-400"}`} />
+        <p className="text-sm text-muted-foreground">{label}</p>
+        <Icon className={`size-4 ${iconClassName ?? "text-muted-foreground"}`} />
       </div>
-      <p className="text-xl font-bold text-gray-900">{value}</p>
+      <p className="text-xl font-bold text-foreground">{value}</p>
       {delta && (
         <p
           className={`text-xs mt-1 font-medium ${
@@ -621,7 +618,7 @@ function StatCard({
               ? "text-green-600"
               : isNegative
               ? "text-red-500"
-              : "text-gray-400"
+              : "text-muted-foreground"
           }`}
         >
           vs прошлый период: {delta}
@@ -650,7 +647,7 @@ function ExportDropdown() {
     <div className="relative">
       <button
         onClick={() => setOpen((v) => !v)}
-        className="flex items-center gap-2 text-sm font-medium text-gray-700 bg-white border border-gray-200 hover:bg-gray-50 rounded-lg px-3 py-2 transition-colors"
+        className="flex items-center gap-2 text-sm font-medium text-foreground bg-card border border-border hover:bg-muted rounded-lg px-3 py-2 transition-colors"
       >
         <Download className="size-4" />
         Экспорт
@@ -658,12 +655,12 @@ function ExportDropdown() {
       {open && (
         <>
           <div className="fixed inset-0 z-10" onClick={() => setOpen(false)} />
-          <div className="absolute right-0 top-full mt-1 w-44 bg-white rounded-lg border border-gray-200 shadow-lg z-20 py-1">
+          <div className="absolute right-0 top-full mt-1 w-44 bg-card rounded-lg border border-border shadow-lg z-20 py-1">
             {EXPORT_OPTIONS.map((opt) => (
               <button
                 key={opt.type}
                 onClick={() => handleExport(opt.type)}
-                className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                className="w-full text-left px-4 py-2 text-sm text-foreground hover:bg-muted transition-colors"
               >
                 {opt.label}
               </button>
