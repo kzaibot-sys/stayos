@@ -1,12 +1,8 @@
 import { PrismaClient } from '@prisma/client'
-import { PrismaLibSql } from '@prisma/adapter-libsql'
 import bcrypt from 'bcryptjs'
-import path from 'path'
 import { subDays, addDays, subMonths, setHours } from 'date-fns'
 
-const dbPath = path.join(process.cwd(), 'prisma', 'dev.db')
-const adapter = new PrismaLibSql({ url: `file:${dbPath}` })
-const prisma = new PrismaClient({ adapter } as any)
+const prisma = new PrismaClient()
 
 function rndInt(min: number, max: number) {
   return Math.floor(Math.random() * (max - min + 1)) + min
