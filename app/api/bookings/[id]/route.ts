@@ -3,6 +3,7 @@ import { auth } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
 import { z } from "zod"
 import { sendTelegramNotification, formatCancelledBookingMessage } from "@/lib/telegram"
+import { MESSAGE_TEMPLATES, renderTemplate } from "@/lib/message-templates"
 import { logActivity } from "@/lib/activity-log"
 
 const updateBookingSchema = z.object({
@@ -186,6 +187,30 @@ export async function PUT(
       entity: "booking",
       entityId: id,
       details: { bookingNumber: booking.bookingNumber },
+    })
+  }
+
+  // Send Telegram check_in / check_out notifications (non-blocking)
+  if (data.status === "CHECKED_IN" || data.status === "CHECKED_OUT") {
+    prisma.hotel.findUnique({
+      where: { id: hotelId },
+      select: { telegramBotToken: true, telegramChatId: true },
+    }).then((hotel) => {
+      if (hotel?.telegramBotToken && hotel?.telegramChatId) {
+        const templateKey = data.status === "CHECKED_IN" ? "check_in" : "check_out"
+        const tpl = MESSAGE_TEMPLATES[templateKey]
+        const vars: Record<string, string> = {
+          bookingNumber: booking.bookingNumber,
+          guestName: `${booking.guestFirstName} ${booking.guestLastName}`,
+          roomName: booking.room.name,
+        }
+        const message = renderTemplate(tpl.telegram, vars)
+        sendTelegramNotification(hotel.telegramBotToken, hotel.telegramChatId, message).catch((err) => {
+          console.error(`[Telegram] Failed to send ${templateKey} notification:`, err)
+        })
+      }
+    }).catch((err) => {
+      console.error('[Telegram] Failed to fetch hotel for notification:', err)
     })
   }
 

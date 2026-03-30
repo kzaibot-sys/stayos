@@ -6,6 +6,7 @@ import { BedDouble, Mail, Phone, MapPin, MessageCircle, Send, Star } from "lucid
 import { HotelHero } from "@/components/hotel-page/hotel-hero"
 import { AmenitiesList } from "@/components/hotel-page/amenities-list"
 import { RoomsSection } from "@/components/hotel-page/rooms-section"
+import { PhotoGallery } from "@/components/hotel-page/photo-gallery"
 import { format } from "date-fns"
 import { ru } from "date-fns/locale"
 
@@ -155,19 +156,7 @@ export default async function HotelPage({
               <h2 className="text-2xl font-heading font-bold text-gray-900 mb-6">
                 Галерея
               </h2>
-              <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                {galleryUrls.slice(0, 6).map((url, i) => (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img
-                    key={i}
-                    src={url}
-                    alt={`${hotel.name} — фото ${i + 1}`}
-                    className={`w-full object-cover rounded-xl ${
-                      i === 0 ? "aspect-video col-span-2 md:col-span-1 md:row-span-2" : "aspect-video"
-                    }`}
-                  />
-                ))}
-              </div>
+              <PhotoGallery photos={galleryUrls} hotelName={hotel.name} />
             </section>
           )}
 

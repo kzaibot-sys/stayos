@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button"
 import { BookingActions } from "@/components/dashboard/booking-actions"
 import { PaymentForm } from "@/components/dashboard/payment-form"
 import { RefundButton } from "@/components/dashboard/refund-button"
+import { InternalNotes } from "@/components/dashboard/internal-notes"
 
 const bookingStatusConfig: Record<string, { label: string; className: string }> = {
   PENDING: { label: "Ожидает", className: "bg-yellow-100 text-yellow-700" },
@@ -224,17 +225,8 @@ export default async function BookingDetailPage({
               </div>
             )}
 
-            {/* Internal notes */}
-            {booking.internalNotes && (
-              <div className="mt-4">
-                <h3 className="text-xs font-medium text-gray-500 uppercase tracking-wider mb-2">
-                  Внутренние заметки
-                </h3>
-                <p className="text-sm text-gray-700 bg-yellow-50 border border-yellow-100 rounded-lg p-3">
-                  {booking.internalNotes}
-                </p>
-              </div>
-            )}
+            {/* Internal notes — editable */}
+            <InternalNotes bookingId={booking.id} initialNotes={booking.internalNotes} />
 
             {/* Cancel reason */}
             {booking.cancelReason && (

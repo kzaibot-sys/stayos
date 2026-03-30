@@ -2,6 +2,7 @@
 
 import { Menu, ChevronRight, Home } from "lucide-react"
 import { UserNav } from "@/components/dashboard/user-nav"
+import { ThemeToggle } from "@/components/dashboard/theme-toggle"
 import { usePathname } from "next/navigation"
 import Link from "next/link"
 
@@ -103,7 +104,10 @@ export function Topbar({ user, hotelName, onMenuClick }: TopbarProps) {
       </div>
 
       {/* Right side */}
-      <UserNav user={user} />
+      <div className="flex items-center gap-2">
+        <ThemeToggle />
+        <UserNav user={user} />
+      </div>
     </header>
   )
 }

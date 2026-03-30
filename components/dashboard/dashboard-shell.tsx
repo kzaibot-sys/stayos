@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { Sidebar } from "@/components/dashboard/sidebar"
 import { Topbar } from "@/components/dashboard/topbar"
+import { NotificationSound } from "@/components/dashboard/notification-sound"
 import {
   Sheet,
   SheetContent,
@@ -19,6 +20,7 @@ export function DashboardShell({ user, hotelName, children }: DashboardShellProp
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <NotificationSound />
       {/* Desktop sidebar - fixed left */}
       <aside className="hidden lg:flex fixed inset-y-0 left-0 z-40">
         <Sidebar user={user} />

@@ -93,6 +93,17 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
 
+/* Feature 47: dark theme overrides using hex values for direct CSS var compatibility */
+html.dark {
+  --background: #0f172a;
+  --foreground: #f8fafc;
+  --card: #1e293b;
+  --card-foreground: #f8fafc;
+  --border: #334155;
+  --muted: #334155;
+  --muted-foreground: #94a3b8;
+}
+
 .dark {
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
