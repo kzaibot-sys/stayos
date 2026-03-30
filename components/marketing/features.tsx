@@ -1,6 +1,6 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { motion, type Variants } from "framer-motion"
 import Link from "next/link"
 import {
   CalendarCheck,
@@ -10,7 +10,8 @@ import {
   MessageCircle,
   CreditCard,
 } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { buttonVariants } from "@/components/ui/button"
+import { cn } from "@/lib/utils"
 
 const features = [
   {
@@ -51,7 +52,7 @@ const features = [
   },
 ]
 
-const container = {
+const container: Variants = {
   hidden: { opacity: 0 },
   show: {
     opacity: 1,
@@ -61,9 +62,13 @@ const container = {
   },
 }
 
-const item = {
+const item: Variants = {
   hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.4, ease: "easeOut" as const },
+  },
 }
 
 export function Features() {
@@ -92,7 +97,10 @@ export function Features() {
                   className="rounded-xl bg-white p-6 shadow-sm"
                 >
                   <div
-                    className={`mb-4 inline-flex size-12 items-center justify-center rounded-full ${feat.color}`}
+                    className={cn(
+                      "mb-4 inline-flex size-12 items-center justify-center rounded-full",
+                      feat.color
+                    )}
                   >
                     <Icon className="size-6" />
                   </div>
@@ -118,13 +126,15 @@ export function Features() {
           <p className="text-lg text-gray-600 mb-8">
             Создайте аккаунт за 2 минуты
           </p>
-          <Button
-            size="lg"
-            asChild
-            className="bg-[#1a56db] px-8 py-3 text-base text-white hover:bg-[#1e429f]"
+          <Link
+            href="/register"
+            className={cn(
+              buttonVariants({ size: "lg" }),
+              "bg-[#1a56db] px-8 text-base text-white hover:bg-[#1e429f]"
+            )}
           >
-            <Link href="/register">Начать бесплатно</Link>
-          </Button>
+            Начать бесплатно
+          </Link>
         </div>
       </section>
     </>

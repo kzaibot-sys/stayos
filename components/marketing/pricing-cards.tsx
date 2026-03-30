@@ -1,9 +1,9 @@
 "use client"
 
-import { motion } from "framer-motion"
+import { motion, type Variants } from "framer-motion"
 import Link from "next/link"
 import { Check } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { buttonVariants } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
 type Plan = {
@@ -15,7 +15,6 @@ type Plan = {
   ctaHref: string
   highlighted?: boolean
   badge?: string
-  ctaVariant?: "default" | "outline"
 }
 
 const plans: Plan[] = [
@@ -30,7 +29,6 @@ const plans: Plan[] = [
     ],
     cta: "Начать бесплатно",
     ctaHref: "/register",
-    ctaVariant: "outline",
   },
   {
     name: "Starter",
@@ -44,7 +42,6 @@ const plans: Plan[] = [
     ],
     cta: "Начать бесплатно",
     ctaHref: "/register",
-    ctaVariant: "outline",
   },
   {
     name: "Pro",
@@ -59,7 +56,6 @@ const plans: Plan[] = [
     ],
     cta: "Начать бесплатно",
     ctaHref: "/register",
-    ctaVariant: "default",
     highlighted: true,
     badge: "Популярный",
   },
@@ -74,11 +70,10 @@ const plans: Plan[] = [
     ],
     cta: "Связаться",
     ctaHref: "/contact",
-    ctaVariant: "outline",
   },
 ]
 
-const container = {
+const container: Variants = {
   hidden: { opacity: 0 },
   show: {
     opacity: 1,
@@ -86,9 +81,13 @@ const container = {
   },
 }
 
-const item = {
+const item: Variants = {
   hidden: { opacity: 0, y: 20 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.4, ease: "easeOut" } },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.4, ease: "easeOut" as const },
+  },
 }
 
 export function PricingCards() {
@@ -138,18 +137,16 @@ export function PricingCards() {
             ))}
           </ul>
 
-          {plan.highlighted ? (
-            <Button
-              asChild
-              className="w-full bg-[#1a56db] text-white hover:bg-[#1e429f]"
-            >
-              <Link href={plan.ctaHref}>{plan.cta}</Link>
-            </Button>
-          ) : (
-            <Button variant="outline" asChild className="w-full">
-              <Link href={plan.ctaHref}>{plan.cta}</Link>
-            </Button>
-          )}
+          <Link
+            href={plan.ctaHref}
+            className={cn(
+              plan.highlighted
+                ? cn(buttonVariants(), "w-full justify-center bg-[#1a56db] text-white hover:bg-[#1e429f]")
+                : cn(buttonVariants({ variant: "outline" }), "w-full justify-center")
+            )}
+          >
+            {plan.cta}
+          </Link>
         </motion.div>
       ))}
     </motion.div>
